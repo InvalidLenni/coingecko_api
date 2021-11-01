@@ -3,11 +3,11 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/10/31 21:14:52.257859
+#+ Editado:	2021/11/01 16:16:42.720272
 # ------------------------------------------------------------------------------
 import requests as r
 import json
-from typing import Optional, List
+from typing import Optional, List, Union
 # ------------------------------------------------------------------------------
 class CoinGecko:
     __url_base: str = 'https://api.coingecko.com/api/v3/'
@@ -42,6 +42,50 @@ class CoinGecko:
             └ Chave "gecko_says" e contido "(V3) To the Moon!".
         """
         return json.loads(r.get(self.get_url_base()+'ping').text)
+
+    # /simple/price
+    def get_price(self, ids_moedas: Union[str, List[str]], ids_moedas_vs: Union[str, List[str]],
+            market_cap: Optional[bool] = False, vol24h: Optional[bool] = False,
+            change24h: Optional[bool] = False, last_updated: Optional[bool] = False) -> dict:
+        """
+        Dadas unhas moeda/s a comparar, devolve o seu valor na/s divisa/s indicada/s.
+        Permite tamén mostrar o market cap, o vol ou cambio 24h e a data de última
+        actualización.
+
+        @entrada:
+            ids_moedas      -   Requirido   -   Catex, Lista de catex
+            └ Identificador/es da/s moeda/s da/s que se quere obter a información.
+            ids_moedas_vs   -   Requirido   -   Catex, Lista de catex
+            └ Identificador/es da/s divisa/s da/s a usar.
+            market_cap      -   Opcional    -   Bool
+            └ Indica se se mostra o market cap para os valores de ids_moedas_vs.
+            vol24h          -   Opcional    -   Bool
+            └ Indica se se mostra o volumen de 24 horas para os valores de ids_moedas_vs.
+            change24h       -   Opcional    -   Bool
+            └ Indica se se mostra o cambio de 24 horas para os valores de ids_moedas_vs.
+            last_updated    -   Opcional    -   Bool
+            └ Indica se se mostra o momento de última actualización para os valores de ids_moedas_vs.
+
+        @saída:
+            Dicionario  -   Sempre
+            └ Coas ids_moedas de chave e cun dicionario dos distintos valores pedidos.
+        """
+
+        # Se mete un str faise unha lista con el para usar join
+        if type(ids_moedas) == str:
+            ids_moedas = [ids_moedas]
+
+        # Se mete un str faise unha lista con el para usar join
+        if type(ids_moedas_vs) == str:
+            ids_moedas_vs = [ids_moedas_vs]
+
+        # Poño todo aqui directamente pq así aforro moitos ifs; facendo a función máis rápida
+        url = self.get_url_base()+'simple/price?ids='+','.join(ids_moedas)+'&vs_currencies='+\
+                ','.join(ids_moedas_vs)+'&include_market_cap='+str(market_cap).lower()+\
+                '&include_24hr_vol='+str(vol24h).lower()+'&include_24hr_change='+str(change24h).lower()+\
+                '&include_last_updated_at='+str(last_updated).lower()
+
+        return json.loads(r.get(url).text)
 
     # /coins
     def get_coins(self) -> List[dict]:
@@ -114,12 +158,18 @@ class CoinGecko:
 # ------------------------------------------------------------------------------
 def main():
     cg = CoinGecko()
+
     #print(cg.ping())
+
     #print(cg.get_coins()[0]['id'])
+
     #print(cg.get_coins_list()[1329])
-    cg.get_coin('bitcoin')
+
+    #print(cg.get_coin('bitcoin'))
+
+    print(cg.get_price('bitcoin', 'eur'))
+    print(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']))
 
 if __name__=='__main__':
     main()
 # ------------------------------------------------------------------------------
-
