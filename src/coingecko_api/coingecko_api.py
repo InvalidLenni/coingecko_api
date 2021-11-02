@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/01 16:40:05.209489
+#+ Editado:	2021/11/02 13:00:16.807369
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -142,6 +142,20 @@ class CoinGecko:
 
         return json.loads(r.get(url).text)
 
+    # /simple/supported_vs_currencies
+    def get_supported_vs_currencies(self) -> List[str]:
+        """
+        Devolve unha lista dos ids de tódalas divisas que se poden usar para a comparativa.
+
+        @entrada:
+            Ninghunha.
+
+        @saída:
+            Lista de catexs -   Sempre
+            └ Ids das moedas que se poden usar para o vs.
+        """
+        return json.loads(r.get(self.get_url_base()+'simple/supported_vs_currencies').text)
+
     # /coins/list
     def get_coins_list(self) -> List[dict]:
         """
@@ -149,28 +163,38 @@ class CoinGecko:
         Ordeada por id.
 
         @entrada:
+            Ningunha.
 
         @saída:
             Lista de dicionarios   -   Sempre
             └ Todas as moedas de CoinGecko.
         """
         return json.loads(r.get(self.get_url_base()+'coins/list').text)
+
     # --------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
 def main():
     cg = CoinGecko()
 
+    # /ping
     #print(cg.ping())
 
+    # /simple/price
+    #print(cg.get_price('bitcoin', 'eur'))
+    #print(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']))
+
+    # /coins
     #print(cg.get_coins()[0]['id'])
 
-    #print(cg.get_coins_list()[1329])
-
+    # /coin
     #print(cg.get_coin('bitcoin'))
 
-    print(cg.get_price('bitcoin', 'eur'))
-    print(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']))
+    # /simple/supported_vs_currencies
+    #print(cg.get_supported_vs_currencies())
+
+    # /coins/list
+    #print(cg.get_coins_list()[1329])
 
 if __name__=='__main__':
     main()
