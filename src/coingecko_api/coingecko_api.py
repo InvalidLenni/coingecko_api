@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/02 13:00:16.807369
+#+ Editado:	2021/11/03 12:31:36.661501
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -31,6 +31,8 @@ class CoinGecko:
     # --------------------------------------------------------------------------
 
     # Operacións ---------------------------------------------------------------
+
+    # PING ---------------------------------------------------------------------
     # /ping
     def ping(self) -> dict:
         """
@@ -44,7 +46,9 @@ class CoinGecko:
             └ Chave "gecko_says" e contido "(V3) To the Moon!".
         """
         return json.loads(r.get(self.get_url_base()+'ping').text)
+    # PING # -------------------------------------------------------------------
 
+    # SIMPLE -------------------------------------------------------------------
     # /simple/price
     def get_price(self, ids_moedas: Union[str, List[str]], ids_moedas_vs: Union[str, List[str]],
             market_cap: Optional[bool] = False, vol24h: Optional[bool] = False,
@@ -88,6 +92,48 @@ class CoinGecko:
                 '&include_last_updated_at='+str(last_updated).lower()
 
         return json.loads(r.get(url).text)
+
+    # /simple/token_price/{id}
+    def get_token_price(self):
+        # xFCR
+        pass
+
+    # /simple/supported_vs_currencies
+    def get_supported_vs_currencies(self) -> List[str]:
+        """
+        Devolve unha lista dos ids de tódalas divisas que se poden usar para a comparativa.
+        Os ids que se poden poñer en funcións como a de get_price.
+
+        @entrada:
+            Ninghunha.
+
+        @saída:
+            Lista de catexs -   Sempre
+            └ Ids das moedas que se poden usar para o vs.
+        """
+        return json.loads(r.get(self.get_url_base()+'simple/supported_vs_currencies').text)
+    # SIMPLE # -----------------------------------------------------------------
+
+    # COINS --------------------------------------------------------------------
+    # /coins/list
+    def get_coins_list(self) -> List[dict]:
+        """
+        Lista de moedas composta por dicionarios co id, símbolo e nome.
+        Ordeada por id.
+
+        @entrada:
+            Ningunha.
+
+        @saída:
+            Lista de dicionarios   -   Sempre
+            └ Todas as moedas de CoinGecko.
+        """
+        return json.loads(r.get(self.get_url_base()+'coins/list').text)
+
+    # /coins/markets
+    def get_coins_markets(self):
+        # xFCR
+        pass
 
     # /coins
     def get_coins(self) -> List[dict]:
@@ -142,34 +188,78 @@ class CoinGecko:
 
         return json.loads(r.get(url).text)
 
-    # /simple/supported_vs_currencies
-    def get_supported_vs_currencies(self) -> List[str]:
-        """
-        Devolve unha lista dos ids de tódalas divisas que se poden usar para a comparativa.
+    # /coins/{id}/tickers
+    def get_coin_tickers(self):
+        # xFCR
+        pass
 
-        @entrada:
-            Ninghunha.
+    # /coins/{id}/history
+    def get_coin_history(self):
+        # xFCR
+        pass
 
-        @saída:
-            Lista de catexs -   Sempre
-            └ Ids das moedas que se poden usar para o vs.
-        """
-        return json.loads(r.get(self.get_url_base()+'simple/supported_vs_currencies').text)
+    # /coins/{id}/market_chart
+    def get_coin_market_chart(self):
+        # xFCR
+        pass
 
-    # /coins/list
-    def get_coins_list(self) -> List[dict]:
-        """
-        Lista de moedas composta por dicionarios co id, símbolo e nome.
-        Ordeada por id.
+    # /coins/{id}/market_chart/range
+    def get_coin_market_chart_range(self):
+        # xFCR
+        pass
 
-        @entrada:
-            Ningunha.
+    # /coins/{id}/status_updates
+    def get_coin_status_updates(self):
+        # xFCR
+        pass
 
-        @saída:
-            Lista de dicionarios   -   Sempre
-            └ Todas as moedas de CoinGecko.
-        """
-        return json.loads(r.get(self.get_url_base()+'coins/list').text)
+    # /coins/{id}/ohlc
+    def get_coin_ohlc(self):
+        # xFCR
+        pass
+    # COINS # ------------------------------------------------------------------
+
+    # CONTRACT -----------------------------------------------------------------
+    # /coins/{id}/contract/{contract_address}
+    # /coins/{id}/contract/{contract_address}/market_chart
+    # /coins/{id}/contract/{contract_address}/market_chart/range
+    # CONTRACT # ---------------------------------------------------------------
+
+    # ASSET_PLATFORMS ----------------------------------------------------------
+    # ASSET_PLATFORMS # --------------------------------------------------------
+
+    # CATEGORIES ---------------------------------------------------------------
+    # CATEGORIES # -------------------------------------------------------------
+
+    # EXCHANGES ----------------------------------------------------------------
+    # EXCHANGES # --------------------------------------------------------------
+
+    # FINANCE ------------------------------------------------------------------
+    # FINANCE # ----------------------------------------------------------------
+
+    # INDEXES ------------------------------------------------------------------
+    # INDEXES # ----------------------------------------------------------------
+
+    # DERIVATIVES --------------------------------------------------------------
+    # DERIVATIVES # ------------------------------------------------------------
+
+    # STATUS_UPDATES -----------------------------------------------------------
+    # STATUS_UPDATES # ---------------------------------------------------------
+
+    # EVENTS -------------------------------------------------------------------
+    # EVENTS # -----------------------------------------------------------------
+
+    # EXCHANGE_RATES -----------------------------------------------------------
+    # EXCHANGE_RATES # ---------------------------------------------------------
+
+    # TRENDING -----------------------------------------------------------------
+    # TRENDING # ---------------------------------------------------------------
+
+    # GLOBAL -------------------------------------------------------------------
+    # GLOBAL # -----------------------------------------------------------------
+
+    # COMPANIES ----------------------------------------------------------------
+    # COMPANIES # --------------------------------------------------------------
 
     # --------------------------------------------------------------------------
 
