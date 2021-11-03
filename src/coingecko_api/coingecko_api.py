@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/03 12:31:36.661501
+#+ Editado:	2021/11/03 14:28:55.429887
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -267,24 +267,44 @@ class CoinGecko:
 def main():
     cg = CoinGecko()
 
+    # TESTS --------------------------------------------------------------------
+
     # /ping
     #print(cg.ping())
+
+    # --------------------------------------------------------------------------
 
     # /simple/price
     #print(cg.get_price('bitcoin', 'eur'))
     #print(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']))
 
-    # /coins
-    #print(cg.get_coins()[0]['id'])
-
-    # /coin
-    #print(cg.get_coin('bitcoin'))
+    # /simple/token_price/{id}
 
     # /simple/supported_vs_currencies
     #print(cg.get_supported_vs_currencies())
 
+    # --------------------------------------------------------------------------
+
     # /coins/list
     #print(cg.get_coins_list()[1329])
+
+    # /coins/markets
+
+    # /coins
+    #print(cg.get_coins()[0]['id'])
+
+    # /coins/{id}
+    #print(cg.get_coin('bitcoin'))
+
+    # /coins/{id}/tickers
+    # /coins/{id}/history
+    # /coins/{id}/market_chart
+    # /coins/{id}/market_chart/range
+    # /coins/{id}/status_updates
+    # /coins/{id}/ohlc
+
+    # TESTS # ------------------------------------------------------------------
+
 
 if __name__=='__main__':
     main()
