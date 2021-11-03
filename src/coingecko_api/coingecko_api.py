@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/03 14:28:55.429887
+#+ Editado:	2021/11/03 21:34:18.392031
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -38,8 +38,10 @@ class CoinGecko:
         """
         Pingea á api para ver se está disponhible.
 
+
         @entrada:
             Ningunha.
+
 
         @saída:
             Dicionario -   Sempre
@@ -58,19 +60,26 @@ class CoinGecko:
         Permite tamén mostrar o market cap, o vol ou cambio 24h e a data de última
         actualización.
 
+
         @entrada:
             ids_moedas      -   Requirido   -   Catex, Lista de catex
             └ Identificador/es da/s moeda/s da/s que se quere obter a información.
+
             ids_moedas_vs   -   Requirido   -   Catex, Lista de catex
             └ Identificador/es da/s divisa/s da/s a usar.
+
             market_cap      -   Opcional    -   Bool
             └ Indica se se mostra o market cap para os valores de ids_moedas_vs.
+
             vol24h          -   Opcional    -   Bool
             └ Indica se se mostra o volumen de 24 horas para os valores de ids_moedas_vs.
+
             change24h       -   Opcional    -   Bool
             └ Indica se se mostra o cambio de 24 horas para os valores de ids_moedas_vs.
+
             last_updated    -   Opcional    -   Bool
             └ Indica se se mostra o momento de última actualización para os valores de ids_moedas_vs.
+
 
         @saída:
             Dicionario  -   Sempre
@@ -94,9 +103,60 @@ class CoinGecko:
         return json.loads(r.get(url).text)
 
     # /simple/token_price/{id}
-    def get_token_price(self):
-        # xFCR
-        pass
+    def get_token_price(self, id_moeda_base: str, contract_addresses: Union[str, List[str]],
+            ids_moedas_vs: Union[str, List[str]], market_cap: Optional[bool] = False,
+            vol24h: Optional[bool] = False, change24h: Optional[bool] = False,
+            last_updated: Optional[bool] = False) -> dict:
+        """
+        Dado un ou máis contract addresses e o id da blockchain á que pertence devolve o valor
+        nas distintas divisas indicadas na variable ids_moedas_vs.
+        Permite tamén mostrar o market cap, o vol ou cambio 24h e a data de última
+        actualización.
+
+
+        @entrada:
+            id_moeda_base       -   Requirido   -   Catex, Lista de catex
+            └ Identificador/es da/s moeda/s da/s que se quere obter a información.
+
+            contract_addresses  -   Requirido   -   Catex, Lista de catex
+            └ Identificador/es do/s token/s da/s que se quere obter a información.
+
+            ids_moedas_vs   -   Requirido   -   Catex, Lista de catex
+            └ Identificador/es da/s divisa/s da/s a usar.
+
+            market_cap      -   Opcional    -   Bool
+            └ Indica se se mostra o market cap para os valores de ids_moedas_vs.
+
+            vol24h          -   Opcional    -   Bool
+            └ Indica se se mostra o volumen de 24 horas para os valores de ids_moedas_vs.
+
+            change24h       -   Opcional    -   Bool
+            └ Indica se se mostra o cambio de 24 horas para os valores de ids_moedas_vs.
+
+            last_updated    -   Opcional    -   Bool
+            └ Indica se se mostra o momento de última actualización para os valores de ids_moedas_vs.
+
+
+        @saída:
+            Dicionario  -   Sempre
+            └ Coas ids_moedas de chave e cun dicionario dos distintos valores pedidos.
+        """
+
+        # Se mete un str faise unha lista con el para usar join
+        if type(contract_addresses) == str:
+           contract_addresses = [contract_addresses]
+
+        # Se mete un str faise unha lista con el para usar join
+        if type(ids_moedas_vs) == str:
+            ids_moedas_vs = [ids_moedas_vs]
+
+        # Poño todo aqui directamente pq así aforro moitos ifs; facendo a función máis rápida
+        url = self.get_url_base()+'simple/token_price/'+id_moeda_base+'?contract_addresses='+\
+                ','.join(contract_addresses)+'&vs_currencies='+','.join(ids_moedas_vs)+\
+                '&include_market_cap='+str(market_cap).lower()+'&include_24hr_vol='+str(vol24h).lower()+\
+                '&include_24hr_change='+str(change24h).lower()+'&include_last_updated_at='+str(last_updated).lower()
+
+        return json.loads(r.get(url).text)
 
     # /simple/supported_vs_currencies
     def get_supported_vs_currencies(self) -> List[str]:
@@ -104,8 +164,10 @@ class CoinGecko:
         Devolve unha lista dos ids de tódalas divisas que se poden usar para a comparativa.
         Os ids que se poden poñer en funcións como a de get_price.
 
+
         @entrada:
             Ninghunha.
+
 
         @saída:
             Lista de catexs -   Sempre
@@ -121,13 +183,16 @@ class CoinGecko:
         Lista de moedas composta por dicionarios co id, símbolo e nome.
         Ordeada por id.
 
+
         @entrada:
             Ningunha.
+
 
         @saída:
             Lista de dicionarios   -   Sempre
             └ Todas as moedas de CoinGecko.
         """
+
         return json.loads(r.get(self.get_url_base()+'coins/list').text)
 
     # /coins/markets
@@ -142,8 +207,10 @@ class CoinGecko:
         bloques en minutos e informacións de mercado e prezo varias.
         Ordeada por ranking (#).
 
+
         @entrada:
             Ningunha.
+
 
         @saída:
             Lista de dicionarios   -   Sempre
@@ -159,21 +226,29 @@ class CoinGecko:
         """
         Devolve unha gran cantidade de información sobre unha moeda concreta.
 
+
         @entrada:
             id_moeda        -   Requirido   -   Catex
             └ Identificador da moeda da que se quere obter a información.
+
             localization    -   Opcional    -   Bool
             └ Controla a mostra de todas as linguas rexionais na resposta.
+
             tickers         -   Opcional    -   Bool
             └ Controla a mostra dos datos de tickers.
+
             market_data     -   Opcional    -   Bool
             └ Controla a mostra dos datos de mercado.
+
             community_data  -   Opcional    -   Bool
             └ Controla a mostra dos datos de comunidade.
+
             developer_data  -   Opcional    -   Bool
             └ Controla a mostra dos datos de programador.
+
             sparkline       -   Opcional    -   Bool
             └ Controla a inclusión dos datos da minigráfica de 7 días.
+
 
         @saída:
             Dicionario  -   Sempre
@@ -279,6 +354,7 @@ def main():
     #print(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']))
 
     # /simple/token_price/{id}
+    print(cg.get_token_price('ethereum', '0xCF8335727B776d190f9D15a54E6B9B9348439eEE', 'eur,usd'))
 
     # /simple/supported_vs_currencies
     #print(cg.get_supported_vs_currencies())
