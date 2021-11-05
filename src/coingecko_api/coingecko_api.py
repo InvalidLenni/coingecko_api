@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/05 12:49:00.975143
+#+ Editado:	2021/11/05 13:39:16.783296
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -274,6 +274,36 @@ class CoinGecko:
     # ASSET_PLATFORMS # --------------------------------------------------------
 
     # CATEGORIES ---------------------------------------------------------------
+    # /coins/categories/list
+    def get_coins_categories_list(self):
+        """
+        Devolve todas as categorías cd CG nunha lista de dics compostos
+        por id e nome.
+
+        @entrada:
+            Ningunha.
+
+        @saída:
+            Lista de dicionarios   -   Sempre
+            └ Todas as categorías de CoinGecko
+        """
+
+        return json.loads(r.get(self.get_url_base()+'coins/categories/list').text)
+
+    # /coins/categories
+    def get_coins_categories(self):
+        """
+        Devolve unha lista de todas as categorías de CG con datos de mercado asociados.
+
+        @entrada:
+            Ningunha.
+
+        @saída:
+            Lista de dicionarios   -   Sempre
+            └ Todas as categorías de CoinGecko con datos de mercado
+        """
+
+        return json.loads(r.get(self.get_url_base()+'coins/categories').text)
     # CATEGORIES # -------------------------------------------------------------
 
     # EXCHANGES ----------------------------------------------------------------
@@ -354,6 +384,14 @@ def main():
     # /coins/{id}/ohlc
 
     # TESTS # ------------------------------------------------------------------
+
+    # CATEGORIES ---------------------------------------------------------------
+    # /coins/categories/list
+    #jprint(cg.get_coins_categories_list())
+
+    # /coins/categories
+    #jprint(cg.get_coins_categories())
+    # CATEGORIES # -------------------------------------------------------------
 
 
 if __name__=='__main__':
