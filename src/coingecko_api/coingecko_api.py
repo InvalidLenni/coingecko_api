@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/03 21:37:26.973958
+#+ Editado:	2021/11/05 12:49:00.975143
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -193,6 +193,7 @@ class CoinGecko:
             Lista de dicionarios   -   Sempre
             └ Todas as moedas de CoinGecko.
         """
+
         return json.loads(r.get(self.get_url_base()+'coins').text)
 
     # /coins/{id}
@@ -309,37 +310,41 @@ class CoinGecko:
 
 # ------------------------------------------------------------------------------
 def main():
+    # import aki para non sobre importar se se usa como módulo
+    from uteis.imprimir import jprint
+
     cg = CoinGecko()
 
     # TESTS --------------------------------------------------------------------
 
     # /ping
-    #print(cg.ping())
+    #jprint(cg.ping())
 
     # --------------------------------------------------------------------------
 
     # /simple/price
-    #print(cg.get_price('bitcoin', 'eur'))
-    #print(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']))
+    #jprint(cg.get_price('bitcoin', 'eur'))
+    #jprint(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']))
 
     # /simple/token_price/{id}
-    print(cg.get_token_price('ethereum', '0xCF8335727B776d190f9D15a54E6B9B9348439eEE', 'eur,usd'))
+    # tether e whackd
+    #jprint(cg.get_token_price('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7,0xCF8335727B776d190f9D15a54E6B9B9348439eEE', 'eur,usd'))
 
     # /simple/supported_vs_currencies
-    #print(cg.get_supported_vs_currencies())
+    #jprint(cg.get_supported_vs_currencies())
 
     # --------------------------------------------------------------------------
 
     # /coins/list
-    #print(cg.get_coins_list()[1329])
+    #jprint(cg.get_coins_list()[1329])
 
     # /coins/markets
 
     # /coins
-    #print(cg.get_coins()[0]['id'])
+    #jprint(cg.get_coins()[0]['id'])
 
     # /coins/{id}
-    #print(cg.get_coin('bitcoin'))
+    #jprint(cg.get_coin('bitcoin'))
 
     # /coins/{id}/tickers
     # /coins/{id}/history
