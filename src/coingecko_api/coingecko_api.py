@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/06 14:47:22.385468
+#+ Editado:	2021/11/06 14:51:39.247336
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -48,6 +48,10 @@ class CoinGecko:
             Bool    -   Sempre
             └ Indicando se todo está correcto (True) ou se non (False)
         """
+
+        # se as listas non teñen a mesma lonxitude algo se meteu mal
+        if len(lista_variables) != len(lista_tipos):
+            raise ErroTipado('As listas tenhen que ter a mesma lonxitude.')
 
         # se mete unha variable solitaria convírtese en lista
         if type(lista_variables) != list:
