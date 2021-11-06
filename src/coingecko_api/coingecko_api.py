@@ -3,11 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/06 14:31:17.260055
+#+ Editado:	2021/11/06 14:47:22.385468
 # ------------------------------------------------------------------------------
 import requests as r
 import json
 from typing import Optional, List, Union
+
+from excepcions import ErroTipado
 # ------------------------------------------------------------------------------
 class CoinGecko:
     # class variable/atribute
@@ -46,6 +48,7 @@ class CoinGecko:
             Bool    -   Sempre
             └ Indicando se todo está correcto (True) ou se non (False)
         """
+
         # se mete unha variable solitaria convírtese en lista
         if type(lista_variables) != list:
             lista_variables = [lista_variables]
@@ -112,7 +115,7 @@ class CoinGecko:
 
         if not self.check_types([ids_moedas, ids_moedas_vs, market_cap, vol24h, change24h, last_updated],
                 [str, str, bool, bool, bool, bool]):
-            return {'Erro': 'Si'}
+            raise ErroTipado('Cometiches un erro no tipado')
 
         # Se mete un str faise unha lista con el para usar join
         if type(ids_moedas) == str:
@@ -162,6 +165,10 @@ class CoinGecko:
             └ Coas ids_moedas de chave e cun dicionario dos distintos valores pedidos.
         """
 
+        if not self.check_types([id_moeda_base, contract_addresses, ids_moedas_vs, market_cap,\
+                vol24h, change24h, last_updated], [str, str, str, bool, bool, bool, bool]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
         # Se mete un str faise unha lista con el para usar join
         if type(contract_addresses) == str:
            contract_addresses = [contract_addresses]
@@ -191,6 +198,7 @@ class CoinGecko:
             Lista de catexs -   Sempre
             └ Ids das moedas que se poden usar para o vs.
         """
+
         return json.loads(r.get(self.get_url_base()+'simple/supported_vs_currencies').text)
     # SIMPLE # -----------------------------------------------------------------
 
@@ -262,6 +270,11 @@ class CoinGecko:
             └ Con toda a información sobre esa moeda ou co erro coa chave "error"
             e de contido unha mensaxe explicando que o id non foi atopado.
         """
+
+        if not self.check_types([id_moeda, localization, tickers, market_data, community_data,\
+                developer_data, sparkline], [str, bool, bool, bool, bool, bool, bool]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
         # Poño todo directamente porque así aforro moitos ifs e a cousa vai máis rápida
         url = self.get_url_base()+'coins/'+id_moeda+'?localization='+str(localization).lower()+\
                 '&tickers='+str(tickers).lower()+'&market_data='+str(market_data).lower()+\
@@ -391,7 +404,6 @@ def main():
 
     # /simple/price
     #jprint(cg.get_price('bitcoin', 'eur'))
-    jprint(cg.get_price('bitcoin', 'eur'))
     #jprint(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']))
 
     # /simple/token_price/{id}
