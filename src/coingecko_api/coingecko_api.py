@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/05 13:39:16.783296
+#+ Editado:	2021/11/06 14:31:17.260055
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -28,6 +28,39 @@ class CoinGecko:
     # --------------------------------------------------------------------------
 
     # Máxicos ------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+
+    # --------------------------------------------------------------------------
+    @staticmethod
+    def check_types(lista_variables, lista_tipos):
+        """
+        Dada unha lista de variables e outra de tipos vai mirando que estén correctos.
+
+        @entrada:
+            lista_variables -   Requirido   -   Lista de ou variable solitaria.
+            └ Lista coas variables.
+            lista_tipos     -   Requirido   -   Lista de ou tipo solitario.
+            └ Lista cos tipos das variables.
+
+        @saída:
+            Bool    -   Sempre
+            └ Indicando se todo está correcto (True) ou se non (False)
+        """
+        # se mete unha variable solitaria convírtese en lista
+        if type(lista_variables) != list:
+            lista_variables = [lista_variables]
+        # se mete un tipo solitario convírtese en lista
+        if type(lista_tipos) != list:
+            lista_tipos = [lista_tipos]
+
+        for variable, tipo in zip(lista_variables, lista_tipos):
+            if type(variable) == list:
+                for ele in variable:
+                    if type(ele) != tipo:
+                        return False
+            elif type(variable) != tipo:
+                return False
+        return True
     # --------------------------------------------------------------------------
 
     # Operacións ---------------------------------------------------------------
@@ -76,6 +109,10 @@ class CoinGecko:
             Dicionario  -   Sempre
             └ Coas ids_moedas de chave e cun dicionario dos distintos valores pedidos.
         """
+
+        if not self.check_types([ids_moedas, ids_moedas_vs, market_cap, vol24h, change24h, last_updated],
+                [str, str, bool, bool, bool, bool]):
+            return {'Erro': 'Si'}
 
         # Se mete un str faise unha lista con el para usar join
         if type(ids_moedas) == str:
@@ -354,6 +391,7 @@ def main():
 
     # /simple/price
     #jprint(cg.get_price('bitcoin', 'eur'))
+    jprint(cg.get_price('bitcoin', 'eur'))
     #jprint(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']))
 
     # /simple/token_price/{id}
