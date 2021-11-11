@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/09 18:47:46.385327
+#+ Editado:	2021/11/11 20:00:09.231275
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -225,7 +225,7 @@ class CoinGecko:
 
     # /coins/markets
     def get_coins_markets(self, id_moeda_vs: str, ids_moedas: Optional[Union[str, List[str]]] = '',
-            categoria: Optional[Union[str, List[str]]] = '', orde: Optional[Union[str, List[str]]] = 'market_cap_desc',
+            categoria: Optional[str] = '', orde: Optional[Union[str, List[str]]] = 'market_cap_desc',
             xpax: Optional[int] = 250, pax: Optional[int] = 0, sparkline: Optional[bool] = False,
             cambio_prezo_porcentaxe: Optional[Union[str, List[str]]] = ['1h', '24h', '7d']):
         '''
@@ -263,19 +263,16 @@ class CoinGecko:
 
         # se meteu ids de moedas
         if ids_moedas:
-            url_ids_moedas = '&ids='+','.join(ids_moedas)
             # Se mete un str faise unha lista con el para usar join
             if type(ids_moedas) == str:
                 ids_moedas = [ids_moedas]
+            url_ids_moedas = '&ids='+','.join(ids_moedas)
         else:
             url_ids_moedas = ''
 
         # se meteu categoría
         if categoria:
-            url_categoria = '&category='+','.join(categoria)
-            # Se mete un str faise unha lista con el para usar join
-            if type(categoria) == str:
-                categoria = [categoria]
+            url_categoria = '&category='+categoria
         else:
             url_categoria = ''
 
@@ -491,6 +488,9 @@ def main():
 
     # /coins/markets
     #jprint(cg.get_coins_markets('usd', ids_moedas = ['bitcoin', 'ethereum']))
+    #jprint(cg.get_coins_markets('usd', ids_moedas = 'bitcoin'))
+    #jprint(cg.get_coins_markets('usd', categoria = 'aave-tokens'))
+    #jprint(cg.get_coins_markets('usd', categoria = 'analytics'))
     # xFCR
 
     # /coins
