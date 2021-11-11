@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/11 20:00:09.231275
+#+ Editado:	2021/11/11 20:11:00.771082
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -323,7 +323,9 @@ class CoinGecko:
             localization    -   Opcional    -   Bool
             └ Controla a mostra de todas as linguas rexionais na resposta.
             tickers         -   Opcional    -   Bool
-            └ Controla a mostra dos datos de tickers.
+            └ Controla a mostra dos datos de tickers (limitado a 100).
+              └ "is_stale": como true cando non foi actualizado nun tempo.
+              └ "is_anomaly": como true cando o prezo do ticker é outliered ó sistema de coingecko.
             market_data     -   Opcional    -   Bool
             └ Controla a mostra dos datos de mercado.
             community_data  -   Opcional    -   Bool
