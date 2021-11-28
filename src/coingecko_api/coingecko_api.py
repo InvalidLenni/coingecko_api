@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/28 13:58:29.102824
+#+ Editado:	2021/11/28 14:19:37.663213
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -376,9 +376,9 @@ class CoinGecko:
             └ Indica se se quere mostrar o 2% da profundidade do orderbook.
 
         @saída:
-            Diccionario -   Sempre
+            Dicionario -   Sempre
             └ Con toda a info sobre esa moeda ou co erro coa chave "error"
-            e de contido unha mensaxe explicando que o di non foi atopado.
+            e de contido unha mensaxe explicando que o id non foi atopado.
         """
 
         if not self.check_types([id_moeda, ids_exchanges, logo_exchange, pax, orde,\
@@ -409,9 +409,45 @@ class CoinGecko:
         return json.loads(r.get(url).text)
 
     # /coins/{id}/history
-    def get_coin_history(self):
-        # xFCR
-        pass
+    def get_coin_history(self, id_moeda: str, ano: int, mes: int, dia: int,
+            linguas: Optional[bool] = False):
+        """
+        Devolve datos históricos (nome, prezo, mercado e estatísticas) dunha moeda nunha data.
+
+        @entrada:
+            id_moeda    -   Requirido   -   Catex
+            └ Identificador da moeda da que se quere obter a información.
+            ano         -   Requirido   -   Int
+            └ Ano do que se quere a info
+            mes         -   Requirido   -   Int
+            └ Mes do que se quere a info
+            dia         -   Requirido   -   Int
+            └ Día do que se quere a info
+            linguas     -   Opcional    -   Bool
+            └
+
+        @saída:
+            Dicionario  -   Sempre
+            └ Con toda a info sobre esa moeda no momento dado ou co erro coa chave "error"
+            e de contido unha mensaxe explicando que o id non foi atopado.
+        """
+
+        if not self.check_types([id_moeda, dia, mes, ano, linguas], [str, int, int, int, bool]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        if 0 < ano:
+            print('mal ano')
+
+        if 0 < mes < 13:
+            print('mal mes')
+
+        if 0 < dia < 32:
+            print('mal dia')
+
+
+        url = self.get_url_base()+'coins/'+id_moeda+'history?date='
+
+        return json.loads(r.get(url).text)
 
     # /coins/{id}/market_chart
     def get_coin_market_chart(self):
@@ -558,6 +594,8 @@ def main():
     #jprint(cg.get_coin_tickers(id_moeda='bitcoin', ids_exchanges='gdax', logo_exchange=True))
 
     # /coins/{id}/history
+    jprint(cg.get_coin_history('bitcoin', 2011, 10, 11))
+
     # /coins/{id}/market_chart
     # /coins/{id}/market_chart/range
     # /coins/{id}/status_updates
