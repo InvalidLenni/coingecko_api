@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/28 13:57:33.256977
+#+ Editado:	2021/11/28 13:58:29.102824
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -555,7 +555,7 @@ def main():
 
     # /coins/{id}/tickers
     #jprint(cg.get_coin_tickers('bitcoin'))
-    jprint(cg.get_coin_tickers(id_moeda='bitcoin', ids_exchanges='gdax', logo_exchange=True))
+    #jprint(cg.get_coin_tickers(id_moeda='bitcoin', ids_exchanges='gdax', logo_exchange=True))
 
     # /coins/{id}/history
     # /coins/{id}/market_chart
