@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/28 20:55:08.197827
+#+ Editado:	2021/11/28 20:58:31.754979
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -632,7 +632,7 @@ def main():
     # ten máximo 30 días
     #jprint(cg.get_coin_history('bitcoin', 2020, 4, 31))
     # correcto
-    jprint(cg.get_coin_history('bitcoin', 2020, 2, 29))
+    #jprint(cg.get_coin_history('bitcoin', 2020, 2, 29))
 
     # /coins/{id}/market_chart
     # /coins/{id}/market_chart/range
