@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/28 20:58:31.754979
+#+ Editado:	2021/11/28 21:35:46.967296
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -248,14 +248,16 @@ class CoinGecko:
             xpax: Optional[int] = 250, pax: Optional[int] = 0, sparkline: Optional[bool] = False,
             cambio_prezo_porcentaxe: Optional[Union[str, List[str]]] = ['1h', '24h', '7d']):
         '''
-        Función para obter os datos de mercado de tódalas moedas (prezo, maket cap, volume)
+        Función para obter os datos de mercado de tódalas moedas (prezo, maket cap, volume).
+        Se non se indica ningun id_moeda nin ningunha categoría mostra as de maior market cap
+        por orde.
 
         @entrada:
             ids_moeda_vs            -   Requirido   -   Catex
             └ Identificador da moeda na que se quere obter o prezo comparativo.
-            ids_moedas              -   *Opcional   -   Catex, Lista de catex
+            ids_moedas              -   Opcional   -   Catex, Lista de catex
             └ Identificador/es da/s moeda/s da/s que se quere obter a información.
-            categoria               -   *Opcional   -   Catex, Lista de catex
+            categoria               -   Opcional   -   Catex, Lista de catex
             └ Unha ou varias das mostradas en /coin/categories/list.
             orde                    -   Opcional    -   Catex, Lista de catex
             └ Indica a orde en que se queren mostrar os resultados proporcionados.
@@ -481,7 +483,37 @@ class CoinGecko:
         return json.loads(r.get(url).text)
 
     # /coins/{id}/market_chart
-    def get_coin_market_chart(self):
+    def get_coin_market_chart(self, id_moeda: str, id_moeda_vs: str, rango: int, rango: Optional[str] = 'daily'):
+        """
+        Devolve datos históricos da moeda pedida.
+        Por defecto devolve datos ó minuto se se escolle unha duración dun día,
+        á hora se se escolle unha duración entre 1 e 90 días e diaria para máis de 90 días.
+
+        @entrada:
+            id_moeda    -   Requirido   -   Catex
+            └ Id da moeda da que se queren obter os datos.
+            id_moeda_vs -   Requirido   -   Catex
+            └ En que moeda se quere mostrar o valor da moeda id_moeda.
+            rango       -   Requirido   -   Int
+            └ Rango de días a mostrar.
+                Na api se pos 0 tan so che mostra o actual pero non funcionan os intervalos,
+                neste wrapper vamos usar ese cero como máximo pois doutra forma manda info
+                que se pode sacar usando outros endpoints como /simple/price para o prezo ou
+                /coins/markets para prezo, market_cap e volume.
+            intervalo   -   Opcional    -   Catex
+            └ Intervalo de tempo no que dividir a info (días, horas, minutos)
+
+        @saída:
+            Dicionario  -   Sempre
+            └ Cunha lista dos valores para cada chave: prezos, market_caps e total_volumes;
+                cun total dos días indicados.
+                Para o intervalo de días:
+                    O último valor de cada lista é o día actual e antes deste hai un total de días que se indican.
+                    De indicarse 5 días, por exemplo, habería 6 entradas en cada chave.
+                    As listas están compostas, á súa vez, dunha lista de dous elementos por día; o unix timestamp con
+                    ceros sobrantes (3 a 10202111282108) e o prezo/market_cap/total_volume.
+                Para o de horas e minutos é análogo.
+        """
         # xFCR
         pass
 
