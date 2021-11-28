@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/27 21:34:25.483348
+#+ Editado:	2021/11/28 13:57:33.256977
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -354,7 +354,9 @@ class CoinGecko:
         return json.loads(r.get(url).text)
 
     # /coins/{id}/tickers
-    def get_coin_tickers(self):
+    def get_coin_tickers(self, id_moeda: str, ids_exchanges: Optional[Union[str, List[str]]] = '',
+            logo_exchange: Optional[bool] = False, pax: Optional[int] = 0,
+            orde: Optional[Union[str, List[str]]] = 'trust_score_asc', profundidade: Optional[bool] = False):
         """
         Devolve os tickers dunha moeda (paxinado por 100 elementos).
 
@@ -362,19 +364,49 @@ class CoinGecko:
             id_moeda        -   Requirido   -   Catex
             └ Identificador da moeda da que se quere obter a información.
             ids_exchanges   -   Opcional    -   Catex, lista de catex
-            └
-            logo_exchange   -   Opcional    -   Catex, lista de catex
-            └
+            └ Identificador do exchange no que se quere buscar a información.
+            logo_exchange   -   Opcional    -   Bool
+            └ Indica se se quere devolver foto co logo do exchange.
             pax             -   Opcional    -   Enteiro
-            └
+            └ Indica a páxina de tickers a sacar.
             orde            -   Opcional    -   Catex
-            └
-            profundidade    -   Opcional    -   Booleano
+            └ Indica o valor polo cal se ordean os resultados.
+                Tan só válidos: trust_score_asc, volume_desc
+            profundidade    -   Opcional    -   Bool
+            └ Indica se se quere mostrar o 2% da profundidade do orderbook.
 
         @saída:
-            └
+            Diccionario -   Sempre
+            └ Con toda a info sobre esa moeda ou co erro coa chave "error"
+            e de contido unha mensaxe explicando que o di non foi atopado.
         """
-        pass
+
+        if not self.check_types([id_moeda, ids_exchanges, logo_exchange, pax, orde,\
+                profundidade], [str, str, bool, int, str, bool]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        # se meteu o/s id/s do/s exchange/s
+        if ids_exchanges:
+            # se mete un str faise unha lista con el para usar join
+            if type(ids_exchanges) == str:
+                ids_exchanges = [ids_exchanges]
+            url_ids_exchanges = 'exchange_ids='+','.join(ids_exchanges)
+        else:
+            url_ids_exchanges = ''
+
+        url_logo_exchange = 'include_exchange_logo='+str(logo_exchange).lower()
+        url_pax = 'page='+str(pax)
+
+        if type(orde) == str:
+            orde = [orde]
+        url_orde = 'order='+','.join(orde)
+
+        url_profundidade = 'depth='+str(profundidade).lower()
+
+        url = self.get_url_base()+'coins/'+id_moeda+'/tickers?'+'&'.join([url_ids_exchanges,\
+                url_logo_exchange, url_pax, url_orde, url_profundidade])
+
+        return json.loads(r.get(url).text)
 
     # /coins/{id}/history
     def get_coin_history(self):
@@ -522,6 +554,9 @@ def main():
     #jprint(cg.get_coin('bitcoin'))
 
     # /coins/{id}/tickers
+    #jprint(cg.get_coin_tickers('bitcoin'))
+    jprint(cg.get_coin_tickers(id_moeda='bitcoin', ids_exchanges='gdax', logo_exchange=True))
+
     # /coins/{id}/history
     # /coins/{id}/market_chart
     # /coins/{id}/market_chart/range
