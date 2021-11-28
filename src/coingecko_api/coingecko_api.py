@@ -3,13 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/28 14:19:37.663213
+#+ Editado:	2021/11/28 20:55:08.197827
 # ------------------------------------------------------------------------------
 import requests as r
 import json
 from typing import Optional, List, Union
 
-from excepcions import ErroTipado
+from excepcions import ErroTipado, ErroData
 # ------------------------------------------------------------------------------
 class CoinGecko:
     # class variable/atribute
@@ -68,6 +68,25 @@ class CoinGecko:
             elif type(variable) != tipo:
                 return False
         return True
+
+    @staticmethod
+    def e_bisesto(ano):
+        """
+        Identifica un ano como bisiesto ou non.
+
+        @entrada:
+            ano -   Requirido   -   Int.
+            └ Ano a clasificar.
+
+        @saída:
+            Bool    -   Sempre
+            └ Indicando se é bisiesto (True) ou non (False).
+        """
+        div4 = ano%4 == 0
+        div100 = ano%100 == 0
+        div400 = ano%400 == 0
+
+        return div4 and (not div100 or div400)
     # --------------------------------------------------------------------------
 
     # Operacións ---------------------------------------------------------------
@@ -435,17 +454,29 @@ class CoinGecko:
         if not self.check_types([id_moeda, dia, mes, ano, linguas], [str, int, int, int, bool]):
             raise ErroTipado('Cometiches un erro no tipado')
 
-        if 0 < ano:
-            print('mal ano')
+        if not 0 < ano:
+            raise ErroData('Anos antes do 0 non están permitidos')
 
-        if 0 < mes < 13:
-            print('mal mes')
+        if not 0 < mes < 13:
+            raise ErroData('Tan só se admiten meses entre o 1 e o 12, ambos incluídos')
 
-        if 0 < dia < 32:
-            print('mal dia')
+        if not 0 < dia < 32:
+            raise ErroData('Tan só se admiten días entre o 1 e 31, ambos incluídos')
+        else:
+            # meses de 31 días
+            if mes in [4, 6, 9, 11] and dia > 30:
+                raise ErroData('Este mes non ten día 31')
+            # o temido febreiro
+            elif mes == 2:
+                # ningún pode ter 30 ou máis
+                if dia > 29:
+                    raise ErroData(f'Este mes non ten {dia} días')
+                # só os bisestos poden ter 29
+                elif dia == 29 and not self.e_bisesto(ano):
+                    raise ErroData('Este mes non é bisesto')
 
-
-        url = self.get_url_base()+'coins/'+id_moeda+'history?date='
+        url = self.get_url_base()+'coins/'+id_moeda+'/history?date='+str(dia)+'-'+str(mes)+\
+                '-'+str(ano)+'&localization='+str(linguas).lower()
 
         return json.loads(r.get(url).text)
 
@@ -594,7 +625,14 @@ def main():
     #jprint(cg.get_coin_tickers(id_moeda='bitcoin', ids_exchanges='gdax', logo_exchange=True))
 
     # /coins/{id}/history
-    jprint(cg.get_coin_history('bitcoin', 2011, 10, 11))
+    # non ten tantos días
+    #jprint(cg.get_coin_history('bitcoin', 2021, 2, 31))
+    # non é ano bisesto
+    #jprint(cg.get_coin_history('bitcoin', 2021, 2, 29))
+    # ten máximo 30 días
+    #jprint(cg.get_coin_history('bitcoin', 2020, 4, 31))
+    # correcto
+    jprint(cg.get_coin_history('bitcoin', 2020, 2, 29))
 
     # /coins/{id}/market_chart
     # /coins/{id}/market_chart/range
