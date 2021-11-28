@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/11 20:11:00.771082
+#+ Editado:	2021/11/27 21:34:25.483348
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -355,7 +355,25 @@ class CoinGecko:
 
     # /coins/{id}/tickers
     def get_coin_tickers(self):
-        # xFCR
+        """
+        Devolve os tickers dunha moeda (paxinado por 100 elementos).
+
+        @entrada:
+            id_moeda        -   Requirido   -   Catex
+            └ Identificador da moeda da que se quere obter a información.
+            ids_exchanges   -   Opcional    -   Catex, lista de catex
+            └
+            logo_exchange   -   Opcional    -   Catex, lista de catex
+            └
+            pax             -   Opcional    -   Enteiro
+            └
+            orde            -   Opcional    -   Catex
+            └
+            profundidade    -   Opcional    -   Booleano
+
+        @saída:
+            └
+        """
         pass
 
     # /coins/{id}/history
@@ -479,6 +497,8 @@ def main():
     # /simple/token_price/{id}
     # tether e whackd
     #jprint(cg.get_token_price('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7,0xCF8335727B776d190f9D15a54E6B9B9348439eEE', 'eur,usd'))
+    # gooddollar
+    #jprint(cg.get_token_price('ethereum', '0x67C5870b4A41D4Ebef24d2456547A03F1f3e094B', 'eur,usd'))
 
     # /simple/supported_vs_currencies
     #jprint(cg.get_supported_vs_currencies())
