@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/04 15:10:42.944090
+#+ Editado:	2021/12/04 17:11:46.129380
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -194,7 +194,7 @@ class CoinGecko:
     def get_coins_markets(self, id_moeda_vs: str, ids_moedas: Optional[Union[str, List[str]]] = '',
             categoria: Optional[str] = '', orde: Optional[Union[str, List[str]]] = 'market_cap_desc',
             xpax: Optional[int] = 250, pax: Optional[int] = 0, sparkline: Optional[bool] = False,
-            cambio_prezo_porcentaxe: Optional[Union[str, List[str]]] = ['1h', '24h', '7d']):
+            cambio_prezo_porcentaxe: Optional[Union[str, List[str]]] = ['1h', '24h', '7d']) -> dict:
         '''
         Función para obter os datos de mercado de tódalas moedas (prezo, maket cap, volume).
         Se non se indica ningun id_moeda nin ningunha categoría mostra as de maior market cap
@@ -325,7 +325,7 @@ class CoinGecko:
     # /coins/{id}/tickers
     def get_coin_tickers(self, id_moeda: str, ids_exchanges: Optional[Union[str, List[str]]] = '',
             logo_exchange: Optional[bool] = False, pax: Optional[int] = 0,
-            orde: Optional[Union[str, List[str]]] = 'trust_score_asc', profundidade: Optional[bool] = False):
+            orde: Optional[Union[str, List[str]]] = 'trust_score_asc', profundidade: Optional[bool] = False) -> dict:
         """
         Devolve os tickers dunha moeda (paxinado por 100 elementos).
 
@@ -379,7 +379,7 @@ class CoinGecko:
 
     # /coins/{id}/history
     def get_coin_history(self, id_moeda: str, ano: int, mes: int, dia: int,
-            linguas: Optional[bool] = False):
+            linguas: Optional[bool] = False) -> dict:
         """
         Devolve datos históricos (nome, prezo, mercado e estatísticas) dunha moeda nunha data.
 
@@ -430,7 +430,7 @@ class CoinGecko:
         return json.loads(r.get(url).text)
 
     # /coins/{id}/market_chart
-    def get_coin_market_chart(self, id_moeda: str, id_moeda_vs: str, rango: int, intervalo: Optional[str] = 'd'):
+    def get_coin_market_chart(self, id_moeda: str, id_moeda_vs: str, rango: int, intervalo: Optional[str] = 'd') -> dict:
         """
         Devolve datos históricos da moeda pedida.
         Por defecto devolve datos ó minuto se se escolle unha duración dun día,
@@ -490,7 +490,7 @@ class CoinGecko:
         return json.loads(r.get(url).text)
 
     # /coins/{id}/market_chart/range
-    def get_coin_market_chart_range(self, id_moeda: str, id_moeda_vs: str, dende: int, ate: Optional[str] = 0):
+    def get_coin_market_chart_range(self, id_moeda: str, id_moeda_vs: str, dende: int, ate: Optional[str] = 0) -> dict:
         """
         Dadas dúas datas en estilo unix unha moeda e divisa coa que comparar devolve o prezo,
         market cap, e volume 24h cunha granularidade automática de:
@@ -515,6 +515,7 @@ class CoinGecko:
             └ Cunha lista dos valores para cada chave: prezos, market_caps e total_volumes;
                 cun total dos días indicados.
         """
+
         # checkeo de tipos
         if not check_types([id_moeda, id_moeda_vs, dende, ate], [str, str, int, int]):
             raise ErroTipado('Cometiches un erro no tipado')
@@ -529,7 +530,7 @@ class CoinGecko:
         return json.loads(r.get(url).text)
 
     # /coins/{id}/status_updates
-    def get_coin_status_updates(self, id_moeda: str, xpax: Optional[int] = 0, pax: Optional[int] = 0):
+    def get_coin_status_updates(self, id_moeda: str, xpax: Optional[int] = 0, pax: Optional[int] = 0) -> dict:
         """
         Actualizacións de estado dunha moeda concreta
 
@@ -568,7 +569,7 @@ class CoinGecko:
         return json.loads(r.get(url).text)
 
     # /coins/{id}/ohlc
-    def get_coin_ohlc(self, id_moeda: str, id_moeda_vs: str, rango: int):
+    def get_coin_ohlc(self, id_moeda: str, id_moeda_vs: str, rango: int) -> List:
         """
         Info sobre a evolución da moeda indicada no rango de tempo indicado.
         Proporciona o unix time prezo de entrada, saída, máximo e mínimo.
