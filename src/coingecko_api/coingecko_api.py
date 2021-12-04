@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/04 12:36:24.145077
+#+ Editado:	2021/12/04 13:45:09.231989
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -586,9 +586,43 @@ class CoinGecko:
         return json.loads(r.get(url).text)
 
     # /coins/{id}/status_updates
-    def get_coin_status_updates(self):
-        # xFCR
-        pass
+    def get_coin_status_updates(self, id_moeda: str, xpax: Optional[int] = 0, pax: Optional[int] = 0):
+        """
+        Actualizacións de estado dunha moeda concreta
+
+        @entrada:
+            id_moeda    -   Requirido   -   Catex
+            └ Id da moeda da que se queren obter os datos.
+            xpax        -   Opcional    -   Int
+            └ Número de resultados por páxina.
+            pax         -   Opcional    -   Int
+            └ Páxina de resultados.
+
+        @saída:
+            Dicionario  -   Sempre
+            └ Cunha lista dos valores coa chave "status_updates".
+        """
+
+        # checkeo de tipos
+        if not self.check_types([id_moeda, xpax, pax], [str, int, int]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        url = self.get_url_base()+f'coins/{id_moeda}/status_updates'
+
+        # se non ten o valor orixinal de 0
+        if xpax:
+            url += f'?per_page={xpax}'
+
+        # se non ten o valor orixinal de 0
+        if pax:
+            # mira se é o primeiro extra ou non
+            if '?' in url:
+                url += '&'
+            else:
+                url += '?'
+            url += f'page={xpax}'
+
+        return json.loads(r.get(url).text)
 
     # /coins/{id}/ohlc
     def get_coin_ohlc(self):
@@ -737,6 +771,9 @@ def main():
     #jprint(cg.get_coin_market_chart_range('bitcoin', 'eur', 1392577232))
 
     # /coins/{id}/status_updates
+    #jprint(cg.get_coin_status_updates('bitcoin'))
+    #jprint(cg.get_coin_status_updates('bitcoin'), 1, 2)
+
     # /coins/{id}/ohlc
 
     # TESTS # ------------------------------------------------------------------
