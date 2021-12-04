@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/04 14:46:16.973856
+#+ Editado:	2021/12/04 14:53:01.985522
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -311,9 +311,9 @@ class CoinGecko:
             cambio_prezo_porcentaxe = [cambio_prezo_porcentaxe]
 
 
-        url = self.get_url_base()+'coins/markets?vs_currency='+id_moeda_vs+\
-                url_ids_moedas+url_categoria+'&order='+','.join(orde)+'&per_page='+str(xpax)+\
-                '&page='+str(pax)+'&sparkline='+str(sparkline).lower()+'&price_change_percentage='+\
+        url = self.get_url_base()+f'coins/markets?vs_currency={id_moeda_vs}'+\
+                url_ids_moedas+url_categoria+'&order='+','.join(orde)+f'&per_page={xpax}'+\
+                f'&page={pax}&sparkline={str(sparkline).lower()}'+'&price_change_percentage='+\
                 ','.join(cambio_prezo_porcentaxe)
 
         return json.loads(r.get(url).text)
@@ -773,7 +773,6 @@ def main():
     #jprint(cg.get_coins_markets('usd', ids_moedas = 'bitcoin'))
     #jprint(cg.get_coins_markets('usd', categoria = 'aave-tokens'))
     #jprint(cg.get_coins_markets('usd', categoria = 'analytics'))
-    # xFCR
 
     # /coins
     #jprint(cg.get_coins()[0]['id'])
