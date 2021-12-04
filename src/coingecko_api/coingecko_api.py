@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/04 15:02:02.247812
+#+ Editado:	2021/12/04 15:10:42.944090
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -84,7 +84,7 @@ class CoinGecko:
             └ Coas ids_moedas de chave e cun dicionario dos distintos valores pedidos.
         """
 
-        if not self.check_types([ids_moedas, ids_moedas_vs, market_cap, vol24h, change24h, last_updated],
+        if not check_types([ids_moedas, ids_moedas_vs, market_cap, vol24h, change24h, last_updated],
                 [str, str, bool, bool, bool, bool]):
             raise ErroTipado('Cometiches un erro no tipado')
 
@@ -136,7 +136,7 @@ class CoinGecko:
             └ Coas ids_moedas de chave e cun dicionario dos distintos valores pedidos.
         """
 
-        if not self.check_types([id_moeda_base, contract_addresses, ids_moedas_vs, market_cap,\
+        if not check_types([id_moeda_base, contract_addresses, ids_moedas_vs, market_cap,\
                 vol24h, change24h, last_updated], [str, str, str, bool, bool, bool, bool]):
             raise ErroTipado('Cometiches un erro no tipado')
 
@@ -226,7 +226,7 @@ class CoinGecko:
         '''
 
         # check de que os tipos metidos sexan correctos
-        if not self.check_types([id_moeda_vs, ids_moedas, categoria, orde, xpax, pax, sparkline,\
+        if not check_types([id_moeda_vs, ids_moedas, categoria, orde, xpax, pax, sparkline,\
                 cambio_prezo_porcentaxe], [str, str, str, str, int, int, bool, str]):
             raise ErroTipado('Cometiches un erro no tipado')
 
@@ -310,7 +310,7 @@ class CoinGecko:
             e de contido unha mensaxe explicando que o id non foi atopado.
         """
 
-        if not self.check_types([id_moeda, localization, tickers, market_data, community_data,\
+        if not check_types([id_moeda, localization, tickers, market_data, community_data,\
                 developer_data, sparkline], [str, bool, bool, bool, bool, bool, bool]):
             raise ErroTipado('Cometiches un erro no tipado')
 
@@ -350,7 +350,7 @@ class CoinGecko:
             e de contido unha mensaxe explicando que o id non foi atopado.
         """
 
-        if not self.check_types([id_moeda, ids_exchanges, logo_exchange, pax, orde,\
+        if not check_types([id_moeda, ids_exchanges, logo_exchange, pax, orde,\
                 profundidade], [str, str, bool, int, str, bool]):
             raise ErroTipado('Cometiches un erro no tipado')
 
@@ -401,7 +401,7 @@ class CoinGecko:
             e de contido unha mensaxe explicando que o id non foi atopado.
         """
 
-        if not self.check_types([id_moeda, dia, mes, ano, linguas], [str, int, int, int, bool]):
+        if not check_types([id_moeda, dia, mes, ano, linguas], [str, int, int, int, bool]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         if not 0 < ano:
@@ -422,7 +422,7 @@ class CoinGecko:
                 if dia > 29:
                     raise ErroData(f'Este mes non ten {dia} días')
                 # só os bisestos poden ter 29
-                elif dia == 29 and not self.e_bisesto(ano):
+                elif dia == 29 and not e_bisesto(ano):
                     raise ErroData('Este mes non é bisesto')
 
         url = self.get_url_base()+f'coins/{id_moeda}/history?date={dia}-{mes}-{ano}&localization={str(linguas).lower()}'
@@ -475,7 +475,7 @@ class CoinGecko:
                 }
 
         # checkeo de tipos
-        if not self.check_types([id_moeda, id_moeda_vs, rango, intervalo], [str, str, int, str]):
+        if not check_types([id_moeda, id_moeda_vs, rango, intervalo], [str, str, int, str]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         # se pon 0 usamos rango máximo
@@ -516,7 +516,7 @@ class CoinGecko:
                 cun total dos días indicados.
         """
         # checkeo de tipos
-        if not self.check_types([id_moeda, id_moeda_vs, dende, ate], [str, str, int, int]):
+        if not check_types([id_moeda, id_moeda_vs, dende, ate], [str, str, int, int]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         # se ate é cero collese o timestamp
@@ -547,7 +547,7 @@ class CoinGecko:
         """
 
         # checkeo de tipos
-        if not self.check_types([id_moeda, xpax, pax], [str, int, int]):
+        if not check_types([id_moeda, xpax, pax], [str, int, int]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         url = self.get_url_base()+f'coins/{id_moeda}/status_updates'
@@ -592,7 +592,7 @@ class CoinGecko:
         """
 
         # checkeo de tipos
-        if not self.check_types([id_moeda, id_moeda_vs, rango], [str, str, int]):
+        if not check_types([id_moeda, id_moeda_vs, rango], [str, str, int]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         # se no rango se mete un 0 significa que se quere o máximo

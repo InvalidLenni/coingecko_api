@@ -3,15 +3,12 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/04 14:01:43.443863
-#+ Editado:	2021/12/04 14:13:35.023285
+#+ Editado:	2021/12/04 15:12:07.340154
 # ------------------------------------------------------------------------------
-
 from datetime import datetime
 
 from typing import Optional
-
 # ------------------------------------------------------------------------------
-
 def check_types(lista_variables, lista_tipos):
     """
     Dada unha lista de variables e outra de tipos vai mirando que estén correctos.
@@ -46,9 +43,7 @@ def check_types(lista_variables, lista_tipos):
         elif type(variable) != tipo:
             return False
     return True
-
 # ------------------------------------------------------------------------------
-
 def e_bisesto(ano):
     """
     Identifica un ano como bisiesto ou non.
@@ -66,9 +61,7 @@ def e_bisesto(ano):
     div400 = ano%400 == 0
 
     return div4 and (not div100 or div400)
-
 # ------------------------------------------------------------------------------
-
 def unix2human(unix_ts: int, sep_d: Optional[str] = '/', sep_h: Optional[str] = ':'):
     """
     Data unha data en unix como int devolve a data correctamente formatada
@@ -87,7 +80,7 @@ def unix2human(unix_ts: int, sep_d: Optional[str] = '/', sep_h: Optional[str] = 
     """
 
     return datetime.fromtimestamp(int(str(unix_ts)[:10])).strftime(f'%Y{sep_d}%m{sep_d}%d %H{sep_h}%M{sep_h}%S')
-
+# ------------------------------------------------------------------------------
 def main():
     print('Executando os uteis de coingecko directamente')
     print(unix2human(1638536400000, '-', ':'))
