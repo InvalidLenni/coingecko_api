@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/04 14:38:20.270542
+#+ Editado:	2021/12/04 14:40:28.164984
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -429,7 +429,7 @@ class CoinGecko:
 
         url_profundidade = 'depth='+str(profundidade).lower()
 
-        url = self.get_url_base()+'coins/'+id_moeda+'/tickers?'+'&'.join([url_ids_exchanges,\
+        url = self.get_url_base()+f'coins/{id_moeda}/tickers?'+'&'.join([url_ids_exchanges,\
                 url_logo_exchange, url_pax, url_orde, url_profundidade])
 
         return json.loads(r.get(url).text)
