@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/04 14:53:01.985522
+#+ Editado:	2021/12/04 14:57:51.319827
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -206,10 +206,10 @@ class CoinGecko:
             ids_moedas_vs = [ids_moedas_vs]
 
         # Poño todo aqui directamente pq así aforro moitos ifs; facendo a función máis rápida
-        url = self.get_url_base()+'simple/token_price/'+id_moeda_base+'?contract_addresses='+\
+        url = self.get_url_base()+f'simple/token_price/{id_moeda_base}?contract_addresses='+\
                 ','.join(contract_addresses)+'&vs_currencies='+','.join(ids_moedas_vs)+\
-                '&include_market_cap='+str(market_cap).lower()+'&include_24hr_vol='+str(vol24h).lower()+\
-                '&include_24hr_change='+str(change24h).lower()+'&include_last_updated_at='+str(last_updated).lower()
+                f'&include_market_cap={str(market_cap).lower()}&include_24hr_vol={str(vol24h).lower()}'\
+                f'&include_24hr_change={str(change24h).lower()}&include_last_updated_at={str(last_updated).lower()}'
 
         return json.loads(r.get(url).text)
 
@@ -756,7 +756,7 @@ def main():
 
     # /simple/token_price/{id}
     # tether e whackd
-    #jprint(cg.get_token_price('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7,0xCF8335727B776d190f9D15a54E6B9B9348439eEE', 'eur,usd'))
+    jprint(cg.get_token_price('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7,0xCF8335727B776d190f9D15a54E6B9B9348439eEE', 'eur,usd'))
     # gooddollar
     #jprint(cg.get_token_price('ethereum', '0x67C5870b4A41D4Ebef24d2456547A03F1f3e094B', 'eur,usd'))
 
