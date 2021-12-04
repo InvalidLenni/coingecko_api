@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/04 14:40:28.164984
+#+ Editado:	2021/12/04 14:46:16.973856
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -372,10 +372,10 @@ class CoinGecko:
             raise ErroTipado('Cometiches un erro no tipado')
 
         # Poño todo directamente porque así aforro moitos ifs e a cousa vai máis rápida
-        url = self.get_url_base()+'coins/'+id_moeda+'?localization='+str(localization).lower()+\
-                '&tickers='+str(tickers).lower()+'&market_data='+str(market_data).lower()+\
-                '&community_data='+str(community_data).lower()+\
-                '&developer_data='+str(developer_data).lower()+'&sparkline='+str(sparkline).lower()
+        url = self.get_url_base()+f'coins/{id_moeda}?localization={str(localization).lower()}'\
+                f'&tickers={str(tickers).lower()}&market_data={str(market_data).lower()}'\
+                f'&community_data={str(community_data).lower()}'\
+                f'&developer_data={str(developer_data).lower()}&sparkline={str(sparkline).lower()}'
 
         return json.loads(r.get(url).text)
 
