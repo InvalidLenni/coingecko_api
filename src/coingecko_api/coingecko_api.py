@@ -3,10 +3,12 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/04 12:10:30.672390
+#+ Editado:	2021/12/04 12:36:24.145077
 # ------------------------------------------------------------------------------
 import requests as r
 import json
+import time
+#from datetime import datetime
 from typing import Optional, List, Union
 
 from uteis.ficheiro import gardarJson
@@ -545,9 +547,43 @@ class CoinGecko:
         return json.loads(r.get(url).text)
 
     # /coins/{id}/market_chart/range
-    def get_coin_market_chart_range(self):
-        # xFCR
-        pass
+    def get_coin_market_chart_range(self, id_moeda: str, id_moeda_vs: str, dende: int, ate: Optional[str] = 0):
+        """
+        Dadas dúas datas en estilo unix unha moeda e divisa coa que comparar devolve o prezo,
+        market cap, e volume 24h cunha granularidade automática de:
+            Fai 1 día           -> Intervalos de 5 minutos.
+            Entre 1-90 días     -> Intervalos horarios.
+            Fai máis de 90 días -> Intervalos diarios.
+
+        @entrada:
+            id_moeda    -   Requirido   -   Catex
+            └ Id da moeda da que se queren obter os datos.
+            id_moeda_vs -   Requirido   -   Catex
+            └ En que moeda se quere mostrar o valor da moeda id_moeda.
+            dende       -   Requirido   -   Int
+            └ Data unix na que se queren iniciar os datos a recibir.
+            ate         -   Opcional    -   Int
+            └ Data unix na que se queren rematar os datos a recibir.
+                De non indicarse a función automáticamente escolle o
+                momento actual.
+
+        @saída:
+            Dicionario  -   Sempre
+            └ Cunha lista dos valores para cada chave: prezos, market_caps e total_volumes;
+                cun total dos días indicados.
+        """
+        # checkeo de tipos
+        if not self.check_types([id_moeda, id_moeda_vs, dende, ate], [str, str, int, int]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        # se ate é cero collese o timestamp
+        if not ate:
+            ate = time.time()
+
+        url = self.get_url_base()+f'coins/{id_moeda}/market_chart/range?vs_currency={id_moeda_vs}&'\
+                f'from={dende}&to={ate}'
+
+        return json.loads(r.get(url).text)
 
     # /coins/{id}/status_updates
     def get_coin_status_updates(self):
@@ -697,6 +733,9 @@ def main():
     #jprint(cg.get_coin_market_chart('bitcoin', 'eur', 2))
 
     # /coins/{id}/market_chart/range
+    #jprint(cg.get_coin_market_chart_range('bitcoin', 'eur', 1392577232, 1422577232))
+    #jprint(cg.get_coin_market_chart_range('bitcoin', 'eur', 1392577232))
+
     # /coins/{id}/status_updates
     # /coins/{id}/ohlc
 
