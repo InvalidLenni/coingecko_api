@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/04 18:09:52.504947
+#+ Editado:	2021/12/04 18:18:27.344137
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -612,6 +612,7 @@ class CoinGecko:
     # COINS # ------------------------------------------------------------------
 
     # CONTRACT -----------------------------------------------------------------
+
     # /coins/{id}/contract/{contract_address}
     def get_contract(self, id_moeda: str, contract_address: str) -> dict:
         """
@@ -631,7 +632,18 @@ class CoinGecko:
         return json.loads(r.get(self.get_url_base()+f'coins/{id_moeda}/contract/{contract_address}').text)
 
     # /coins/{id}/contract/{contract_address}/market_chart
+    def get_contract_market_chart(self, id_moeda: str, contract_address: str, id_moeda_vs: str, rango: int):
+        """
+        Devolve datos históricos do token, incluíndo prezo, market cap e volume 24h.
+        Ten granularidade automática dependendo do rango explicitado.
+
+        """
+
     # /coins/{id}/contract/{contract_address}/market_chart/range
+    def get_contract_market_chart_range(self):
+        #xFCR
+        pass
+
     # CONTRACT # ---------------------------------------------------------------
 
     # ASSET_PLATFORMS ----------------------------------------------------------
