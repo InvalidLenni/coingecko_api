@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/04 17:11:46.129380
+#+ Editado:	2021/12/04 18:09:52.504947
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -40,6 +40,7 @@ class CoinGecko:
     # Operacións ---------------------------------------------------------------
 
     # PING ---------------------------------------------------------------------
+
     # /ping
     def ping(self) -> dict:
         """
@@ -53,9 +54,11 @@ class CoinGecko:
             └ Chave "gecko_says" e contido "(V3) To the Moon!".
         """
         return json.loads(r.get(self.get_url_base()+'ping').text)
+
     # PING # -------------------------------------------------------------------
 
     # SIMPLE -------------------------------------------------------------------
+
     # /simple/price
     def get_price(self, ids_moedas: Union[str, List[str]], ids_moedas_vs: Union[str, List[str]],
             market_cap: Optional[bool] = False, vol24h: Optional[bool] = False,
@@ -171,9 +174,11 @@ class CoinGecko:
         """
 
         return json.loads(r.get(self.get_url_base()+'simple/supported_vs_currencies').text)
+
     # SIMPLE # -----------------------------------------------------------------
 
     # COINS --------------------------------------------------------------------
+
     # /coins/list
     def get_coins_list(self) -> List[dict]:
         """
@@ -608,6 +613,23 @@ class CoinGecko:
 
     # CONTRACT -----------------------------------------------------------------
     # /coins/{id}/contract/{contract_address}
+    def get_contract(self, id_moeda: str, contract_address: str) -> dict:
+        """
+        Información de divisa dada unha dirección de contrato.
+
+        @entrada:
+            id_moeda            -   Requirido   -   Catex
+            └ Id da moeda da que se queren obter os datos.
+            contract_address    -   Requirido   -   Catex
+            └ Identificador do token da que se quere obter a información.
+
+        @saída:
+            Dicionario  -   Sempre
+            └ Con unha gran cantitade de info sobre o token.
+        """
+
+        return json.loads(r.get(self.get_url_base()+f'coins/{id_moeda}/contract/{contract_address}').text)
+
     # /coins/{id}/contract/{contract_address}/market_chart
     # /coins/{id}/contract/{contract_address}/market_chart/range
     # CONTRACT # ---------------------------------------------------------------
@@ -616,6 +638,7 @@ class CoinGecko:
     # ASSET_PLATFORMS # --------------------------------------------------------
 
     # CATEGORIES ---------------------------------------------------------------
+
     # /coins/categories/list
     def get_coins_categories_list(self):
         """
@@ -646,6 +669,7 @@ class CoinGecko:
         """
 
         return json.loads(r.get(self.get_url_base()+'coins/categories').text)
+
     # CATEGORIES # -------------------------------------------------------------
 
     # EXCHANGES ----------------------------------------------------------------
@@ -754,15 +778,22 @@ def main():
     #print(unix2human(cg.get_coin_ohlc('bitcoin', 'eur', 1)[0][0]))
     #jprint(cg.get_coin_ohlc('bitcoin', 'eur', 0))
 
-    # TESTS # ------------------------------------------------------------------
+    # --------------------------------------------------------------------------
 
-    # CATEGORIES ---------------------------------------------------------------
+    # /coins/{id}/contract/{contract_address}
+    #jprint(cg.get_contract('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7'))
+
+    # /coins/{id}/contract/{contract_address}/market_chart
+
+    # --------------------------------------------------------------------------
+
     # /coins/categories/list
     #jprint(cg.get_coins_categories_list())
 
     # /coins/categories
     #jprint(cg.get_coins_categories())
-    # CATEGORIES # -------------------------------------------------------------
+
+    # TESTS # ------------------------------------------------------------------
 
 
 if __name__=='__main__':
