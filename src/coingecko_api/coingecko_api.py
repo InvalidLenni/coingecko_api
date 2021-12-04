@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/04 14:17:00.273190
+#+ Editado:	2021/12/04 14:37:17.667137
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -482,8 +482,10 @@ class CoinGecko:
                 elif dia == 29 and not self.e_bisesto(ano):
                     raise ErroData('Este mes non é bisesto')
 
-        url = self.get_url_base()+'coins/'+id_moeda+'/history?date='+str(dia)+'-'+str(mes)+\
-                '-'+str(ano)+'&localization='+str(linguas).lower()
+        #url = self.get_url_base()+'coins/'+id_moeda+'/history?date='+str(dia)+'-'+str(mes)+\
+        #        '-'+str(ano)+'&localization='+str(linguas).lower()
+
+        url = self.get_url_base()+f'coins/{id_moeda}/history?date={dia}-{mes}-{ano}&localization={str(linguas).lower()}'
 
         return json.loads(r.get(url).text)
 
@@ -794,7 +796,7 @@ def main():
     # ten máximo 30 días
     #jprint(cg.get_coin_history('bitcoin', 2020, 4, 31))
     # correcto
-    #jprint(cg.get_coin_history('bitcoin', 2020, 2, 29))
+    jprint(cg.get_coin_history('bitcoin', 2020, 2, 29))
 
     # /coins/{id}/market_chart
     #jprint(cg.get_coin_market_chart('bitcoin', 'eur', 2))
