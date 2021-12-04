@@ -3,11 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/11/28 21:35:46.967296
+#+ Editado:	2021/12/04 12:10:30.672390
 # ------------------------------------------------------------------------------
 import requests as r
 import json
 from typing import Optional, List, Union
+
+from uteis.ficheiro import gardarJson
 
 from excepcions import ErroTipado, ErroData
 # ------------------------------------------------------------------------------
@@ -483,11 +485,16 @@ class CoinGecko:
         return json.loads(r.get(url).text)
 
     # /coins/{id}/market_chart
-    def get_coin_market_chart(self, id_moeda: str, id_moeda_vs: str, rango: int, rango: Optional[str] = 'daily'):
+    def get_coin_market_chart(self, id_moeda: str, id_moeda_vs: str, rango: int, intervalo: Optional[str] = 'd'):
         """
         Devolve datos históricos da moeda pedida.
         Por defecto devolve datos ó minuto se se escolle unha duración dun día,
         á hora se se escolle unha duración entre 1 e 90 días e diaria para máis de 90 días.
+        Isto foi modificado para que sempre devolva os datos ó intervalo especificado, da igual o rango.
+
+        Resaltar que sempre fai a conta en horas para o rango especificado. Por exemplo, se hoxe é o día
+        4 as 11:30:10, especifaches un rango de 2 (días) e un intervalo horario: devolverá os datos actuais
+        e comezando en 11:yy:xx ira retrocedendo hora por hora até chegar á mesma hora dous días antes (49 horas).
 
         @entrada:
             id_moeda    -   Requirido   -   Catex
@@ -514,8 +521,28 @@ class CoinGecko:
                     ceros sobrantes (3 a 10202111282108) e o prezo/market_cap/total_volume.
                 Para o de horas e minutos é análogo.
         """
-        # xFCR
-        pass
+
+        # declaración do dicionario de correspondencia dos intervalos
+        trad_intervalo = {
+                'd': 'daily',
+                'h': 'hourly',
+                'm': 'minutely'
+                }
+
+        # checkeo de tipos
+        if not self.check_types([id_moeda, id_moeda_vs, rango, intervalo], [str, str, int, str]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        # se pon 0 usamos rango máximo
+        if rango == 0:
+            rango='max'
+
+        # substituimos o intervalo metido polo que pide a API
+        intervalo = trad_intervalo.get(intervalo, 'daily')
+
+        url = self.get_url_base()+f'coins/{id_moeda}/market_chart?vs_currency={id_moeda_vs}&days={rango}&interval={intervalo}'
+
+        return json.loads(r.get(url).text)
 
     # /coins/{id}/market_chart/range
     def get_coin_market_chart_range(self):
@@ -667,6 +694,8 @@ def main():
     #jprint(cg.get_coin_history('bitcoin', 2020, 2, 29))
 
     # /coins/{id}/market_chart
+    #jprint(cg.get_coin_market_chart('bitcoin', 'eur', 2))
+
     # /coins/{id}/market_chart/range
     # /coins/{id}/status_updates
     # /coins/{id}/ohlc
