@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/04 13:45:09.231989
+#+ Editado:	2021/12/04 14:17:00.273190
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -14,6 +14,7 @@ from typing import Optional, List, Union
 from uteis.ficheiro import gardarJson
 
 from excepcions import ErroTipado, ErroData
+from cg_uteis import unix2human
 # ------------------------------------------------------------------------------
 class CoinGecko:
     # class variable/atribute
@@ -625,9 +626,41 @@ class CoinGecko:
         return json.loads(r.get(url).text)
 
     # /coins/{id}/ohlc
-    def get_coin_ohlc(self):
-        # xFCR
-        pass
+    def get_coin_ohlc(self, id_moeda: str, id_moeda_vs: str, rango: int):
+        """
+        Info sobre a evolución da moeda indicada no rango de tempo indicado.
+        Proporciona o unix time prezo de entrada, saída, máximo e mínimo.
+        Está dividido en:
+            30min   ->  1-2 días
+            4horas  ->  3-30 días
+            4días   ->  31-max
+
+        @entrada:
+            id_moeda    -   Requirido   -   Catex
+            └ Id da moeda da que se queren obter os datos.
+            id_moeda_vs -   Requirido   -   Catex
+            └ En que moeda se quere mostrar o valor da moeda id_moeda.
+            rango       -   Requirido   -   Int
+            └ Rango de días a mostrar. Se se pon 0 ponherase o máximo.
+
+        @saída:
+            Lista -   Sempre
+            └ Con cada lista interna tendo os valores:
+                time stamp unix, open, high, low, max
+        """
+
+        # checkeo de tipos
+        if not self.check_types([id_moeda, id_moeda_vs, rango], [str, str, int]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        # se no rango se mete un 0 significa que se quere o máximo
+        if not rango:
+            rango = 'max'
+
+        url = self.get_url_base()+f'coins/{id_moeda}/ohlc?vs_currency={id_moeda_vs}&days={rango}'
+
+        return json.loads(r.get(url).text)
+
     # COINS # ------------------------------------------------------------------
 
     # CONTRACT -----------------------------------------------------------------
@@ -775,6 +808,9 @@ def main():
     #jprint(cg.get_coin_status_updates('bitcoin'), 1, 2)
 
     # /coins/{id}/ohlc
+    #jprint(cg.get_coin_ohlc('bitcoin', 'eur', 1))
+    #print(unix2human(cg.get_coin_ohlc('bitcoin', 'eur', 1)[0][0]))
+    #jprint(cg.get_coin_ohlc('bitcoin', 'eur', 0))
 
     # TESTS # ------------------------------------------------------------------
 
