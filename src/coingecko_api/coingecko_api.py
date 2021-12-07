@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/04 18:18:27.344137
+#+ Editado:	2021/12/07 21:44:56.148696
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -495,7 +495,7 @@ class CoinGecko:
         return json.loads(r.get(url).text)
 
     # /coins/{id}/market_chart/range
-    def get_coin_market_chart_range(self, id_moeda: str, id_moeda_vs: str, dende: int, ate: Optional[str] = 0) -> dict:
+    def get_coin_market_chart_range(self, id_moeda: str, id_moeda_vs: str, dende: int, ate: Optional[int] = 0) -> dict:
         """
         Dadas dúas datas en estilo unix unha moeda e divisa coa que comparar devolve o prezo,
         market cap, e volume 24h cunha granularidade automática de:
@@ -629,20 +629,81 @@ class CoinGecko:
             └ Con unha gran cantitade de info sobre o token.
         """
 
+        # checkeo de tipos
+        if not check_types([id_moeda, contract_address], [str, str]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
         return json.loads(r.get(self.get_url_base()+f'coins/{id_moeda}/contract/{contract_address}').text)
 
     # /coins/{id}/contract/{contract_address}/market_chart
-    def get_contract_market_chart(self, id_moeda: str, contract_address: str, id_moeda_vs: str, rango: int):
+    def get_contract_market_chart(self, id_moeda: str, contract_address: str,
+            id_moeda_vs: str, rango: Optional[int] = 0) -> dict:
         """
         Devolve datos históricos do token, incluíndo prezo, market cap e volume 24h.
         Ten granularidade automática dependendo do rango explicitado.
 
+        @entrada:
+            id_moeda            -   Requirido   -   Catex
+            └ Id da moeda da que se queren obter os datos.
+            contract_address    -   Requirido   -   Catex
+            └ Identificador do token da que se quere obter a información.
+            id_moeda_vs         -   Requirido   -   Catex
+            └ En que moeda se quere mostrar o valor da moeda id_moeda.
+            rango               -   Opcional    -   Int
+            └ Rango de días a mostrar. Se se pon 0 ponherase o máximo.
+
+        @saída:
+            Dicionario  -   Sempre
+            └ Con unha gran cantitade de info sobre o token.
         """
 
+        # checkeo de tipos
+        if not check_types([id_moeda, contract_address, id_moeda_vs, rango], [str, str, str, int]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        # se no rango se mete un 0 significa que se quere o máximo
+        if not rango:
+            rango = 'max'
+
+        url = self.get_url_base()+f'coins/{id_moeda}/contract/{contract_address}/?'\
+                f'vs_currency={id_moeda_vs}&days={rango}'
+
+        return json.loads(r.get(url).text)
+
     # /coins/{id}/contract/{contract_address}/market_chart/range
-    def get_contract_market_chart_range(self):
-        #xFCR
-        pass
+    def get_contract_market_chart_range(self, id_moeda: str, contract_address: str,
+            id_moeda_vs: str, dende: int, ate: Optional[int] = 0) -> dict:
+        """
+        Dadas dúas datas en formato unix devolve o prezo, market cap e volume 24h
+        cunha granularidade automática.
+
+        @entrada:
+            id_moeda            -   Requirido   -   Catex
+            └ Id da moeda da que se queren obter os datos.
+            contract_address    -   Requirido   -   Catex
+            └ Identificador do token da que se quere obter a información.
+            id_moeda_vs         -   Requirido   -   Catex
+            └ En que moeda se quere mostrar o valor da moeda id_moeda.
+            dende               -   Requirido   -   Int
+            └ Data unix na que se queren iniciar os datos a recibir.
+            ate                 -   Opcional    -   Int
+            └ Data unix na que se queren rematar os datos a recibir.
+            De non indicarse a función automáticamente escolle o momento actual.
+
+        @saída:
+            Diccionario -   Sempre
+            └ Cunha lista dos valores para cada chave: prezos, market_caps e total_volumes;
+                cun total dos días indicados.
+        """
+
+        # checkeo de tipos
+        if not check_types([id_moeda, contract_address, id_moeda_vs, dende, ate],
+                [str, str, str, int, int]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        # se ate é cero collese o timestamp
+        if not ate:
+            ate = time.time()
 
     # CONTRACT # ---------------------------------------------------------------
 
@@ -725,10 +786,11 @@ def main():
 
     # TESTS --------------------------------------------------------------------
 
+    # PING ---------------------------------------------------------------------
     # /ping
     #jprint(cg.ping())
 
-    # --------------------------------------------------------------------------
+    # SIMPLE -------------------------------------------------------------------
 
     # /simple/price
     #jprint(cg.get_price('bitcoin', 'eur'))
@@ -743,7 +805,7 @@ def main():
     # /simple/supported_vs_currencies
     #jprint(cg.get_supported_vs_currencies())
 
-    # --------------------------------------------------------------------------
+    # COINS --------------------------------------------------------------------
 
     # /coins/list
     #jprint(cg.get_coins_list()[1329])
@@ -790,14 +852,18 @@ def main():
     #print(unix2human(cg.get_coin_ohlc('bitcoin', 'eur', 1)[0][0]))
     #jprint(cg.get_coin_ohlc('bitcoin', 'eur', 0))
 
-    # --------------------------------------------------------------------------
+    # CONTRACT -----------------------------------------------------------------
 
     # /coins/{id}/contract/{contract_address}
     #jprint(cg.get_contract('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7'))
 
     # /coins/{id}/contract/{contract_address}/market_chart
+    #jprint(cg.get_contract_market_chart('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur'))
+    #jprint(cg.get_contract_market_chart('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur', 1))
 
-    # --------------------------------------------------------------------------
+    # /coins/{id}/contract/{contract_address}/market_chart/range
+
+    # CATEGORIES ---------------------------------------------------------------
 
     # /coins/categories/list
     #jprint(cg.get_coins_categories_list())
