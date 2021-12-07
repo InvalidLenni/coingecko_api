@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/07 21:58:47.305288
+#+ Editado:	2021/12/07 23:52:49.389357
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -716,8 +716,18 @@ class CoinGecko:
 
     # /asset_platforms
     def get_asset_platforms(self):
-        # xFCR
-        return
+        """
+        Lista todas as plataformas de assets.
+
+        @entrada:
+            Ningunha
+
+        @saída:
+            Lista de dicionarios    -   Sempre
+            └ Co id, o id da chain, o nome e o shotname.
+        """
+
+        return json.loads(r.get(self.get_url_base()+f'asset_platforms').text)
 
     # ASSET_PLATFORMS # --------------------------------------------------------
 
@@ -883,6 +893,12 @@ def main():
 
     # /coins/categories
     #jprint(cg.get_coins_categories())
+
+    # ASSET_PLATFORMS ----------------------------------------------------------
+
+    # /asset_platforms
+    #jprint(cg.get_asset_platforms())
+
 
     # TESTS # ------------------------------------------------------------------
 
