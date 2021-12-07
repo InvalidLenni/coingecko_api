@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/08 00:00:16.280246
+#+ Editado:	2021/12/08 00:04:04.764750
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -715,7 +715,7 @@ class CoinGecko:
     # ASSET_PLATFORMS ----------------------------------------------------------
 
     # /asset_platforms
-    def get_asset_platforms(self):
+    def get_asset_platforms(self) -> List[dict]:
         """
         Lista todas as plataformas de assets.
 
@@ -734,7 +734,7 @@ class CoinGecko:
     # CATEGORIES ---------------------------------------------------------------
 
     # /coins/categories/list
-    def get_coins_categories_list(self):
+    def get_coins_categories_list(self) -> List[dict]:
         """
         Devolve todas as categorías cd CG nunha lista de dics compostos
         por id e nome.
@@ -750,7 +750,7 @@ class CoinGecko:
         return json.loads(r.get(self.get_url_base()+'coins/categories/list').text)
 
     # /coins/categories
-    def get_coins_categories(self):
+    def get_coins_categories(self) -> List[dict]:
         """
         Devolve unha lista de todas as categorías de CG con datos de mercado asociados.
 
