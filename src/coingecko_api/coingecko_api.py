@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/07 23:52:49.389357
+#+ Editado:	2021/12/07 23:56:34.665777
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -767,6 +767,37 @@ class CoinGecko:
     # CATEGORIES # -------------------------------------------------------------
 
     # EXCHANGES ----------------------------------------------------------------
+
+    # /exchanges
+    def get_exchanges(self):
+        # xFCR
+        pass
+
+    # /exchanges/list
+    def get_exchanges_list(self):
+        # xFCR
+        pass
+
+    # /exchanges/{id}
+    def get_exchange(self):
+        # xFCR
+        pass
+
+    # /exchanges/{id}/tickers
+    def get_exchange_tickers(self):
+        # xFCR
+        pass
+
+    # /exchanges/{id}/tickers/status_updates
+    def get_exchange_tickers_status_updates(self):
+        # xFCR
+        pass
+
+    # /exchanges/{id}/tickers/volume_chart
+    def get_exchange_tickers_volume_chart(self):
+        # xFCR
+        pass
+
     # EXCHANGES # --------------------------------------------------------------
 
     # FINANCE ------------------------------------------------------------------
