@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/08 00:10:36.353235
+#+ Editado:	2021/12/08 00:15:59.579495
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1010,6 +1010,62 @@ def main():
     # /asset_platforms
     #jprint(cg.get_asset_platforms())
 
+    # EXCHANGES ----------------------------------------------------------------
+
+    # /exchanges
+
+    # /exchanges/list
+
+    # /exchanges/{id}
+
+    # /exchanges/{id}/tickers
+
+    # /exchanges/{id}/tickers/status_updates
+
+    # /exchanges/{id}/tickers/volume_chart
+
+    # FINANCE ------------------------------------------------------------------
+
+    # /finance_platforms
+
+    # /finance_products
+
+    # INDEXES ------------------------------------------------------------------
+
+    # /indexes
+
+    # /indexes/{market_id}/{id}
+
+    # /indexes/list
+
+    # DERIVATIVES --------------------------------------------------------------
+
+    # /derivatives
+
+    # /derivatives/exchanges
+
+    # /derivatives/exchanges/list
+
+    # STATUS_UPDATES -----------------------------------------------------------
+
+    # /status_updates
+
+    # EXCHANGE_RATES -----------------------------------------------------------
+
+    # /exchange_rates
+
+    # TRENDING -----------------------------------------------------------------
+
+    # /search/trending
+
+    # GLOBAL -------------------------------------------------------------------
+
+    # /global
+    # /global/decentralized_finance_defi
+
+    # COMPANIES ----------------------------------------------------------------
+
+    # /companies
 
     # TESTS # ------------------------------------------------------------------
 
