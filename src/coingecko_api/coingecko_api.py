@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/08 00:04:04.764750
+#+ Editado:	2021/12/08 00:06:13.229149
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -834,6 +834,27 @@ class CoinGecko:
     # INDEXES # ----------------------------------------------------------------
 
     # DERIVATIVES --------------------------------------------------------------
+
+    # /derivatives
+    def get_derivatives(self):
+        # xFCR
+        pass
+
+    # /derivatives/exchanges
+    def get_derivatives_exchanges(self):
+        # xFCR
+        pass
+
+    # /derivatives/exchanges/{id}
+    def get_derivatives_exchange(self):
+        # xFCR
+        pass
+
+    # /derivatives/exchanges/list
+    def get_derivatives_exchanges_list(self):
+        # xFCR
+        pass
+
     # DERIVATIVES # ------------------------------------------------------------
 
     # STATUS_UPDATES -----------------------------------------------------------
