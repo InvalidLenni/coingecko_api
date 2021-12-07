@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/07 21:44:56.148696
+#+ Editado:	2021/12/07 21:57:01.806261
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -705,6 +705,11 @@ class CoinGecko:
         if not ate:
             ate = time.time()
 
+        url = self.get_url_base()+f'coins/{id_moeda}/contract/{contract_address}/'\
+                f'market_chart/range?vs_currency={id_moeda_vs}&from={dende}&to={ate}'
+
+        return json.loads(r.get(url).text)
+
     # CONTRACT # ---------------------------------------------------------------
 
     # ASSET_PLATFORMS ----------------------------------------------------------
@@ -862,6 +867,8 @@ def main():
     #jprint(cg.get_contract_market_chart('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur', 1))
 
     # /coins/{id}/contract/{contract_address}/market_chart/range
+    #jprint(cg.get_contract_market_chart_range('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur', 1392577232, 1422577232))
+    #jprint(cg.get_contract_market_chart_range('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur', 1392577232))
 
     # CATEGORIES ---------------------------------------------------------------
 
