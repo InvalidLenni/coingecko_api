@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/09 18:59:47.206666
+#+ Editado:	2021/12/09 19:19:12.926980
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -106,7 +106,7 @@ class CoinGecko:
                 f'&include_24hr_vol={str(vol24h).lower()}&include_24hr_change={str(change24h).lower()}'\
                 f'&include_last_updated_at={str(last_updated).lower()}'
 
-        return json.loads(r.get(url).text)
+        return json.loads(r.get(url.replace(' ','')).text)
 
     # /simple/token_price/{id}
     def get_token_price(self, id_moeda_base: str, contract_addresses: Union[str, List[str]],
@@ -158,7 +158,7 @@ class CoinGecko:
                 f'&include_market_cap={str(market_cap).lower()}&include_24hr_vol={str(vol24h).lower()}'\
                 f'&include_24hr_change={str(change24h).lower()}&include_last_updated_at={str(last_updated).lower()}'
 
-        return json.loads(r.get(url).text)
+        return json.loads(r.get(url.replace(' ','')).text)
 
     # /simple/supported_vs_currencies
     def get_supported_vs_currencies(self) -> List[str]:
@@ -969,6 +969,7 @@ def main():
     # /simple/price
     #jprint(cg.get_price('bitcoin', 'eur'))
     #jprint(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']))
+    #jprint(cg.get_price('bitcoin, ethereum', 'eur,usd'))
 
     # /simple/token_price/{id}
     # tether e whackd
