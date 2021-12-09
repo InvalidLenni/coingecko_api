@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/08 00:15:59.579495
+#+ Editado:	2021/12/09 18:45:43.704393
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -769,9 +769,40 @@ class CoinGecko:
     # EXCHANGES ----------------------------------------------------------------
 
     # /exchanges
-    def get_exchanges(self):
-        # xFCR
-        pass
+    def get_exchanges(self, xpax: Optional[int] = 100, pax: Optional[int] = 1) -> List[dict]:
+        """
+        Lista todos os exchanges dando, por cada un, un dicionario con información
+        relevante sobre el.
+
+        @entrada:
+            xpax    -   Opcional    -   Int
+            └ Cantidade de resultados a mostrar por páxina.
+                Por defecto son 100, e van de 1 a 250.
+                Un 0 equiparase ó máximo.
+            pax     -   Opcional    -   Int
+            └ Número da páxina de resultados a mostrar.
+
+        @saída:
+            Lista de dicionarios   -   Sempre
+            └ Todas as categorías de CoinGecko con datos de mercado.
+        """
+
+        # checkeo de tipos
+        if not check_types([xpax, pax], [int, int]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        # se mete un número de elementos por páxina non soportado reponse no límite
+        # se mete 0 ponse o máximo
+        if pax<1:
+            pax = 1
+        elif pax>250 or pax==0:
+            pax = 250
+
+        # se mete cero ponher a primeira páxina
+        if pax == 0:
+            pax = 1
+
+        return json.loads(r.get(self.get_url_base()+f'exchanges/?per_page={xpax}&page={pax}').text)
 
     # /exchanges/list
     def get_exchanges_list(self):
@@ -1013,6 +1044,7 @@ def main():
     # EXCHANGES ----------------------------------------------------------------
 
     # /exchanges
+    #jprint(cg.get_exchanges(250, 1))
 
     # /exchanges/list
 
@@ -1061,6 +1093,7 @@ def main():
     # GLOBAL -------------------------------------------------------------------
 
     # /global
+
     # /global/decentralized_finance_defi
 
     # COMPANIES ----------------------------------------------------------------
