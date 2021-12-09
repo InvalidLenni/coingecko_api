@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/09 18:45:43.704393
+#+ Editado:	2021/12/09 18:50:00.452362
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -17,8 +17,9 @@ from excepcions import ErroTipado, ErroData
 from cg_uteis import check_types, e_bisesto, unix2human
 # ------------------------------------------------------------------------------
 class CoinGecko:
-    # class variable/atribute
-    __url_base: str = 'https://api.coingecko.com/api/v3/'
+    # class variables/atributes
+    __version_api: str = 'v3'
+    __url_base: str = f'https://api.coingecko.com/api/{__version_api}/'
 
     # Constructor --------------------------------------------------------------
     def __init__(self) -> None:
