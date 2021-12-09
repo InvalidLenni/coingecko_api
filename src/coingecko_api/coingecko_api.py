@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/09 18:52:44.843377
+#+ Editado:	2021/12/09 18:59:47.206666
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -807,8 +807,18 @@ class CoinGecko:
 
     # /exchanges/list
     def get_exchanges_list(self):
-        # xFCR
-        pass
+        """
+        Función para obter todos os ids dos mercados/exchanges para facer chamadas á API.
+
+        @entrada:
+            Ningunha.
+
+        @saída:
+            Lista de dicionarios    -   Sempre
+            └ Co id e nome dos mercados/exchanges existentes.
+        """
+
+        return json.loads(r.get(self.get_url_base()+'exchanges/list').text)
 
     # /exchanges/{id}
     def get_exchange(self):
@@ -1048,6 +1058,7 @@ def main():
     #jprint(cg.get_exchanges(250, 1))
 
     # /exchanges/list
+    #jprint(cg.get_exchanges_list())
 
     # /exchanges/{id}
 
