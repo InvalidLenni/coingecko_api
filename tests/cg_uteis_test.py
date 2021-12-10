@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/10 16:44:23.128361
-#+ Editado:	2021/12/10 18:05:48.314569
+#+ Editado:	2021/12/10 20:44:53.469575
 # ------------------------------------------------------------------------------
 import unittest
 
@@ -13,58 +13,59 @@ from src.coingecko_api.excepcions import ErroTipado
 class TestCG_Uteis(unittest.TestCase):
 
     # check_types --------------------------------------------------------------
-    def test_check_types_1(self):
+    def test_check_types_simples_non_lista(self):
         """
-        Entradas simples como lista
-
-        True
+        Entradas simples sen listas.
         """
 
-        self.assertTrue(check_types(['a'], [str]))
-        self.assertTrue(check_types([0], [int]))
-        self.assertTrue(check_types([True], [bool]))
-
-    def test_check_types_2(self):
-        """
-        Entradas simples sen listas
-        """
-
+        # true
         self.assertTrue(check_types('e', str))
         self.assertTrue(check_types(1, int))
         self.assertTrue(check_types(False, bool))
+        self.assertTrue(check_types([[[]]], list))
 
-    # entradas simples como lista variada
-    def test_check_types_3(self):
-        self.assertTrue(check_types(['', 0, True], [str, int, bool]))
-
-    # entradas simples como variable sola: int
-    def test_check_types_4(self):
-        self.assertTrue(check_types(0, int))
-
-    # entradas simples como variable sola: bool
-    def test_check_types_5(self):
-        self.assertTrue(check_types(False, bool))
-
-    # entradas simples como lista: int
-    def test_check_types_6(self):
-        self.assertTrue(check_types([0], [int]))
-
-    # entradas simples como lista: bool
-    def test_check_types_7(self):
-        self.assertTrue(check_types([False], [bool]))
-
-    # entradas simples como lista: bool as int
-    def test_check_types_8(self):
-        self.assertFalse(check_types([False], [int]))
-
-    # entradas simples como lista: int as bool
-    def test_check_types_9(self):
+        #false
+        self.assertFalse(check_types([[]], list))       # [[]]   ? list
         self.assertFalse(check_types(0, bool))
-
-    # entradas simples como lista: str as int
-    def test_check_types_10(self):
         self.assertFalse(check_types('', int))
 
+        # ErroTipado
+        with self.assertRaises(ErroTipado):
+            check_types([], list)
+
+    def test_check_types_simples_lista(self):
+        """
+        Entradas simples como lista.
+        """
+
+        # true
+        self.assertTrue(check_types(['a'], [str]))      # [str]  ? [str]
+        self.assertTrue(check_types([0], [int]))        # [int]  ? [int]
+        self.assertTrue(check_types([True], [bool]))    # [bool] ? [bool]
+        self.assertTrue(check_types([[[]]], [list]))    # [[[]]] ? [list]
+        #
+
+        # false
+        self.assertFalse(check_types([[]], [list]))     # [[]]   ? [list]
+
+        self.assertFalse(check_types(['b'], [int]))     # [str]  ? [int]
+        self.assertFalse(check_types(['c'], [bool]))    # [str]  ? [bool]
+        self.assertFalse(check_types(['d'], [list]))    # [str]  ? [list]
+
+        self.assertFalse(check_types([False], [int]))   # [bool] ? [int]
+        self.assertFalse(check_types([True], [str]))    # [bool] ? [str]
+        self.assertFalse(check_types([True], [list]))   # [bool] ? [list]
+        #
+
+    def test_check_types_3(self):
+        """
+        Entradas complexas
+        """
+
+        # true
+        self.assertTrue(check_types(['', 0, True], [str, int, bool]))
+
+    """
     # listas con un elemento mal posto
     def test_check_types_11(self):
         self.assertFalse(check_types(['', 0, 0, True], [str, int, str, bool]))
@@ -81,6 +82,7 @@ class TestCG_Uteis(unittest.TestCase):
     # listas con lista errando
     def test_check_types_14(self):
         self.assertFalse(check_types(['', 0, [0, 'a'], True], [str, int, list, bool]))
+    """
 
 # ------------------------------------------------------------------------------
 
