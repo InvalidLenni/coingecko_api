@@ -3,9 +3,11 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/04 14:01:43.443863
-#+ Editado:	2021/12/04 15:12:07.340154
+#+ Editado:	2021/12/10 18:02:50.785541
 # ------------------------------------------------------------------------------
 from datetime import datetime
+
+from src.coingecko_api.excepcions import ErroTipado
 
 from typing import Optional
 # ------------------------------------------------------------------------------
@@ -24,10 +26,6 @@ def check_types(lista_variables, lista_tipos):
         └ Indicando se todo está correcto (True) ou se non (False)
     """
 
-    # se as listas non teñen a mesma lonxitude algo se meteu mal
-    if len(lista_variables) != len(lista_tipos):
-        raise ErroTipado('As listas tenhen que ter a mesma lonxitude.')
-
     # se mete unha variable solitaria convírtese en lista
     if type(lista_variables) != list:
         lista_variables = [lista_variables]
@@ -35,10 +33,18 @@ def check_types(lista_variables, lista_tipos):
     if type(lista_tipos) != list:
         lista_tipos = [lista_tipos]
 
+    # se as listas non teñen a mesma lonxitude algo se meteu mal
+    if len(lista_variables) != len(lista_tipos):
+        raise ErroTipado('As listas tenhen que ter a mesma lonxitude.')
+
     for variable, tipo in zip(lista_variables, lista_tipos):
         if type(variable) == list:
-            for ele in variable:
-                if type(ele) != tipo:
+            if type(tipo) != list:
+                tipo = [tipo]
+            if len(variable) != len(tipo):
+                return False
+            for l_variable, l_tipo in zip(variable, tipo):
+                if type(l_variable) != l_tipo:
                     return False
         elif type(variable) != tipo:
             return False
@@ -56,7 +62,7 @@ def e_bisesto(ano):
         Bool    -   Sempre
         └ Indicando se é bisiesto (True) ou non (False).
     """
-    div4 = ano%4 == 0
+    div4   = ano%4 == 0
     div100 = ano%100 == 0
     div400 = ano%400 == 0
 
