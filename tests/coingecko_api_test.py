@@ -3,17 +3,34 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/09 22:21:58.806502
+#+ Editado:	2021/12/10 16:42:48.258939
 # ------------------------------------------------------------------------------
+import requests as r
+import json
 import unittest
 
 from src.coingecko_api.coingecko_api import CoinGecko
 # ------------------------------------------------------------------------------
 class TestCoinGecko_API(unittest.TestCase):
 
-    def test_ping(self):
+    @staticmethod
+    def get(url):
+        return json.loads(r.get(url).text)
+
+    # Getters ------------------------------------------------------------------
+    def test_get_url_base(self):
+        url_base = 'https://api.coingecko.com/api/v3/'
         cg = CoinGecko()
-        self.assertEqual(cg.ping(),cg.ping())
+
+        self.assertEqual(cg.get_url_base(), url_base)
+
+    # --------------------------------------------------------------------------
+
+    def test_ping(self):
+        url = 'https://api.coingecko.com/api/v3/ping'
+        cg = CoinGecko()
+
+        self.assertEqual(cg.ping(), self.get(url))
 
 if __name__ == '__main__':
     # para que corran os testes
