@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/10 16:44:23.128361
-#+ Editado:	2021/12/11 23:05:46.077398
+#+ Editado:	2021/12/12 00:02:12.924298
 # ------------------------------------------------------------------------------
 import unittest
 
@@ -167,14 +167,29 @@ class TestCG_Uteis(unittest.TestCase):
         #
 
     # lazy_check_types ---------------------------------------------------------
-    def test_lazy_check_types_caso1(self):
+    def test_lazy_check_types_casos_base(self):
+        # caso 1
         self.assertTrue(lazy_check_types('', str))
-
-    def test_lazy_check_types_caso2(self):
+        # caso 2
         self.assertTrue(lazy_check_types(['', ''], str))
-
-    def test_lazy_check_types_caso3(self):
+        # caso 3
         self.assertTrue(lazy_check_types(['', 0, ['', '']], [str, int, str]))
+
+    def test_lazy_check_types_simples(self):
+        # true
+        self.assertTrue(lazy_check_types('a', str))         # str   ?   str
+        self.assertTrue(lazy_check_types(1, int))           # int   ?   int
+        self.assertTrue(lazy_check_types(False, bool))      # bool  ?   bool
+        self.assertTrue(lazy_check_types([], list))         # list  ?   list
+        #
+
+        # false
+        self.assertFalse(lazy_check_types('b', int))        # str   ?   int
+        self.assertFalse(lazy_check_types('c', bool))       # str   ?   bool
+        self.assertFalse(lazy_check_types('d', list))       # str   ?   list
+        #
+
+
 
     # e_bisesto ----------------------------------------------------------------
     def test_e_bisesto(self):
