@@ -3,12 +3,12 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/09 22:18:26.265596
+#+ Editado:	2021/12/11 22:59:39.618654
 # ------------------------------------------------------------------------------
 import requests as r
 import json
 import time
-#from datetime import datetime
+from datetime import datetime
 from typing import Optional, List, Union
 
 from uteis.ficheiro import gardarJson
@@ -23,8 +23,8 @@ class CoinGecko:
 
     # Constructor --------------------------------------------------------------
     def __init__(self) -> None:
-        # no instance variables/atributes
-        pass
+        # instance variables/atributes
+        self.__url_base = self.__url_base
     # --------------------------------------------------------------------------
 
     # Getters ------------------------------------------------------------------
@@ -64,6 +64,7 @@ class CoinGecko:
     def get_price(self, ids_moedas: Union[str, List[str]], ids_moedas_vs: Union[str, List[str]],
             market_cap: Optional[bool] = False, vol24h: Optional[bool] = False,
             change24h: Optional[bool] = False, last_updated: Optional[bool] = False) -> dict:
+        # O que devolve poderíase mellorar facendo un dataclass concreto en lugar de ponher simplemente dict
         """
         Dadas unhas moeda/s a comparar, devolve o seu valor na/s divisa/s indicada/s.
         Permite tamén mostrar o market cap, o vol ou cambio 24h e a data de última
@@ -89,7 +90,7 @@ class CoinGecko:
         """
 
         if not check_types([ids_moedas, ids_moedas_vs, market_cap, vol24h, change24h, last_updated],
-                [str, str, bool, bool, bool, bool]):
+                [[str, str], [str, str], bool, bool, bool, bool]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         # Se mete un str faise unha lista con el para usar join
@@ -968,7 +969,7 @@ def main():
 
     # /simple/price
     #jprint(cg.get_price('bitcoin', 'eur'))
-    #jprint(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']))
+    jprint(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']))
     #jprint(cg.get_price('bitcoin, ethereum', 'eur,usd'))
 
     # /simple/token_price/{id}

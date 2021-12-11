@@ -8,7 +8,6 @@
 from datetime import datetime
 
 from src.coingecko_api.excepcions import ErroTipado
-#from excepcions import ErroTipado
 
 from typing import Optional
 # ------------------------------------------------------------------------------
