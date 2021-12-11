@@ -3,11 +3,12 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/04 14:01:43.443863
-#+ Editado:	2021/12/11 20:52:58.195474
+#+ Editado:	2021/12/11 23:06:54.459918
 # ------------------------------------------------------------------------------
 from datetime import datetime
 
 from src.coingecko_api.excepcions import ErroTipado
+#from excepcions import ErroTipado
 
 from typing import Optional
 # ------------------------------------------------------------------------------
@@ -44,15 +45,50 @@ def check_types(varis, tipos):
         raise ErroTipado('As listas tenhen que ter a mesma lonxitude.')
 
     # recorrer as listas
-    for var, tipo in zip(varis, tipos):
+    for vari, tipo in zip(varis, tipos):
         # só var porque list (en tipo) non é type list senón type
-        if type(var) == list:
-            if not check_types(var, tipo):
+        if type(vari) == list:
+            if not check_types(vari, tipo):
                 return False
         # mira que o tipo ou o propio contido non sexan igual ó tipo
-        elif (type(var) != tipo) and (var != tipo):
+        elif (type(vari) != tipo) and (vari != tipo):
             return False
 
+    return True
+# ------------------------------------------------------------------------------
+def lazy_check_types(varis, tipos):
+    """
+    Dada unha lista de variables e outra de tipos vai mirando que estén correctos.
+    Ante listas compostas tan só mira que os contidos da lista sexan todos iguais ó
+    tipo especificado.
+
+    @entrada:
+        varis    -   Requirido   -   Lista de ou variable solitaria.
+        └ Lista coas variables.
+        tipos   -   Requirido   -   Lista de ou tipo solitario.
+        └ Lista cos tipos das variables.
+
+    @saída:
+        Bool    -   Sempre
+        └ Indicando se todo está correcto (True) ou se non (False)
+    """
+
+    # caso 1: '' e str
+    if (type(varis) != list) and (type(tipos) != list):
+        if type(varis) != tipos:
+            return False
+    # caso 2: ['', ''] e str
+    elif (type(varis) == list) and (type(tipos) != list):
+        for vari in varis:
+            if type(vari) != tipos:
+                return False
+    # caso 3: ['', 0 ,['', '']] e [str, int, str]
+    else:
+        if len(varis) != len(tipos):
+            raise ErroTipado('As listas tenhen que ter a mesma lonxitude')
+        for vari, tipo in zip(varis, tipos):
+            if not lazy_check_types(vari, tipo):
+                return False
     return True
 # ------------------------------------------------------------------------------
 def e_bisesto(ano):
