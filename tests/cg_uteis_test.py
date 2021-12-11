@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/10 16:44:23.128361
-#+ Editado:	2021/12/11 21:02:47.619198
+#+ Editado:	2021/12/11 21:16:18.811210
 # ------------------------------------------------------------------------------
 import unittest
 
@@ -43,18 +43,26 @@ class TestCG_Uteis(unittest.TestCase):
         # ErroTipado
         with self.assertRaises(ErroTipado):
             check_types([], int)
+        with self.assertRaises(ErroTipado):
             check_types([], bool)
+        with self.assertRaises(ErroTipado):
             check_types([], str)
 
+        with self.assertRaises(ErroTipado):
             check_types([[]], str)
+        with self.assertRaises(ErroTipado):
             check_types([[]], int)
+        with self.assertRaises(ErroTipado):
             check_types([[]], bool)
 
+        with self.assertRaises(ErroTipado):
             check_types([[[]]], str)
+        with self.assertRaises(ErroTipado):
             check_types([[[]]], int)
+        with self.assertRaises(ErroTipado):
             check_types([[[]]], bool)
 
-            # etc
+        # etc
         #
 
     def test_check_types_simples_lista(self):
@@ -87,15 +95,23 @@ class TestCG_Uteis(unittest.TestCase):
         # ErroTipado
         with self.assertRaises(ErroTipado):
             check_types([], [int])
+        with self.assertRaises(ErroTipado):
             check_types([], [bool])
+        with self.assertRaises(ErroTipado):
             check_types([], [bool])
 
+        with self.assertRaises(ErroTipado):
             check_types([[]], [str])
+        with self.assertRaises(ErroTipado):
             check_types([[]], [int])
+        with self.assertRaises(ErroTipado):
             check_types([[]], [bool])
 
+        with self.assertRaises(ErroTipado):
             check_types([[[]]], [str])
+        with self.assertRaises(ErroTipado):
             check_types([[[]]], [int])
+        with self.assertRaises(ErroTipado):
             check_types([[[]]], [bool])
 
             # etc
@@ -134,6 +150,7 @@ class TestCG_Uteis(unittest.TestCase):
         # ErroTipado
         with self.assertRaises(ErroTipado):
             check_types(['', 0, [0, 'a'], True], [str, int, list, bool])
+        with self.assertRaises(ErroTipado):
             check_types(['', 0, [0, [100, 'a', [False]]], True], [str, int, [int, int, str, bool], bool])
         #
 
@@ -145,6 +162,7 @@ class TestCG_Uteis(unittest.TestCase):
         # ErroTipado
         with self.assertRaises(ErroTipado):
             check_types([1,2], int)
+        with self.assertRaises(ErroTipado):
             check_types([1,2], [int, int, bool])
         #
 
