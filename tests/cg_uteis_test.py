@@ -3,11 +3,11 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/10 16:44:23.128361
-#+ Editado:	2021/12/11 21:16:18.811210
+#+ Editado:	2021/12/11 23:05:46.077398
 # ------------------------------------------------------------------------------
 import unittest
 
-from src.coingecko_api.cg_uteis import check_types, e_bisesto, unix2human
+from src.coingecko_api.cg_uteis import check_types, lazy_check_types, e_bisesto, unix2human
 from src.coingecko_api.excepcions import ErroTipado
 # ------------------------------------------------------------------------------
 class TestCG_Uteis(unittest.TestCase):
@@ -165,6 +165,16 @@ class TestCG_Uteis(unittest.TestCase):
         with self.assertRaises(ErroTipado):
             check_types([1,2], [int, int, bool])
         #
+
+    # lazy_check_types ---------------------------------------------------------
+    def test_lazy_check_types_caso1(self):
+        self.assertTrue(lazy_check_types('', str))
+
+    def test_lazy_check_types_caso2(self):
+        self.assertTrue(lazy_check_types(['', ''], str))
+
+    def test_lazy_check_types_caso3(self):
+        self.assertTrue(lazy_check_types(['', 0, ['', '']], [str, int, str]))
 
     # e_bisesto ----------------------------------------------------------------
     def test_e_bisesto(self):
