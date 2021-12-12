@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/12 16:52:55.880088
+#+ Editado:	2021/12/12 20:03:59.923317
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -67,11 +67,51 @@ class TestCoinGecko_API(unittest.TestCase):
             url = f'https://api.coingecko.com/api/v3/simple/price?ids={iden2}&vs_currencies={vs_curren2}&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true'
             self.assertEqual(cg.get_price(iden, vs_curren, True, True, True, True), self.get(url))
 
+    def test_get_token_price_erro(self):
+        """
+        Proba con entradas erróneas.
+        """
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_token_price('ethereum', False, 7)
+
     def test_get_token_price(self):
         """
         Probas básicas dun uso normal.
         """
+        gooddollar = '0x67C5870b4A41D4Ebef24d2456547A03F1f3e094B'
+        tether = '0xdac17f958d2ee523a2206206994597c13d831ec7'
+        whackd = '0xcf8335727b776d190f9d15a54e6b9b9348439eee'
+
+        lista_moedas = ['ethereum', 'ethereum', 'ethereum']
+        lista_tokens = [gooddollar, [tether, whackd], whackd]
+        lista_divisas = ['usd', 'eur,usd', ['eur', 'usd']]
+
         cg = CoinGecko()
+
+        for moeda, token, divisa in zip(lista_moedas, lista_tokens, lista_divisas):
+            if type(token) == list:
+                token2 = ','.join(token)
+            else:
+                token2 = token
+
+            if type(divisa) == list:
+                divisa2 = ','.join(divisa)
+            else:
+                divisa2 = divisa
+
+            url = f'https://api.coingecko.com/api/v3/simple/token_price/{moeda}?contract_addresses={token2}'\
+                    f'&vs_currencies={divisa2}&include_market_cap=false&include_24hr_vol=false&'\
+                    f'include_24hr_change=false&include_last_updated_at=false'
+
+            self.assertEqual(cg.get_token_price(moeda, token, divisa), self.get(url))
+
+            url = f'https://api.coingecko.com/api/v3/simple/token_price/{moeda}?contract_addresses={token2}'\
+                    f'&vs_currencies={divisa2}&include_market_cap=true&include_24hr_vol=true&'\
+                    f'include_24hr_change=true&include_last_updated_at=true'
+
+            self.assertEqual(cg.get_token_price(moeda, token, divisa, True, True, True, True), self.get(url))
 
 # ------------------------------------------------------------------------------
 

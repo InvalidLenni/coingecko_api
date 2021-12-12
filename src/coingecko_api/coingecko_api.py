@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/12 12:17:26.323130
+#+ Editado:	2021/12/12 19:50:16.834854
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -39,6 +39,9 @@ class CoinGecko:
     # --------------------------------------------------------------------------
 
     # Operacións ---------------------------------------------------------------
+    @staticmethod
+    def get(url):
+        return json.loads(r.get(url.replace(' ', '')).text)
 
     # PING ---------------------------------------------------------------------
 
@@ -107,7 +110,7 @@ class CoinGecko:
                 f'&include_24hr_vol={str(vol24h).lower()}&include_24hr_change={str(change24h).lower()}'\
                 f'&include_last_updated_at={str(last_updated).lower()}'
 
-        return json.loads(r.get(url.replace(' ','')).text)
+        return self.get(url)
 
     # /simple/token_price/{id}
     def get_token_price(self, id_moeda_base: str, contract_addresses: Union[str, List[str]],
@@ -125,15 +128,15 @@ class CoinGecko:
             └ Identificador/es da/s moeda/s da/s que se quere obter a información.
             contract_addresses  -   Requirido   -   Catex, Lista de catex
             └ Identificador/es do/s token/s da/s que se quere obter a información.
-            ids_moedas_vs   -   Requirido   -   Catex, Lista de catex
+            ids_moedas_vs       -   Requirido   -   Catex, Lista de catex
             └ Identificador/es da/s divisa/s da/s a usar.
-            market_cap      -   Opcional    -   Bool
+            market_cap          -   Opcional    -   Bool
             └ Indica se se mostra o market cap para os valores de ids_moedas_vs.
-            vol24h          -   Opcional    -   Bool
+            vol24h              -   Opcional    -   Bool
             └ Indica se se mostra o volumen de 24 horas para os valores de ids_moedas_vs.
-            change24h       -   Opcional    -   Bool
+            change24h           -   Opcional    -   Bool
             └ Indica se se mostra o cambio de 24 horas para os valores de ids_moedas_vs.
-            last_updated    -   Opcional    -   Bool
+            last_updated        -   Opcional    -   Bool
             └ Indica se se mostra o momento de última actualización para os valores de ids_moedas_vs.
 
         @saída:
@@ -159,7 +162,7 @@ class CoinGecko:
                 f'&include_market_cap={str(market_cap).lower()}&include_24hr_vol={str(vol24h).lower()}'\
                 f'&include_24hr_change={str(change24h).lower()}&include_last_updated_at={str(last_updated).lower()}'
 
-        return json.loads(r.get(url.replace(' ','')).text)
+        return self.get(url)
 
     # /simple/supported_vs_currencies
     def get_supported_vs_currencies(self) -> List[str]:
@@ -960,23 +963,6 @@ def main():
     cg = CoinGecko()
 
     # TESTS --------------------------------------------------------------------
-
-    # PING ---------------------------------------------------------------------
-    # /ping
-    #jprint(cg.ping())
-
-    # SIMPLE -------------------------------------------------------------------
-
-    # /simple/price
-    #jprint(cg.get_price('bitcoin', 'eur'))
-    jprint(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']))
-    #jprint(cg.get_price('bitcoin, ethereum', 'eur,usd'))
-
-    # /simple/token_price/{id}
-    # tether e whackd
-    #jprint(cg.get_token_price('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7,0xCF8335727B776d190f9D15a54E6B9B9348439eEE', 'eur,usd'))
-    # gooddollar
-    #jprint(cg.get_token_price('ethereum', '0x67C5870b4A41D4Ebef24d2456547A03F1f3e094B', 'eur,usd'))
 
     # /simple/supported_vs_currencies
     #jprint(cg.get_supported_vs_currencies())
