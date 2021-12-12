@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/11 22:59:39.618654
+#+ Editado:	2021/12/12 12:17:26.323130
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -14,7 +14,7 @@ from typing import Optional, List, Union
 from uteis.ficheiro import gardarJson
 
 from src.coingecko_api.excepcions import ErroTipado, ErroData
-from src.coingecko_api.cg_uteis import check_types, e_bisesto, unix2human
+from src.coingecko_api.cg_uteis import check_types, lazy_check_types, e_bisesto, unix2human
 # ------------------------------------------------------------------------------
 class CoinGecko:
     # class variables/atributes
@@ -89,8 +89,8 @@ class CoinGecko:
             └ Coas ids_moedas de chave e cun dicionario dos distintos valores pedidos.
         """
 
-        if not check_types([ids_moedas, ids_moedas_vs, market_cap, vol24h, change24h, last_updated],
-                [[str, str], [str, str], bool, bool, bool, bool]):
+        if not lazy_check_types([ids_moedas, ids_moedas_vs, market_cap, vol24h, change24h, last_updated],
+                [str, str, bool, bool, bool, bool]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         # Se mete un str faise unha lista con el para usar join
@@ -141,7 +141,7 @@ class CoinGecko:
             └ Coas ids_moedas de chave e cun dicionario dos distintos valores pedidos.
         """
 
-        if not check_types([id_moeda_base, contract_addresses, ids_moedas_vs, market_cap,\
+        if not lazy_check_types([id_moeda_base, contract_addresses, ids_moedas_vs, market_cap,\
                 vol24h, change24h, last_updated], [str, str, str, bool, bool, bool, bool]):
             raise ErroTipado('Cometiches un erro no tipado')
 

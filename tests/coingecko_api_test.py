@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/11 21:51:50.660699
+#+ Editado:	2021/12/12 12:18:59.362740
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -32,17 +32,49 @@ class TestCoinGecko_API(unittest.TestCase):
 
         self.assertEqual(cg.ping(), self.get(url))
 
-    def test_get_price(self):
+    def test_get_price_falses(self):
         probas_ids = ['bitcoin', ['bitcoin', 'ethereum']]
         probas_vs_currencies = ['eur', ['eur', 'usd']]
         cg = CoinGecko()
 
-        url = f'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=eur,usd&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false'
-        self.assertEqual(cg.get_price(['bitcoin', 'ethereum'], ['eur', 'usd']), self.get(url))
-        #for identificador, vs_currencies in zip(probas_ids, probas_vs_currencies):
-            #url = f'https://api.coingecko.com/api/v3/simple/price?ids={identificador}&vs_currencies={vs_currencies}&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false'
+        for iden, vs_curren in zip(probas_ids, probas_vs_currencies):
+            if type(iden) == list:
+                iden2 = ','.join(iden)
+            else:
+                iden2 = iden
 
-            #self.assertEqual(cg.get_price(identificador, vs_currencies), self.get(url))
+            if type(vs_curren) == list:
+                vs_curren2 = ','.join(vs_curren)
+            else:
+                vs_curren2 = vs_curren
+
+            url = f'https://api.coingecko.com/api/v3/simple/price?ids={iden2}&vs_currencies={vs_curren2}&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false'
+
+            self.assertEqual(cg.get_price(iden, vs_curren), self.get(url))
+
+    def test_get_prices_trues(self):
+       probas_ids = ['bitcoin', ['bitcoin', 'ethereum']]
+        probas_vs_currencies = ['eur', ['eur', 'usd']]
+        cg = CoinGecko()
+
+        for iden, vs_curren in zip(probas_ids, probas_vs_currencies):
+            if type(iden) == list:
+                iden2 = ','.join(iden)
+            else:
+                iden2 = iden
+
+            if type(vs_curren) == list:
+                vs_curren2 = ','.join(vs_curren)
+            else:
+                vs_curren2 = vs_curren
+
+            url = f'https://api.coingecko.com/api/v3/simple/price?ids={iden2}&vs_currencies={vs_curren2}&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false'
+
+            self.assertEqual(cg.get_price(iden, vs_curren), self.get(url))
+
+
+    def test_get_token_price(self):
+        pass
 
 # ------------------------------------------------------------------------------
 
