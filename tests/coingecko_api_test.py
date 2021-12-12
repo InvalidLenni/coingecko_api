@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/12 20:03:59.923317
+#+ Editado:	2021/12/12 20:13:32.815416
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -112,6 +112,17 @@ class TestCoinGecko_API(unittest.TestCase):
                     f'include_24hr_change=true&include_last_updated_at=true'
 
             self.assertEqual(cg.get_token_price(moeda, token, divisa, True, True, True, True), self.get(url))
+
+    def test_get_supported_vs_currencies(self):
+        """
+        Uso normal
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'simple/supported_vs_currencies'
+
+        self.assertEqual(cg.get_supported_vs_currencies(), self.get(url))
 
 # ------------------------------------------------------------------------------
 

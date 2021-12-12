@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/12 19:50:16.834854
+#+ Editado:	2021/12/12 20:12:03.509476
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -178,7 +178,7 @@ class CoinGecko:
             └ Ids das moedas que se poden usar para o vs.
         """
 
-        return json.loads(r.get(self.get_url_base()+'simple/supported_vs_currencies').text)
+        return self.get(self.get_url_base()+'simple/supported_vs_currencies')
 
     # SIMPLE # -----------------------------------------------------------------
 
