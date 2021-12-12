@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/04 14:01:43.443863
-#+ Editado:	2021/12/11 23:35:25.703479
+#+ Editado:	2021/12/12 09:43:23.127022
 # ------------------------------------------------------------------------------
 from datetime import datetime
 
@@ -83,7 +83,7 @@ def lazy_check_types(varis, tipos):
             for vari in varis:
                 if type(vari) != tipos:
                     return False
-        # se está baleira e non é list
+        # se está baleira e non é list: [] e !=list
         elif (not varis) and (tipos != list):
             return False
     # caso 3: ['', 0 ,['', '']] e [str, int, str]
