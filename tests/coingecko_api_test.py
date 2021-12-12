@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/12 16:29:15.583244
+#+ Editado:	2021/12/12 16:50:26.693626
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -46,8 +46,8 @@ class TestCoinGecko_API(unittest.TestCase):
         """
         Probas básicas do uso normal.
         """
-        probas_ids = ['bitcoin', ['bitcoin', 'ethereum']]
-        probas_vs_currencies = ['eur', ['eur', 'usd']]
+        probas_ids = ['bitcoin', ['bitcoin', 'ethereum'], [['bitcoin', 'ethereum']]]
+        probas_vs_currencies = ['eur', ['eur', 'usd'], [['eur', 'usd']]]
         cg = CoinGecko()
 
         for iden, vs_curren in zip(probas_ids, probas_vs_currencies):
@@ -71,7 +71,7 @@ class TestCoinGecko_API(unittest.TestCase):
         """
         Probas básicas dun uso normal.
         """
-        pass
+        cg = CoinGecko()
 
 # ------------------------------------------------------------------------------
 
