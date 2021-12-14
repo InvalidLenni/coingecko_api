@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/12 20:13:32.815416
+#+ Editado:	2021/12/14 18:26:48.959793
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -27,21 +27,30 @@ class TestCoinGecko_API(unittest.TestCase):
 
     # --------------------------------------------------------------------------
 
+    # PING ---------------------------------------------------------------------
+
+    # /ping
     def test_ping(self):
         url = 'https://api.coingecko.com/api/v3/ping'
         cg = CoinGecko()
 
         self.assertEqual(cg.ping(), self.get(url))
 
+    # PING # -------------------------------------------------------------------
+
+    # SIMPLE -------------------------------------------------------------------
+
+    # /simple/price
     def test_get_price_erro(self):
         """
-        Testeo de ter metido un tipo de entrada que non entra dentro do especificado
+        Testeo de ter metido un tipo de entrada que non entra dentro do especificado.
         """
         cg = CoinGecko()
 
         with self.assertRaises(ErroTipado):
             cg.get_price(['bitcoin'], [0])
 
+    # /simple/price
     def test_get_price(self):
         """
         Probas básicas do uso normal.
@@ -67,6 +76,7 @@ class TestCoinGecko_API(unittest.TestCase):
             url = f'https://api.coingecko.com/api/v3/simple/price?ids={iden2}&vs_currencies={vs_curren2}&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true'
             self.assertEqual(cg.get_price(iden, vs_curren, True, True, True, True), self.get(url))
 
+    # /simple/token_price/{id}
     def test_get_token_price_erro(self):
         """
         Proba con entradas erróneas.
@@ -76,6 +86,7 @@ class TestCoinGecko_API(unittest.TestCase):
         with self.assertRaises(ErroTipado):
             cg.get_token_price('ethereum', False, 7)
 
+    # /simple/token_price/{id}
     def test_get_token_price(self):
         """
         Probas básicas dun uso normal.
@@ -113,9 +124,10 @@ class TestCoinGecko_API(unittest.TestCase):
 
             self.assertEqual(cg.get_token_price(moeda, token, divisa, True, True, True, True), self.get(url))
 
+    # /simple/supported_vs_currencies
     def test_get_supported_vs_currencies(self):
         """
-        Uso normal
+        Uso normal.
         """
 
         cg = CoinGecko()
@@ -123,6 +135,26 @@ class TestCoinGecko_API(unittest.TestCase):
         url = cg.get_url_base()+'simple/supported_vs_currencies'
 
         self.assertEqual(cg.get_supported_vs_currencies(), self.get(url))
+
+    # SIMPLE # -----------------------------------------------------------------
+
+    # COINS --------------------------------------------------------------------
+
+    # /coins/list
+    def test_get_coin_list(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'coins/list'
+
+        self.assertEqual(cg.get_coins_list(), self.get(url))
+
+
+    # COINS # ------------------------------------------------------------------
+
 
 # ------------------------------------------------------------------------------
 
