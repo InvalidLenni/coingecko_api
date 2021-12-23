@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/14 18:28:28.942500
+#+ Editado:	2021/12/23 19:07:52.055138
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -213,10 +213,10 @@ class CoinGecko:
         @entrada:
             ids_moeda_vs            -   Requirido   -   Catex
             └ Identificador da moeda na que se quere obter o prezo comparativo.
-            ids_moedas              -   Opcional   -   Catex, Lista de catex
+            ids_moedas              -   *Opcional   -   Catex, Lista de catex
             └ Identificador/es da/s moeda/s da/s que se quere obter a información.
-            categoria               -   Opcional   -   Catex, Lista de catex
-            └ Unha ou varias das mostradas en /coin/categories/list.
+            categoria               -   *Opcional   -   Catex
+            └ Unha das mostradas en /coin/categories/list.
             orde                    -   Opcional    -   Catex, Lista de catex
             └ Indica a orde en que se queren mostrar os resultados proporcionados.
                 Tan só válidos: market_cap_desc, gecko_desc, gecko_asc, market_cap_asc,
@@ -236,7 +236,7 @@ class CoinGecko:
         '''
 
         # check de que os tipos metidos sexan correctos
-        if not check_types([id_moeda_vs, ids_moedas, categoria, orde, xpax, pax, sparkline,\
+        if not lazy_check_types([id_moeda_vs, ids_moedas, categoria, orde, xpax, pax, sparkline,\
                 cambio_prezo_porcentaxe], [str, str, str, str, int, int, bool, str]):
             raise ErroTipado('Cometiches un erro no tipado')
 
@@ -266,10 +266,10 @@ class CoinGecko:
 
         url = self.get_url_base()+f'coins/markets?vs_currency={id_moeda_vs}'+\
                 url_ids_moedas+url_categoria+'&order='+','.join(orde)+f'&per_page={xpax}'+\
-                f'&page={pax}&sparkline={str(sparkline).lower()}'+'&price_change_percentage='+\
+                f'&page={pax}&sparkline={str(sparkline).lower()}&price_change_percentage='+\
                 ','.join(cambio_prezo_porcentaxe)
 
-        return json.loads(r.get(url).text)
+        return self.get(url)
 
     # /coins
     def get_coins(self) -> List[dict]:
@@ -967,8 +967,6 @@ def main():
     # COINS --------------------------------------------------------------------
 
     # /coins/markets
-    #jprint(cg.get_coins_markets('usd', ids_moedas = ['bitcoin', 'ethereum']))
-    #jprint(cg.get_coins_markets('usd', ids_moedas = 'bitcoin'))
     #jprint(cg.get_coins_markets('usd', categoria = 'aave-tokens'))
     #jprint(cg.get_coins_markets('usd', categoria = 'analytics'))
 

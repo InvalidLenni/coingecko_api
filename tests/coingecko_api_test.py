@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/14 18:26:48.959793
+#+ Editado:	2021/12/23 23:12:28.955302
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -151,6 +151,77 @@ class TestCoinGecko_API(unittest.TestCase):
         url = cg.get_url_base()+'coins/list'
 
         self.assertEqual(cg.get_coins_list(), self.get(url))
+
+    # /coin/markets
+    def test_get_coins_markets_erro(self):
+        """
+        Entrada incorrecta.
+        """
+
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_coins_markets(0, '', '')
+
+    # /coin/markets
+    def test_get_coins_markets(self):
+        """
+        Uso normal.
+        """
+
+        moedas_vs =     ['usd', 'eur', 'usd', 'eur', 'usd']
+        moedas =        ['bitcoin', 'bitcoin, ethereum', ['bitcoin', 'ethereum'], None, None]
+        categorias =    [None, None, None, 'aave-tokens', 'analytics']
+        ordes =         ['market_cap_desc', 'market_cap_desc', 'gecko_desc', 'volume_asc', 'id_desc']
+        xpaxs =         [250, 100, 200, 50, 5]
+        paxs =          [0, 4, 1, 0, 5]
+        sparklines =    [False, True, True, False, True]
+        pcps =          [['1h', '24h', '7d'], '7d', '1d', '1d', '24h']
+
+        cg = CoinGecko()
+
+        for moeda_vs, moeda, categoria, orde, xpax, pax, sparkline, pcp in\
+            zip(moedas_vs, moedas, categorias, ordes, xpaxs, paxs, sparklines, pcps):
+
+            if type(pcp) != list:
+                pcp = [pcp]
+            if type(moeda) != list:
+                moeda = [moeda]
+
+            if categoria:
+                url = cg.get_url_base()+f'coins/markets?vs_currency={moeda_vs}'\
+                    f'&category={categoria}&order={orde}&per_page={xpax}'\
+                    f'&page={pax}&sparkline={str(sparkline).lower()}&price_change_percentage='+','.join(pcp)
+
+                print(url)
+
+                resultado = cg.get_coins_markets(moeda_vs, categoria=categoria, orde=orde,
+                                xpax=xpax, pax=pax, sparkline=sparkline, cambio_prezo_porcentaxe=pcp)
+            elif moeda:
+                url = cg.get_url_base()+f'coins/markets?vs_currency={moeda_vs}'\
+                    +'&ids='+','.join(moeda)+f'&order={orde}&per_page={xpax}'\
+                    f'&page={pax}&sparkline={str(sparkline).lower()}&price_change_percentage='+','.join(pcp)
+
+                resultado = cg.get_coins_markets(moeda_vs, ids_moedas=moeda, orde=orde,
+                                xpax=xpax, pax=pax, sparkline=sparkline, cambio_prezo_porcentaxe=pcp)
+
+            self.assertEqual(resultado, self.get(url))
+
+    # /coins
+
+    # /coins/{id}
+
+    # /coins/{id}/tickers
+
+    # /coins/{id}/history
+
+    # /coins/{id}/market_chart
+
+    # /coins/{id}/market_chart/range
+
+    # /coins/{id}/status_updates
+
+    # /coins/{id}/ohlc
 
 
     # COINS # ------------------------------------------------------------------
