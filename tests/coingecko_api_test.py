@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/29 18:43:49.988329
+#+ Editado:	2021/12/29 19:00:18.931141
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -330,8 +330,29 @@ class TestCoinGecko_API(unittest.TestCase):
         self.assertEqual(cg.get_coin_market_chart_range('bitcoin', 'eur', 1392577232, 1422577232), self.get(url))
 
     # /coins/{id}/status_updates
+    def test_get_coin_status_updates(self):
+        """
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'coins/bitcoin/status_updates'
+        self.assertEqual(cg.get_coin_status_updates('bitcoin'), self.get(url))
+
+        url += '?per_page=1&page=2'
+        self.assertEqual(cg.get_coin_status_updates('bitcoin', 1, 2), self.get(url))
 
     # /coins/{id}/ohlc
+    def test_get_coin_ohlc(self):
+        """
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'coins/bitcoin/ohlc?vs_currency=eur&days='
+
+        self.assertEqual(cg.get_coin_ohlc('bitcoin', 'eur', 1), self.get(url+'1'))
+        self.assertEqual(cg.get_coin_ohlc('bitcoin', 'eur', 0), self.get(url+'max'))
 
     # COINS # ------------------------------------------------------------------
 

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/29 18:43:28.120195
+#+ Editado:	2021/12/29 19:00:34.693902
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -14,7 +14,7 @@ from typing import Optional, List, Union
 from uteis.ficheiro import gardarJson
 
 from src.coingecko_api.excepcions import ErroTipado, ErroData
-from src.coingecko_api.cg_uteis import check_types, lazy_check_types, e_bisesto, unix2human
+from src.coingecko_api.cg_uteis import check_types, lazy_check_types, e_bisesto
 # ------------------------------------------------------------------------------
 class CoinGecko:
     # class variables/atributes
@@ -411,7 +411,7 @@ class CoinGecko:
             e de contido unha mensaxe explicando que o id non foi atopado.
         """
 
-        if not check_types([id_moeda, dia, mes, ano, linguas], [str, int, int, int, bool]):
+        if not lazy_check_types([id_moeda, dia, mes, ano, linguas], [str, int, int, int, bool]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         if not 0 < ano:
@@ -485,7 +485,7 @@ class CoinGecko:
                 }
 
         # checkeo de tipos
-        if not check_types([id_moeda, id_moeda_vs, rango, intervalo], [str, str, int, str]):
+        if not lazy_check_types([id_moeda, id_moeda_vs, rango, intervalo], [str, str, int, str]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         # se pon 0 usamos rango máximo
@@ -527,7 +527,7 @@ class CoinGecko:
         """
 
         # checkeo de tipos
-        if not check_types([id_moeda, id_moeda_vs, dende, ate], [str, str, int, int]):
+        if not lazy_check_types([id_moeda, id_moeda_vs, dende, ate], [str, str, int, int]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         # se ate é cero collese o timestamp
@@ -558,7 +558,7 @@ class CoinGecko:
         """
 
         # checkeo de tipos
-        if not check_types([id_moeda, xpax, pax], [str, int, int]):
+        if not lazy_check_types([id_moeda, xpax, pax], [str, int, int]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         url = self.get_url_base()+f'coins/{id_moeda}/status_updates'
@@ -603,7 +603,7 @@ class CoinGecko:
         """
 
         # checkeo de tipos
-        if not check_types([id_moeda, id_moeda_vs, rango], [str, str, int]):
+        if not lazy_check_types([id_moeda, id_moeda_vs, rango], [str, str, int]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         # se no rango se mete un 0 significa que se quere o máximo
@@ -963,17 +963,6 @@ def main():
     cg = CoinGecko()
 
     # TESTS --------------------------------------------------------------------
-
-    # COINS --------------------------------------------------------------------
-
-    # /coins/{id}/status_updates
-    #jprint(cg.get_coin_status_updates('bitcoin'))
-    #jprint(cg.get_coin_status_updates('bitcoin'), 1, 2)
-
-    # /coins/{id}/ohlc
-    #jprint(cg.get_coin_ohlc('bitcoin', 'eur', 1))
-    #print(unix2human(cg.get_coin_ohlc('bitcoin', 'eur', 1)[0][0]))
-    #jprint(cg.get_coin_ohlc('bitcoin', 'eur', 0))
 
     # CONTRACT -----------------------------------------------------------------
 
