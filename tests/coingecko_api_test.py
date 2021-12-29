@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/29 13:02:32.197004
+#+ Editado:	2021/12/29 17:24:56.152825
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -218,10 +218,84 @@ class TestCoinGecko_API(unittest.TestCase):
         self.assertEqual(cg.get_coins(), self.get(cg.get_url_base()+'coins'))
 
     # /coins/{id}
+    def test_get_coin_erro(self):
+        """
+        Entrada incorrecta.
+        """
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_coin(0)
+
+    # /coins/{id}
+    def test_get_coin(self):
+        """
+        Uso normal.
+        Faltaría probar máis casos.
+        """
+
+        cg = CoinGecko()
+
+        self.assertEqual(cg.get_coin('bitcoin'), self.get(cg.get_url_base()+'coins/bitcoin'))
 
     # /coins/{id}/tickers
+    def get_coin_tickers_erros(self):
+        """
+        Entrada incorrecta.
+        """
+
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_coin_tickers(0)
+
+    # /coins/{id}/tickers
+    def get_coin_tickers(self):
+        """
+        Uso normal.
+        Faltan casos.
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'coins/bitcoin'
+        self.assertEqual(cg.get_coin_tickers('bitcoin'), self.get(url))
+
+        url += '?exchange_ids=aax,gdax&include_exchange_logo=True'
+        self.assertEqual(cg.get_coin_tickers(id_moeda='bitcoin', ids_exchanges=['aax', 'gdax'], logo_exchange=True), self.get(url))
 
     # /coins/{id}/history
+    def get_coin_history_erro(self):
+        """
+        Entradas incorrectas
+        """
+
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroData):
+            # non ten tantos días
+            cg.get_coin_history('bitcoin', 2021, 2, 31)
+
+        with self.assertRaises(ErroData):
+            # non é ano bisesto
+            cg.get_coin_history('bitcoin', 2021, 2, 29)
+
+        with self.assertRaises(ErroData):
+            # ten máximo 30 días
+            cg.get_coin_history('bitcoin', 2020, 4, 31)
+
+    # /coins/{id}/history
+    def get_coin_history(self):
+        """
+        Uso normal.
+        Faltaría probar máis casos
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'coins/bitcoin/history?date=29-2-2020'
+
+        self.assertEqual(cg.get_coin_history('bitcoin', 2020, 2, 29), self.get_url(url))
 
     # /coins/{id}/market_chart
 
