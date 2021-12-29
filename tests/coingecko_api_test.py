@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/29 23:21:29.143696
+#+ Editado:	2021/12/29 23:38:29.879211
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -457,10 +457,38 @@ class TestCoinGecko_API(unittest.TestCase):
 
     # CATEGORIES # -------------------------------------------------------------
 
+    # EXCHANGES ----------------------------------------------------------------
+
+    # /exchanges
+    def test_get_exchanges(self):
+        """
+        Uso normal.
+        Faltarían casos.
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'exchanges/?per_page=250&page=1'
+
+        self.assertEqual(cg.get_exchanges(250, 1), self.get(url))
+
+    # /exchanges/list
+    def test_get_exchanges_list(self):
+        """
+        Uso normal.
+        Faltarían casos.
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'exchanges/list'
+
+        self.assertEqual(cg.get_exchanges_list(), self.get(url))
+
+    # EXCHANGES # --------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
 
-# CATEGORIES ---------------------------------------------------------------
 
 
 
