@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/23 23:12:28.955302
+#+ Editado:	2021/12/29 13:02:32.197004
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -208,6 +208,14 @@ class TestCoinGecko_API(unittest.TestCase):
             self.assertEqual(resultado, self.get(url))
 
     # /coins
+    def test_get_coins(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        self.assertEqual(cg.get_coins(), self.get(cg.get_url_base()+'coins'))
 
     # /coins/{id}
 
