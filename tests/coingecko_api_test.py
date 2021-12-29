@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/29 19:00:18.931141
+#+ Editado:	2021/12/29 21:18:55.126763
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -356,6 +356,68 @@ class TestCoinGecko_API(unittest.TestCase):
 
     # COINS # ------------------------------------------------------------------
 
+    # CONTRACT -----------------------------------------------------------------
+
+    # /coins/{id}/contract/{contract_address}
+    def test_get_contract(self):
+        """
+        Uso normal.
+        Casos por implementar.
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'coins/ethereum/contract/0xdac17f958d2ee523a2206206994597c13d831ec7'
+        self.assertEqual(cg.get_contract('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7'), self.get(url))
+
+    # /coins/{id}/contract/{contract_address}/market_chart
+    def test_get_contract_market_chart(self):
+        """
+        Uso normal.
+        Faltarían casos por implementar.
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'coins/ethereum/contract/0xdac17f958d2ee523a2206206994597c13d831ec7/?vs_currency=eur&days='
+
+        self.assertEqual(cg.get_contract_market_chart('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur'),
+                self.get(url+'0'))
+
+        self.assertEqual(cg.get_contract_market_chart('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur', 1),
+                self.get(url+'1'))
+
+
+    # /coins/{id}/contract/{contract_address}/market_chart/range
+    def test_get_contract_market_chart_range(self):
+        """
+        Uso normal.
+        Faltarían casos.
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'coins/ethereum/contract/0xdac17f958d2ee523a2206206994597c13d831ec7/market_chart/range'\
+                '?vs_currency=eur&from=1392577232&to='
+
+        r1 = cg.get_contract_market_chart_range('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur', 1392577232, 1422577232)
+        r2 = self.get(url+'1422577232')
+        self.assertEqual(r1, r2)
+
+        r3 = cg.get_contract_market_chart_range('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur', 1392577232)
+        r4 = self.get(url+str(time.time()))
+        self.assertEqual(r3, r4)
+
+    # CONTRACT # ---------------------------------------------------------------
+
 
 # ------------------------------------------------------------------------------
+
+# CATEGORIES ---------------------------------------------------------------
+
+# /coins/categories/list
+#jprint(cg.get_coins_categories_list())
+
+# /coins/categories
+#jprint(cg.get_coins_categories())
 

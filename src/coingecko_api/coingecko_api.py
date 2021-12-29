@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/29 19:00:34.693902
+#+ Editado:	2021/12/29 21:20:19.802700
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -635,7 +635,7 @@ class CoinGecko:
         """
 
         # checkeo de tipos
-        if not check_types([id_moeda, contract_address], [str, str]):
+        if not lazy_check_types([id_moeda, contract_address], [str, str]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         return json.loads(r.get(self.get_url_base()+f'coins/{id_moeda}/contract/{contract_address}').text)
@@ -663,7 +663,7 @@ class CoinGecko:
         """
 
         # checkeo de tipos
-        if not check_types([id_moeda, contract_address, id_moeda_vs, rango], [str, str, str, int]):
+        if not lazy_check_types([id_moeda, contract_address, id_moeda_vs, rango], [str, str, str, int]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         # se no rango se mete un 0 significa que se quere o máximo
@@ -702,7 +702,7 @@ class CoinGecko:
         """
 
         # checkeo de tipos
-        if not check_types([id_moeda, contract_address, id_moeda_vs, dende, ate],
+        if not lazy_check_types([id_moeda, contract_address, id_moeda_vs, dende, ate],
                 [str, str, str, int, int]):
             raise ErroTipado('Cometiches un erro no tipado')
 
@@ -957,7 +957,6 @@ class CoinGecko:
 
 # ------------------------------------------------------------------------------
 def main():
-    # import aki para non sobre importar se se usa como módulo
     from uteis.imprimir import jprint
 
     cg = CoinGecko()
