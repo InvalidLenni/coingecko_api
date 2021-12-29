@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/29 23:12:35.936304
+#+ Editado:	2021/12/29 23:21:29.143696
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -430,10 +430,30 @@ class TestCoinGecko_API(unittest.TestCase):
     # CATEGORIES ---------------------------------------------------------------
 
     # /coins/categories/list
-    #jprint(cg.get_coins_categories_list())
+    def test_get_coins_categories_list(self):
+        """
+        Uso normal.
+        Faltarían casos.
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'coins/categories/list'
+
+        self.assertEqual(cg.get_coins_categories_list(), self.get(url))
 
     # /coins/categories
-    #jprint(cg.get_coins_categories())
+    def test_get_coins_categories(self):
+        """
+        Uso normal.
+        Faltarían casos.
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'coins/categories'
+
+        self.assertEqual(cg.get_coins_categories(), self.get(url))
 
     # CATEGORIES # -------------------------------------------------------------
 
