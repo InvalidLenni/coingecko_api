@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/29 21:18:55.126763
+#+ Editado:	2021/12/29 23:12:35.936304
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -410,14 +410,37 @@ class TestCoinGecko_API(unittest.TestCase):
 
     # CONTRACT # ---------------------------------------------------------------
 
+    # ASSET_PLATFORMS ----------------------------------------------------------
+
+    # /asset_platforms
+    def test_get_asset_platforms(self):
+        """
+        Uso normal.
+        Faltarían casos.
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'asset_platforms'
+
+        self.assertEqual(cg.get_asset_platforms(), self.get(url))
+
+    # ASSET_PLATFORMS # --------------------------------------------------------
+
+    # CATEGORIES ---------------------------------------------------------------
+
+    # /coins/categories/list
+    #jprint(cg.get_coins_categories_list())
+
+    # /coins/categories
+    #jprint(cg.get_coins_categories())
+
+    # CATEGORIES # -------------------------------------------------------------
+
 
 # ------------------------------------------------------------------------------
 
 # CATEGORIES ---------------------------------------------------------------
 
-# /coins/categories/list
-#jprint(cg.get_coins_categories_list())
 
-# /coins/categories
-#jprint(cg.get_coins_categories())
 

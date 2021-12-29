@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/29 21:20:19.802700
+#+ Editado:	2021/12/29 23:12:38.417012
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -198,7 +198,7 @@ class CoinGecko:
             └ Todas as moedas de CoinGecko.
         """
 
-        return json.loads(r.get(self.get_url_base()+'coins/list').text)
+        return self.get(self.get_url_base()+'coins/list')
 
     # /coins/markets
     def get_coins_markets(self, id_moeda_vs: str, ids_moedas: Optional[Union[str, List[str]]] = '',
@@ -286,7 +286,7 @@ class CoinGecko:
             └ Todas as moedas de CoinGecko.
         """
 
-        return json.loads(r.get(self.get_url_base()+'coins').text)
+        return self.get(self.get_url_base()+'coins')
 
     # /coins/{id}
     def get_coin(self, id_moeda: str, localization: Optional[bool] = True,
@@ -330,7 +330,7 @@ class CoinGecko:
                 f'&community_data={str(community_data).lower()}'\
                 f'&developer_data={str(developer_data).lower()}&sparkline={str(sparkline).lower()}'
 
-        return json.loads(r.get(url).text)
+        return self.get(url)
 
     # /coins/{id}/tickers
     def get_coin_tickers(self, id_moeda: str, ids_exchanges: Optional[Union[str, List[str]]] = '',
@@ -385,7 +385,7 @@ class CoinGecko:
         url = self.get_url_base()+f'coins/{id_moeda}/tickers?'+'&'.join([url_ids_exchanges,\
                 url_logo_exchange, url_pax, url_orde, url_profundidade])
 
-        return json.loads(r.get(url).text)
+        return self.get(url)
 
     # /coins/{id}/history
     def get_coin_history(self, id_moeda: str, ano: int, mes: int, dia: int,
@@ -437,7 +437,7 @@ class CoinGecko:
 
         url = self.get_url_base()+f'coins/{id_moeda}/history?date={dia}-{mes}-{ano}&localization={str(linguas).lower()}'
 
-        return json.loads(r.get(url).text)
+        return self.get(url)
 
     # /coins/{id}/market_chart
     def get_coin_market_chart(self, id_moeda: str, id_moeda_vs: str, rango: int, intervalo: Optional[str] = 'd') -> dict:
@@ -497,7 +497,7 @@ class CoinGecko:
 
         url = self.get_url_base()+f'coins/{id_moeda}/market_chart?vs_currency={id_moeda_vs}&days={rango}&interval={intervalo}'
 
-        return json.loads(r.get(url).text)
+        return self.get(url)
 
     # /coins/{id}/market_chart/range
     def get_coin_market_chart_range(self, id_moeda: str, id_moeda_vs: str, dende: int, ate: Optional[int] = 0) -> dict:
@@ -537,7 +537,7 @@ class CoinGecko:
         url = self.get_url_base()+f'coins/{id_moeda}/market_chart/range?vs_currency={id_moeda_vs}&'\
                 f'from={dende}&to={ate}'
 
-        return json.loads(r.get(url).text)
+        return self.get(url)
 
     # /coins/{id}/status_updates
     def get_coin_status_updates(self, id_moeda: str, xpax: Optional[int] = 0, pax: Optional[int] = 0) -> dict:
@@ -576,7 +576,7 @@ class CoinGecko:
                 url += '?'
             url += f'page={xpax}'
 
-        return json.loads(r.get(url).text)
+        return self.get(url)
 
     # /coins/{id}/ohlc
     def get_coin_ohlc(self, id_moeda: str, id_moeda_vs: str, rango: int) -> List:
@@ -612,7 +612,7 @@ class CoinGecko:
 
         url = self.get_url_base()+f'coins/{id_moeda}/ohlc?vs_currency={id_moeda_vs}&days={rango}'
 
-        return json.loads(r.get(url).text)
+        return self.get(url)
 
     # COINS # ------------------------------------------------------------------
 
@@ -638,7 +638,7 @@ class CoinGecko:
         if not lazy_check_types([id_moeda, contract_address], [str, str]):
             raise ErroTipado('Cometiches un erro no tipado')
 
-        return json.loads(r.get(self.get_url_base()+f'coins/{id_moeda}/contract/{contract_address}').text)
+        return self.get(self.get_url_base()+f'coins/{id_moeda}/contract/{contract_address}')
 
     # /coins/{id}/contract/{contract_address}/market_chart
     def get_contract_market_chart(self, id_moeda: str, contract_address: str,
@@ -673,7 +673,7 @@ class CoinGecko:
         url = self.get_url_base()+f'coins/{id_moeda}/contract/{contract_address}/?'\
                 f'vs_currency={id_moeda_vs}&days={rango}'
 
-        return json.loads(r.get(url).text)
+        return self.get(url)
 
     # /coins/{id}/contract/{contract_address}/market_chart/range
     def get_contract_market_chart_range(self, id_moeda: str, contract_address: str,
@@ -713,7 +713,7 @@ class CoinGecko:
         url = self.get_url_base()+f'coins/{id_moeda}/contract/{contract_address}/'\
                 f'market_chart/range?vs_currency={id_moeda_vs}&from={dende}&to={ate}'
 
-        return json.loads(r.get(url).text)
+        return self.get(url)
 
     # CONTRACT # ---------------------------------------------------------------
 
@@ -732,7 +732,7 @@ class CoinGecko:
             └ Co id, o id da chain, o nome e o shotname.
         """
 
-        return json.loads(r.get(self.get_url_base()+f'asset_platforms').text)
+        return self.get(self.get_url_base()+f'asset_platforms')
 
     # ASSET_PLATFORMS # --------------------------------------------------------
 
@@ -752,7 +752,7 @@ class CoinGecko:
             └ Todas as categorías de CoinGecko
         """
 
-        return json.loads(r.get(self.get_url_base()+'coins/categories/list').text)
+        return self.get(self.get_url_base()+'coins/categories/list')
 
     # /coins/categories
     def get_coins_categories(self) -> List[dict]:
@@ -767,7 +767,7 @@ class CoinGecko:
             └ Todas as categorías de CoinGecko con datos de mercado
         """
 
-        return json.loads(r.get(self.get_url_base()+'coins/categories').text)
+        return self.get(self.get_url_base()+'coins/categories')
 
     # CATEGORIES # -------------------------------------------------------------
 
@@ -807,7 +807,7 @@ class CoinGecko:
         if pax == 0:
             pax = 1
 
-        return json.loads(r.get(self.get_url_base()+f'exchanges/?per_page={xpax}&page={pax}').text)
+        return self.get(self.get_url_base()+f'exchanges/?per_page={xpax}&page={pax}')
 
     # /exchanges/list
     def get_exchanges_list(self):
@@ -822,7 +822,7 @@ class CoinGecko:
             └ Co id e nome dos mercados/exchanges existentes.
         """
 
-        return json.loads(r.get(self.get_url_base()+'exchanges/list').text)
+        return self.get(self.get_url_base()+'exchanges/list')
 
     # /exchanges/{id}
     def get_exchange(self):
@@ -963,19 +963,6 @@ def main():
 
     # TESTS --------------------------------------------------------------------
 
-    # CONTRACT -----------------------------------------------------------------
-
-    # /coins/{id}/contract/{contract_address}
-    #jprint(cg.get_contract('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7'))
-
-    # /coins/{id}/contract/{contract_address}/market_chart
-    #jprint(cg.get_contract_market_chart('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur'))
-    #jprint(cg.get_contract_market_chart('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur', 1))
-
-    # /coins/{id}/contract/{contract_address}/market_chart/range
-    #jprint(cg.get_contract_market_chart_range('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur', 1392577232, 1422577232))
-    #jprint(cg.get_contract_market_chart_range('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur', 1392577232))
-
     # CATEGORIES ---------------------------------------------------------------
 
     # /coins/categories/list
@@ -983,11 +970,6 @@ def main():
 
     # /coins/categories
     #jprint(cg.get_coins_categories())
-
-    # ASSET_PLATFORMS ----------------------------------------------------------
-
-    # /asset_platforms
-    #jprint(cg.get_asset_platforms())
 
     # EXCHANGES ----------------------------------------------------------------
 
