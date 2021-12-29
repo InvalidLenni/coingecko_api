@@ -3,14 +3,15 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/29 17:24:56.152825
+#+ Editado:	2021/12/29 18:43:49.988329
 # ------------------------------------------------------------------------------
 import requests as r
 import json
+import time
 import unittest
 
 from src.coingecko_api.coingecko_api import CoinGecko
-from src.coingecko_api.excepcions import ErroTipado
+from src.coingecko_api.excepcions import ErroTipado, ErroData
 # ------------------------------------------------------------------------------
 class TestCoinGecko_API(unittest.TestCase):
 
@@ -239,7 +240,7 @@ class TestCoinGecko_API(unittest.TestCase):
         self.assertEqual(cg.get_coin('bitcoin'), self.get(cg.get_url_base()+'coins/bitcoin'))
 
     # /coins/{id}/tickers
-    def get_coin_tickers_erros(self):
+    def test_get_coin_tickers_erros(self):
         """
         Entrada incorrecta.
         """
@@ -250,7 +251,7 @@ class TestCoinGecko_API(unittest.TestCase):
             cg.get_coin_tickers(0)
 
     # /coins/{id}/tickers
-    def get_coin_tickers(self):
+    def test_get_coin_tickers(self):
         """
         Uso normal.
         Faltan casos.
@@ -258,14 +259,14 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'coins/bitcoin'
+        url = cg.get_url_base()+'coins/bitcoin/tickers?include_exchange_logo=false&page=0&order=trust_score_asc&depth=false'
         self.assertEqual(cg.get_coin_tickers('bitcoin'), self.get(url))
 
-        url += '?exchange_ids=aax,gdax&include_exchange_logo=True'
+        url = cg.get_url_base()+'coins/bitcoin/tickers?exchange_ids=aax,gdax&include_exchange_logo=true&page=0&order=trust_score_asc&depth=false'
         self.assertEqual(cg.get_coin_tickers(id_moeda='bitcoin', ids_exchanges=['aax', 'gdax'], logo_exchange=True), self.get(url))
 
     # /coins/{id}/history
-    def get_coin_history_erro(self):
+    def test_get_coin_history_erro(self):
         """
         Entradas incorrectas
         """
@@ -285,7 +286,7 @@ class TestCoinGecko_API(unittest.TestCase):
             cg.get_coin_history('bitcoin', 2020, 4, 31)
 
     # /coins/{id}/history
-    def get_coin_history(self):
+    def test_get_coin_history(self):
         """
         Uso normal.
         Faltaría probar máis casos
@@ -293,18 +294,44 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'coins/bitcoin/history?date=29-2-2020'
+        url = cg.get_url_base()+'coins/bitcoin/history?date=29-2-2020&localization=false'
 
-        self.assertEqual(cg.get_coin_history('bitcoin', 2020, 2, 29), self.get_url(url))
+        self.assertEqual(cg.get_coin_history('bitcoin', 2020, 2, 29), self.get(url))
 
     # /coins/{id}/market_chart
+    def test_get_coin_market_chart(self):
+        """
+        Uso normal.
+        Faltarían casos por probar.
+        """
+
+        cg = CoinGecko()
+
+
+        url = cg.get_url_base()+'coins/bitcoin/market_chart?vs_currency=eur&days=2&interval=daily'
+
+        self.assertEqual(cg.get_coin_market_chart('bitcoin', 'eur', 2), self.get(url))
 
     # /coins/{id}/market_chart/range
+    def test_get_coin_market_chart_range(self):
+        """
+        Uso normal.
+        Faltarían casos.
+        """
+
+        cg = CoinGecko()
+
+        url = cg.get_url_base()+'coins/bitcoin/market_chart/range?vs_currency=eur&from=1392577232'
+
+        self.assertEqual(cg.get_coin_market_chart_range('bitcoin', 'eur', 1392577232), self.get(url+f'&to={time.time()}'))
+
+        url = cg.get_url_base()+'coins/bitcoin/market_chart/range?vs_currency=eur&from=1392577232&to=1422577232'
+
+        self.assertEqual(cg.get_coin_market_chart_range('bitcoin', 'eur', 1392577232, 1422577232), self.get(url))
 
     # /coins/{id}/status_updates
 
     # /coins/{id}/ohlc
-
 
     # COINS # ------------------------------------------------------------------
 

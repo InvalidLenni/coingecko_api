@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/29 17:03:24.017144
+#+ Editado:	2021/12/29 18:43:28.120195
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -320,7 +320,7 @@ class CoinGecko:
             e de contido unha mensaxe explicando que o id non foi atopado.
         """
 
-        if not check_types([id_moeda, localization, tickers, market_data, community_data,\
+        if not lazy_check_types([id_moeda, localization, tickers, market_data, community_data,\
                 developer_data, sparkline], [str, bool, bool, bool, bool, bool, bool]):
             raise ErroTipado('Cometiches un erro no tipado')
 
@@ -360,7 +360,7 @@ class CoinGecko:
             e de contido unha mensaxe explicando que o id non foi atopado.
         """
 
-        if not check_types([id_moeda, ids_exchanges, logo_exchange, pax, orde,\
+        if not lazy_check_types([id_moeda, ids_exchanges, logo_exchange, pax, orde,\
                 profundidade], [str, str, bool, int, str, bool]):
             raise ErroTipado('Cometiches un erro no tipado')
 
@@ -966,27 +966,6 @@ def main():
 
     # COINS --------------------------------------------------------------------
 
-    # /coins/{id}/tickers
-    #jprint(cg.get_coin_tickers('bitcoin'))
-    #jprint(cg.get_coin_tickers(id_moeda='bitcoin', ids_exchanges='gdax', logo_exchange=True))
-
-    # /coins/{id}/history
-    # non ten tantos días
-    #jprint(cg.get_coin_history('bitcoin', 2021, 2, 31))
-    # non é ano bisesto
-    #jprint(cg.get_coin_history('bitcoin', 2021, 2, 29))
-    # ten máximo 30 días
-    #jprint(cg.get_coin_history('bitcoin', 2020, 4, 31))
-    # correcto
-    #jprint(cg.get_coin_history('bitcoin', 2020, 2, 29))
-
-    # /coins/{id}/market_chart
-    #jprint(cg.get_coin_market_chart('bitcoin', 'eur', 2))
-
-    # /coins/{id}/market_chart/range
-    #jprint(cg.get_coin_market_chart_range('bitcoin', 'eur', 1392577232, 1422577232))
-    #jprint(cg.get_coin_market_chart_range('bitcoin', 'eur', 1392577232))
-
     # /coins/{id}/status_updates
     #jprint(cg.get_coin_status_updates('bitcoin'))
     #jprint(cg.get_coin_status_updates('bitcoin'), 1, 2)
@@ -1029,58 +1008,6 @@ def main():
 
     # /exchanges/list
     #jprint(cg.get_exchanges_list())
-
-    # /exchanges/{id}
-
-    # /exchanges/{id}/tickers
-
-    # /exchanges/{id}/tickers/status_updates
-
-    # /exchanges/{id}/tickers/volume_chart
-
-    # FINANCE ------------------------------------------------------------------
-
-    # /finance_platforms
-
-    # /finance_products
-
-    # INDEXES ------------------------------------------------------------------
-
-    # /indexes
-
-    # /indexes/{market_id}/{id}
-
-    # /indexes/list
-
-    # DERIVATIVES --------------------------------------------------------------
-
-    # /derivatives
-
-    # /derivatives/exchanges
-
-    # /derivatives/exchanges/list
-
-    # STATUS_UPDATES -----------------------------------------------------------
-
-    # /status_updates
-
-    # EXCHANGE_RATES -----------------------------------------------------------
-
-    # /exchange_rates
-
-    # TRENDING -----------------------------------------------------------------
-
-    # /search/trending
-
-    # GLOBAL -------------------------------------------------------------------
-
-    # /global
-
-    # /global/decentralized_finance_defi
-
-    # COMPANIES ----------------------------------------------------------------
-
-    # /companies
 
     # TESTS # ------------------------------------------------------------------
 
