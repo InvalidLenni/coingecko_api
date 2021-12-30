@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/30 11:33:40.731558
+#+ Editado:	2021/12/30 11:49:58.006902
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -793,7 +793,7 @@ class CoinGecko:
         """
 
         # checkeo de tipos
-        if not check_types([xpax, pax], [int, int]):
+        if not lazy_check_types([xpax, pax], [int, int]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         # se mete un número de elementos por páxina non soportado reponse no límite
