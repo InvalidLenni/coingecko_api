@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/29 23:38:45.752632
+#+ Editado:	2021/12/30 11:33:40.731558
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -825,9 +825,24 @@ class CoinGecko:
         return self.get(self.get_url_base()+'exchanges/list')
 
     # /exchanges/{id}
-    def get_exchange(self):
-        # xFCR
-        pass
+    def get_exchange(self, exchange_id: str) -> dict:
+        """
+        Función para obter todos os datos dun exchange.
+
+        @entrada:
+            exchange_id -   Obrigatorio -   Catex
+            └ Identificador do exchange.
+
+        @saida:
+            Dicionario  -   Sempre
+            └ Cos datos do exchange.
+        """
+
+        # checkeo de tipos
+        if not lazy_check_types(exchange_id, str):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        return self.get(self.get_url_base()+f'exchanges/{exchange_id}')
 
     # /exchanges/{id}/tickers
     def get_exchange_tickers(self):

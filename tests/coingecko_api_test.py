@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/29 23:38:29.879211
+#+ Editado:	2021/12/30 11:48:35.806089
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -18,6 +18,10 @@ class TestCoinGecko_API(unittest.TestCase):
     @staticmethod
     def get(url):
         return json.loads(r.get(url).text)
+
+    @staticmethod
+    def get_url_base():
+        return 'http://api.coingecko.com/api/v3/'
 
     # Getters ------------------------------------------------------------------
     def test_get_url_base(self):
@@ -484,6 +488,36 @@ class TestCoinGecko_API(unittest.TestCase):
         url = cg.get_url_base()+'exchanges/list'
 
         self.assertEqual(cg.get_exchanges_list(), self.get(url))
+
+    # /exchanges/{id}
+    def test_get_exchange(self):
+        """
+        Uso normal.
+        """
+
+        exchanges = ['binance']
+
+        cg = CoinGecko()
+
+        for exchange in exchanges:
+            url = self.get_url_base()+f'exchanges/{exchange}'
+
+            self.assertEqual(cg.get_exchange(exchange), self.get(url))
+
+    # /exchanges/{id}
+    def test_get_exchange_erro(self):
+        """
+        Erro
+        """
+
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_exchange(2)
+
+    # /exchanges/{id}/tickers
+    # /exchanges/{id}/tickers/status_updates
+    # /exchanges/{id}/tickers/volume_chart
 
     # EXCHANGES # --------------------------------------------------------------
 
