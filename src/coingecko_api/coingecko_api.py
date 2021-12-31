@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/31 13:18:15.152070
+#+ Editado:	2021/12/31 14:23:19.193523
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -927,9 +927,29 @@ class CoinGecko:
         return self.get(url)
 
     # /exchanges/{id}/tickers/status_updates
-    def get_exchange_tickers_status_updates(self):
-        # xFCR
-        pass
+    def get_exchange_tickers_status_updates(self, exchange_id: str, xpax: Optional[int] = 0, pax: Optional[int] = 0):
+        """
+        Devolve actualizacións de estado dun exchange concreto.
+
+        @entrada:
+            exchange_id -   Requirido   -   Catex
+            └ Identificador de exchange.
+            xpax        -   Opcional    -   Enteiro
+            └ Indica a cantidade de elementos a mostrar por páxina.
+            pax         -   Opcional    -   Enteiro
+            └ Indica a páxina de elementos a mostrar.
+
+        @saída:
+            Dicionario  -   Sempre
+            └ Dun só elemento ("status_updates") cunha lista de dicionarios.
+        """
+
+        # checkeo de tipos
+        if not lazy_check_types([exchange_id, xpax, pax], [str, int, int]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        url = self.get_url_base()+f'exchanges/{exchange_id}/status_updates?per_page={xpax}&page={pax}'
+        return self.get(url)
 
     # /exchanges/{id}/tickers/volume_chart
     def get_exchange_tickers_volume_chart(self):

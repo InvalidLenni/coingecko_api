@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/31 13:09:57.232625
+#+ Editado:	2021/12/31 14:30:27.927997
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -567,6 +567,34 @@ class TestCoinGecko_API(unittest.TestCase):
         self.assertEqual(r1, self.get(url))
 
     # /exchanges/{id}/tickers/status_updates
+    def test_get_exchange_tickers_status_updates_erros(self):
+        """
+        Erros.
+        """
+
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_exchange_tickers_status_updates(exchange_id= 0)
+
+    # /exchanges/{id}/tickers/status_updates
+    def test_get_exchange_tickers_status_updates(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = self.get_url_base()+'exchanges/binance/status_updates'
+        self.assertEqual(cg.get_exchange_tickers_status_updates('binance'), self.get(url))
+
+        url = self.get_url_base()+'exchanges/binance/status_updates?per_page=0&page=0'
+        self.assertEqual(cg.get_exchange_tickers_status_updates('binance'), self.get(url))
+
+        url = self.get_url_base()+'exchanges/binance/status_updates?per_page=1&page=4'
+        self.assertEqual(cg.get_exchange_tickers_status_updates('binance', xpax=1, pax=4), self.get(url))
+
+
     # /exchanges/{id}/tickers/volume_chart
 
     # EXCHANGES # --------------------------------------------------------------
