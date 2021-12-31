@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/31 15:04:30.362297
+#+ Editado:	2021/12/31 17:54:10.529791
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -798,10 +798,10 @@ class CoinGecko:
 
         # se mete un número de elementos por páxina non soportado reponse no límite
         # se mete 0 ponse o máximo
-        if pax<1:
-            pax = 1
-        elif pax>250 or pax==0:
-            pax = 250
+        if xpax<1:
+            xpax = 1
+        elif xpax>250 or xpax==0:
+            xpax = 250
 
         # se mete cero ponher a primeira páxina
         if pax == 0:
@@ -979,9 +979,28 @@ class CoinGecko:
     # FINANCE ------------------------------------------------------------------
 
     # /finance_platforms
-    def get_finance_platforms(self):
-        # xFCR
-        pass
+    def get_finance_platforms(self, xpax: Optional[int] = 0, pax: Optional[int] = 0) -> List[dict]:
+        """
+        Lista todas as plataformas de finanzas.
+
+        @entradas:
+            xpax    -   Opcional    -   Enteiro
+            └ Cantidade de resultados a mostrar por páxina.
+            pax     -   Opcional    -   Enteiro
+            └ Páxina de resultados a mostrar.
+
+        @saídas:
+            Lista de dicionarios    -   Sempre
+            └ Con datos sobre cada plataforma.
+        """
+
+        # checkeo de tipos
+        if not lazy_check_types([xpax, pax], [int, int]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        url = self.get_url_base()+f'finance_platforms?per_page={xpax}&page={pax}'
+        return self.get(url)
+
 
     # /finance_products
     def get_finance_products(self):

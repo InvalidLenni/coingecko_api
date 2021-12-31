@@ -3,11 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-<<<<<<< HEAD
-#+ Editado:	2021/12/31 15:04:42.817994
-=======
-#+ Editado:	2021/12/31 14:36:50.517423
->>>>>>> 3d7aa425670f1aabf1ea0b6155c8f287c0d92c48
+#+ Editado:	2021/12/31 18:04:40.326141
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -351,6 +347,8 @@ class TestCoinGecko_API(unittest.TestCase):
     # /coins/{id}/ohlc
     def test_get_coin_ohlc(self):
         """
+        Uso normal.
+        Faltarían casos.
         """
 
         cg = CoinGecko()
@@ -624,6 +622,34 @@ class TestCoinGecko_API(unittest.TestCase):
     # EXCHANGES # --------------------------------------------------------------
 
     # FINANCE ------------------------------------------------------------------
+    # /finance_platforms
+    def test_get_finance_platforms_erros(self):
+        """
+        Erros.
+        """
+
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_finance_platforms('binance')
+
+    # /finance_platforms
+    def test_get_finance_platforms(self):
+        """
+        Erros.
+        """
+
+        cg = CoinGecko()
+
+        url0 = self.get_url_base()+'finance_platforms'
+        url = self.get_url_base()+'finance_platforms?per_page=0&page=0'
+        self.assertEqual(cg.get_finance_platforms(), self.get(url0), self.get(url))
+
+        url = self.get_url_base()+'finance_platforms?per_page=2&page=3'
+        self.assertEqual(cg.get_finance_platforms(xpax=2, pax=3), self.get(url))
+
+    # /finance_products
+    # /finance_products
     # FINANCE # ----------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
