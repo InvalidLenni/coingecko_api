@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/31 21:11:18.761166
+#+ Editado:	2021/12/31 21:16:41.387306
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -726,8 +726,20 @@ class TestCoinGecko_API(unittest.TestCase):
         self.assertEqual(cg.get_index('binance', 'DFN'), self.get(url))
 
     # /indexes/list
+    def test_get_indexes_list(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = self.get_url_base()+'indexes/list'
+        self.assertEqual(cg.get_indexes_list(), self.get(url))
 
     # INDEXES # ----------------------------------------------------------------
+
+    # DERIVATIVES --------------------------------------------------------------
+    # DERIVATIVES # ------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
 

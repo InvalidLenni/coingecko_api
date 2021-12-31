@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/31 21:11:21.252201
+#+ Editado:	2021/12/31 21:16:06.916724
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1066,7 +1066,7 @@ class CoinGecko:
         return self.get(url)
 
     # /indexes/{market_id}/{id}
-    def get_index(self, exchange_id: str, indice_id: str):
+    def get_index(self, exchange_id: str, indice_id: str) -> dict:
         """
         Devolve o índice de mercado dado o id de mercado/exchange e de índice.
 
@@ -1090,9 +1090,20 @@ class CoinGecko:
         return self.get(url)
 
     # /indexes/list
-    def get_indexes_list(self):
-        # xFCR
-        pass
+    def get_indexes_list(self) -> List[dict]:
+        """
+        Lista o id e nome dos índices de mercado.
+
+        @entradas:
+            Ningunha
+
+        @saídas:
+            Lista de dicionarios    -   Sempre
+            └ Co id e o nome
+        """
+
+
+        return self.get(self.get_url_base()+'indexes/list')
 
     # INDEXES # ----------------------------------------------------------------
 
