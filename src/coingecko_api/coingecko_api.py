@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/31 14:23:19.193523
+#+ Editado:	2021/12/31 15:04:30.362297
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -952,9 +952,27 @@ class CoinGecko:
         return self.get(url)
 
     # /exchanges/{id}/tickers/volume_chart
-    def get_exchange_tickers_volume_chart(self):
-        # xFCR
-        pass
+    def get_exchange_tickers_volume_chart(self, exchange_id: str, dias: Optional[int] = 1):
+        """
+        Devolve os datos do gráfico de volume para un exchange especificado.
+
+        @entradas:
+            exchange_id -   Requirido   -   Catex
+            └ Identificador de exchange.
+            dias        -   Opcional    -   Enteiro
+            └ Número de días previos dos que obter datos.
+
+        @saídas:
+            Lista de Listas -   Sempre
+            └ Cada lista interna tendo dous elementos, o timestamp e o valor do volume.
+        """
+
+        # checkeo de tipos
+        if not lazy_check_types([exchange_id, dias], [str, int]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        url = self.get_url_base()+f'exchanges/{exchange_id}/volume_chart?days={dias}'
+        return self.get(url)
 
     # EXCHANGES # --------------------------------------------------------------
 
