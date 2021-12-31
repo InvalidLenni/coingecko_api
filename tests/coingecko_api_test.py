@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/30 11:48:35.806089
+#+ Editado:	2021/12/31 13:09:57.232625
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -516,6 +516,56 @@ class TestCoinGecko_API(unittest.TestCase):
             cg.get_exchange(2)
 
     # /exchanges/{id}/tickers
+    def test_get_exchange_tickers_erros(self):
+        """
+        Erros
+        """
+
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_exchange_tickers(1)
+
+        with self.assertRaises(ErroTipado):
+            cg.get_exchange_tickers('binance', 'bnb', True, 0, False, '')
+
+    # /exchanges/{id}/tickers
+    def test_get_exchange_tickers(self):
+        """
+        Uso normal
+        """
+
+        cg = CoinGecko()
+
+        # caso base
+        url = self.get_url_base()+'exchanges/binance/tickers?&order=trust_score_desc'
+        self.assertEqual(cg.get_exchange_tickers('binance'), self.get(url))
+
+        # caso 1
+        url = self.get_url_base()+'exchanges/binance/tickers?coin_ids=monero&order=trust_score_desc'
+        self.assertEqual(cg.get_exchange_tickers('binance', 'monero'), self.get(url))
+
+        # caso 1 complexo
+        url = self.get_url_base()+'exchanges/binance/tickers?coin_ids=monero,bitcoin,ethereum&order=trust_score_desc'
+        self.assertEqual(cg.get_exchange_tickers('binance', ['mon   ero', 'bitcoin', 'ethereum']), self.get(url))
+
+        # caso 2
+        url = self.get_url_base()+'exchanges/binance/tickers?coin_ids=monero&include_exchange_logo=true&order=trust_score_desc'
+        r1 = cg.get_exchange_tickers(exchange_id='binance', id_moeda='monero', exchange_logo=True)
+        self.assertEqual(r1, self.get(url))
+
+        # caso 3
+        url = self.get_url_base()+'exchanges/binance/tickers?coin_ids=monero&include_exchange_logo=true'\
+                '&page=2&depth=cost_to_move_up_usd&order=trust_score_desc'
+        r1 = cg.get_exchange_tickers(exchange_id='binance', id_moeda='monero', exchange_logo=True, pax=2, depth='cost_to_move_up_usd')
+        self.assertEqual(r1, self.get(url))
+
+        # caso no que se metan depth e orde que non estén contemplados
+        url = self.get_url_base()+'exchanges/binance/tickers?coin_ids=monero&include_exchange_logo=true'\
+                '&page=2'
+        r1 = cg.get_exchange_tickers(exchange_id='binance', id_moeda='monero', exchange_logo=True, pax=2, depth='algo', orde='algo')
+        self.assertEqual(r1, self.get(url))
+
     # /exchanges/{id}/tickers/status_updates
     # /exchanges/{id}/tickers/volume_chart
 

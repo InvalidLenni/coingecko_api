@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/30 11:49:58.006902
+#+ Editado:	2021/12/31 13:18:15.152070
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -845,9 +845,86 @@ class CoinGecko:
         return self.get(self.get_url_base()+f'exchanges/{exchange_id}')
 
     # /exchanges/{id}/tickers
-    def get_exchange_tickers(self):
-        # xFCR
-        pass
+    def get_exchange_tickers(self, exchange_id: str, id_moeda: Optional[Union[str, List[str]]] = '',
+            exchange_logo: Optional[bool] = False, pax: Optional[int] = 0, depth: Optional[str] = '',
+            orde: Optional[Union[str, List[str]]] = 'trust_score_desc') -> dict:
+        """
+        Devolve os exchange tickers para o exchange marcado sobre as moedas pasadas de forma paxinada.
+            "is_stale" = True -> cando o ticker non se modificou/actualizou nun tempo.
+            "is_anomaly" = True -> cando o sistema de CoinGecko o marca como anomalía.
+
+        @entrada:
+            exchange_id     -   Requirido   -   Catex
+            └ Identificador de exchange.
+            id_moeda        -   Opcional    -   Catex, Lista de catex
+            └ Identificador/es da/s moeda/s.
+            exchange_logo   -   Opcional    -   Booleano
+            └ Flag para mostrar se se quere devolver o logo do exchange.
+            pax             -   Opcional    -   Enteiro
+            └ Indica que páxina dos resultados mostrar.
+            depth           -   Opcional    -   Catex
+            └ Indica a mostra dun 2% da profundidade do orderbook.
+                valores válidos: cost_to_move_up_usd, cost_to_move_down_usd
+            orde            -   Opcional    -   Catex
+            └ Indica a orde, valores válidos:
+                trust_score_desc, trust_score_asc, volume_desc
+
+        @saída:
+            Dicionario  -   Sempre
+            └ Co nome do exchange e unha lista de dicionarios de tickers.
+        """
+
+        # checkeo de tipos
+        if not lazy_check_types([exchange_id, id_moeda, exchange_logo, pax, depth, orde],
+                [str, str, bool, int, str, str]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        # variables cos valores válidos posibles
+        vv_depth = [
+                'cost_to_move_up_usd',
+                'cost_to_move_down_usd'
+                ]
+        vv_orde = [
+                'trust_score_desc',
+                'trust_score_asc',
+                'volume_desc'
+                ]
+
+        url_id_moeda = ''
+        # se mete id_moeda
+        if id_moeda:
+            if type(id_moeda) == str:
+                id_moeda = [id_moeda]
+            url_id_moeda = 'coin_ids='+','.join(id_moeda)
+
+        url_depth = ''
+        # se mete depth
+        if depth:
+            # ten que ser un dos valores válidos
+            if depth in vv_depth:
+                url_depth = f'&depth={depth}'
+
+        url_orde = ''
+        if type(orde) == str:
+            # ten que ser un dos valores válidos
+            if orde in vv_orde:
+                url_orde = f'&order={orde}'
+        elif type(orde) == list:
+            correcto = True
+            for ele in orde:
+                # se algún elemento non está dentro do permitido
+                # non se modificará a url
+                if ele not in vv_orde:
+                    correcto = False
+            if correcto:
+                url_orde = '&order='+','.join(orde)
+
+
+        url = self.get_url_base()+f'exchanges/{exchange_id}/tickers?'+url_id_moeda+\
+                f'&include_exchange_logo={str(exchange_logo).lower()}&page={pax}'+\
+                url_depth+url_orde
+
+        return self.get(url)
 
     # /exchanges/{id}/tickers/status_updates
     def get_exchange_tickers_status_updates(self):
