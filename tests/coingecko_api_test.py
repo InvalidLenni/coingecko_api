@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/31 20:34:11.868807
+#+ Editado:	2021/12/31 21:11:18.761166
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -23,7 +23,6 @@ class TestCoinGecko_API(unittest.TestCase):
     def get_url_base():
         return 'https://api.coingecko.com/api/v3/'
 
-    '''
     # Getters ------------------------------------------------------------------
     def test_get_url_base(self):
         url_base = 'https://api.coingecko.com/api/v3/'
@@ -679,7 +678,6 @@ class TestCoinGecko_API(unittest.TestCase):
 
     # INDEXES ------------------------------------------------------------------
 
-    '''
     # /indexes
     def test_get_indexes_erros(self):
         """
@@ -706,6 +704,26 @@ class TestCoinGecko_API(unittest.TestCase):
         self.assertEqual(cg.get_indexes(xpax=2, pax=3), self.get(url))
 
     # /indexes/{market_id}/{id}
+    def test_get_index_erro(self):
+        """
+        Erros.
+        """
+
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_index(2, 1)
+
+    # /indexes/{market_id}/{id}
+    def test_get_index(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = self.get_url_base()+'indexes/binance/DFN'
+        self.assertEqual(cg.get_index('binance', 'DFN'), self.get(url))
 
     # /indexes/list
 

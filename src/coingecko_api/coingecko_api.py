@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/31 20:34:29.137043
+#+ Editado:	2021/12/31 21:11:21.252201
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1066,9 +1066,28 @@ class CoinGecko:
         return self.get(url)
 
     # /indexes/{market_id}/{id}
-    def get_index(self):
-        # xFCR
-        pass
+    def get_index(self, exchange_id: str, indice_id: str):
+        """
+        Devolve o índice de mercado dado o id de mercado/exchange e de índice.
+
+        @entradas:
+            exchange_id -   Requirido   -   Catex
+            └ Identificador do exchange/mercado.
+            indice_id   -   Requirido   -   Catex
+            └ Identificador do índice.
+
+        @saídas:
+            Diccionario -   Sempre
+            └ xFCR non estou seguro de con que porque non o conseguir facer funcionar.
+        """
+
+       # checkeo de tipos
+        if not lazy_check_types([exchange_id, indice_id], [str, str]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        url = self.get_url_base()+f'indexes/{exchange_id}/{indice_id}'
+
+        return self.get(url)
 
     # /indexes/list
     def get_indexes_list(self):
