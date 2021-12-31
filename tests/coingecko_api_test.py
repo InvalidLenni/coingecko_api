@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/31 18:04:40.326141
+#+ Editado:	2021/12/31 18:29:06.014859
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -21,7 +21,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
     @staticmethod
     def get_url_base():
-        return 'http://api.coingecko.com/api/v3/'
+        return 'https://api.coingecko.com/api/v3/'
 
     # Getters ------------------------------------------------------------------
     def test_get_url_base(self):
@@ -636,7 +636,7 @@ class TestCoinGecko_API(unittest.TestCase):
     # /finance_platforms
     def test_get_finance_platforms(self):
         """
-        Erros.
+        Uso normal.
         """
 
         cg = CoinGecko()
@@ -649,8 +649,35 @@ class TestCoinGecko_API(unittest.TestCase):
         self.assertEqual(cg.get_finance_platforms(xpax=2, pax=3), self.get(url))
 
     # /finance_products
+    def test_get_finance_products_erros(self):
+        """
+        Erros.
+        """
+
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_finance_products('binance')
+
     # /finance_products
+    def test_get_finance_products(self):
+        """
+        Erros.
+        """
+
+        cg = CoinGecko()
+
+        #url0 = self.get_url_base()+'finance_products'
+        url = self.get_url_base()+'finance_products?per_page=100&page=0'
+        self.assertEqual(cg.get_finance_products(), self.get(url))
+
+        url = self.get_url_base()+'finance_products?per_page=2&page=3'
+        self.assertEqual(cg.get_finance_products(xpax=2, pax=3), self.get(url))
+
     # FINANCE # ----------------------------------------------------------------
+
+    # INDEXES ------------------------------------------------------------------
+    # INDEXES # ----------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
 

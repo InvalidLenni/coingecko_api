@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/31 17:54:10.529791
+#+ Editado:	2021/12/31 18:28:02.077489
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1001,11 +1001,41 @@ class CoinGecko:
         url = self.get_url_base()+f'finance_platforms?per_page={xpax}&page={pax}'
         return self.get(url)
 
-
     # /finance_products
-    def get_finance_products(self):
+    def get_finance_products(self, xpax: Optional[int] = 100, pax: Optional[int] = 0,
+            dende: Optional[int] = 0, ate: Optional[int] = 0):
+        """
+        Lista todos os produtos financeiros.
+
+        @entradas:
+            xpax    -   Opcional    -   Enteiro
+            └ Cantidade de resultados a mostrar por páxina.
+            pax     -   Opcional    -   Enteiro
+            └ Páxina de resultados a mostrar.
+            dende   -   Opcional    -   Enteiro
+            └ Data de inicio dos resultados devoltos.
+            ate     -   Opcional    -   Enteiro
+            └ Data de fin dos resultados devoltos.
+
+        @saídas:
+            Lista de dicionarios    -   Sempre
+            └ Cos datos sobre cada produto financieiro.
+        """
+
+        # checkeo de tipos
+        if not lazy_check_types([xpax, pax, dende, ate], [int, int, int, int]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        # se ate é 0 ponse o momento actual
+        if not ate:
+            ate = time.time()
+
         # xFCR
-        pass
+        # A API parece non responder ós parametros start_at e end_at así que queda aqui comentado
+        #url = self.get_url_base()+f'finance_products?per_page={xpax}&page={pax}&from={dende}&to={ate}'
+        url = self.get_url_base()+f'finance_products?per_page={xpax}&page={pax}'
+
+        return self.get(url)
 
     # FINANCE # ----------------------------------------------------------------
 
