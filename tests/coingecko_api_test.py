@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/31 18:29:06.014859
+#+ Editado:	2021/12/31 20:34:11.868807
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -23,6 +23,7 @@ class TestCoinGecko_API(unittest.TestCase):
     def get_url_base():
         return 'https://api.coingecko.com/api/v3/'
 
+    '''
     # Getters ------------------------------------------------------------------
     def test_get_url_base(self):
         url_base = 'https://api.coingecko.com/api/v3/'
@@ -662,7 +663,7 @@ class TestCoinGecko_API(unittest.TestCase):
     # /finance_products
     def test_get_finance_products(self):
         """
-        Erros.
+        Uso normal.
         """
 
         cg = CoinGecko()
@@ -677,6 +678,37 @@ class TestCoinGecko_API(unittest.TestCase):
     # FINANCE # ----------------------------------------------------------------
 
     # INDEXES ------------------------------------------------------------------
+
+    '''
+    # /indexes
+    def test_get_indexes_erros(self):
+        """
+        Erros.
+        """
+
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_indexes('binance')
+
+    # /indexes
+    def test_get_indexes(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = self.get_url_base()+'indexes?per_page=0&page=0'
+        self.assertEqual(cg.get_indexes(), self.get(url))
+
+        url = self.get_url_base()+'indexes?per_page=2&page=3'
+        self.assertEqual(cg.get_indexes(xpax=2, pax=3), self.get(url))
+
+    # /indexes/{market_id}/{id}
+
+    # /indexes/list
+
     # INDEXES # ----------------------------------------------------------------
 
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/31 18:28:02.077489
+#+ Editado:	2021/12/31 20:34:29.137043
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1042,9 +1042,28 @@ class CoinGecko:
     # INDEXES ------------------------------------------------------------------
 
     # /indexes
-    def get_indexes(self):
-        # xFCR
-        pass
+    def get_indexes(self, xpax: Optional[int] = 0, pax: Optional[int] = 0) -> List[dict]:
+        """
+        Lista de tódolos índices de mercado.
+
+        @entradas:
+            xpax    -   Opcional    -   Enteiro
+            └ Cantidade de resultados a mostrar por páxina.
+            pax     -   Opcional    -   Enteiro
+            └ Páxina de resultados a mostrar.
+
+        @saídas:
+            Lista de dicionarios    -   Sempre
+            └ Coa información de cada índice de mercado.
+        """
+
+        # checkeo de tipos
+        if not lazy_check_types([xpax, pax], [int, int]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        url = self.get_url_base()+f'indexes?per_page={xpax}&page={pax}'
+
+        return self.get(url)
 
     # /indexes/{market_id}/{id}
     def get_index(self):
