@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/31 14:30:27.927997
+#+ Editado:	2021/12/31 14:36:50.517423
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -75,10 +75,10 @@ class TestCoinGecko_API(unittest.TestCase):
             else:
                 vs_curren2 = vs_curren
 
-            url = f'https://api.coingecko.com/api/v3/simple/price?ids={iden2}&vs_currencies={vs_curren2}&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false'
+            url = self.get_url_base()+f'simple/price?ids={iden2}&vs_currencies={vs_curren2}&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false'
             self.assertEqual(cg.get_price(iden, vs_curren), self.get(url))
 
-            url = f'https://api.coingecko.com/api/v3/simple/price?ids={iden2}&vs_currencies={vs_curren2}&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true'
+            url = self.get_url_base()+f'simple/price?ids={iden2}&vs_currencies={vs_curren2}&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true'
             self.assertEqual(cg.get_price(iden, vs_curren, True, True, True, True), self.get(url))
 
     # /simple/token_price/{id}
@@ -117,13 +117,13 @@ class TestCoinGecko_API(unittest.TestCase):
             else:
                 divisa2 = divisa
 
-            url = f'https://api.coingecko.com/api/v3/simple/token_price/{moeda}?contract_addresses={token2}'\
+            url = self.get_url_base()+f'simple/token_price/{moeda}?contract_addresses={token2}'\
                     f'&vs_currencies={divisa2}&include_market_cap=false&include_24hr_vol=false&'\
                     f'include_24hr_change=false&include_last_updated_at=false'
 
             self.assertEqual(cg.get_token_price(moeda, token, divisa), self.get(url))
 
-            url = f'https://api.coingecko.com/api/v3/simple/token_price/{moeda}?contract_addresses={token2}'\
+            url = self.get_url_base()+f'simple/token_price/{moeda}?contract_addresses={token2}'\
                     f'&vs_currencies={divisa2}&include_market_cap=true&include_24hr_vol=true&'\
                     f'include_24hr_change=true&include_last_updated_at=true'
 
@@ -137,7 +137,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'simple/supported_vs_currencies'
+        url = self.get_url_base()+'simple/supported_vs_currencies'
 
         self.assertEqual(cg.get_supported_vs_currencies(), self.get(url))
 
@@ -153,7 +153,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'coins/list'
+        url = self.get_url_base()+'coins/list'
 
         self.assertEqual(cg.get_coins_list(), self.get(url))
 
@@ -194,7 +194,7 @@ class TestCoinGecko_API(unittest.TestCase):
                 moeda = [moeda]
 
             if categoria:
-                url = cg.get_url_base()+f'coins/markets?vs_currency={moeda_vs}'\
+                url = self.get_url_base()+f'coins/markets?vs_currency={moeda_vs}'\
                     f'&category={categoria}&order={orde}&per_page={xpax}'\
                     f'&page={pax}&sparkline={str(sparkline).lower()}&price_change_percentage='+','.join(pcp)
 
@@ -203,7 +203,7 @@ class TestCoinGecko_API(unittest.TestCase):
                 resultado = cg.get_coins_markets(moeda_vs, categoria=categoria, orde=orde,
                                 xpax=xpax, pax=pax, sparkline=sparkline, cambio_prezo_porcentaxe=pcp)
             elif moeda:
-                url = cg.get_url_base()+f'coins/markets?vs_currency={moeda_vs}'\
+                url = self.get_url_base()+f'coins/markets?vs_currency={moeda_vs}'\
                     +'&ids='+','.join(moeda)+f'&order={orde}&per_page={xpax}'\
                     f'&page={pax}&sparkline={str(sparkline).lower()}&price_change_percentage='+','.join(pcp)
 
@@ -263,10 +263,10 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'coins/bitcoin/tickers?include_exchange_logo=false&page=0&order=trust_score_asc&depth=false'
+        url = self.get_url_base()+'coins/bitcoin/tickers?include_exchange_logo=false&page=0&order=trust_score_asc&depth=false'
         self.assertEqual(cg.get_coin_tickers('bitcoin'), self.get(url))
 
-        url = cg.get_url_base()+'coins/bitcoin/tickers?exchange_ids=aax,gdax&include_exchange_logo=true&page=0&order=trust_score_asc&depth=false'
+        url = self.get_url_base()+'coins/bitcoin/tickers?exchange_ids=aax,gdax&include_exchange_logo=true&page=0&order=trust_score_asc&depth=false'
         self.assertEqual(cg.get_coin_tickers(id_moeda='bitcoin', ids_exchanges=['aax', 'gdax'], logo_exchange=True), self.get(url))
 
     # /coins/{id}/history
@@ -298,7 +298,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'coins/bitcoin/history?date=29-2-2020&localization=false'
+        url = self.get_url_base()+'coins/bitcoin/history?date=29-2-2020&localization=false'
 
         self.assertEqual(cg.get_coin_history('bitcoin', 2020, 2, 29), self.get(url))
 
@@ -312,7 +312,7 @@ class TestCoinGecko_API(unittest.TestCase):
         cg = CoinGecko()
 
 
-        url = cg.get_url_base()+'coins/bitcoin/market_chart?vs_currency=eur&days=2&interval=daily'
+        url = self.get_url_base()+'coins/bitcoin/market_chart?vs_currency=eur&days=2&interval=daily'
 
         self.assertEqual(cg.get_coin_market_chart('bitcoin', 'eur', 2), self.get(url))
 
@@ -325,12 +325,10 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'coins/bitcoin/market_chart/range?vs_currency=eur&from=1392577232'
-
+        url = self.get_url_base()+'coins/bitcoin/market_chart/range?vs_currency=eur&from=1392577232'
         self.assertEqual(cg.get_coin_market_chart_range('bitcoin', 'eur', 1392577232), self.get(url+f'&to={time.time()}'))
 
-        url = cg.get_url_base()+'coins/bitcoin/market_chart/range?vs_currency=eur&from=1392577232&to=1422577232'
-
+        url = self.get_url_base()+'coins/bitcoin/market_chart/range?vs_currency=eur&from=1392577232&to=1422577232'
         self.assertEqual(cg.get_coin_market_chart_range('bitcoin', 'eur', 1392577232, 1422577232), self.get(url))
 
     # /coins/{id}/status_updates
@@ -340,7 +338,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'coins/bitcoin/status_updates'
+        url = self.get_url_base()+'coins/bitcoin/status_updates'
         self.assertEqual(cg.get_coin_status_updates('bitcoin'), self.get(url))
 
         url += '?per_page=1&page=2'
@@ -353,7 +351,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'coins/bitcoin/ohlc?vs_currency=eur&days='
+        url = self.get_url_base()+'coins/bitcoin/ohlc?vs_currency=eur&days='
 
         self.assertEqual(cg.get_coin_ohlc('bitcoin', 'eur', 1), self.get(url+'1'))
         self.assertEqual(cg.get_coin_ohlc('bitcoin', 'eur', 0), self.get(url+'max'))
@@ -371,7 +369,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'coins/ethereum/contract/0xdac17f958d2ee523a2206206994597c13d831ec7'
+        url = self.get_url_base()+'coins/ethereum/contract/0xdac17f958d2ee523a2206206994597c13d831ec7'
         self.assertEqual(cg.get_contract('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7'), self.get(url))
 
     # /coins/{id}/contract/{contract_address}/market_chart
@@ -383,7 +381,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'coins/ethereum/contract/0xdac17f958d2ee523a2206206994597c13d831ec7/?vs_currency=eur&days='
+        url = self.get_url_base()+'coins/ethereum/contract/0xdac17f958d2ee523a2206206994597c13d831ec7/?vs_currency=eur&days='
 
         self.assertEqual(cg.get_contract_market_chart('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur'),
                 self.get(url+'0'))
@@ -401,7 +399,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'coins/ethereum/contract/0xdac17f958d2ee523a2206206994597c13d831ec7/market_chart/range'\
+        url = self.get_url_base()+'coins/ethereum/contract/0xdac17f958d2ee523a2206206994597c13d831ec7/market_chart/range'\
                 '?vs_currency=eur&from=1392577232&to='
 
         r1 = cg.get_contract_market_chart_range('ethereum', '0xdac17f958d2ee523a2206206994597c13d831ec7', 'eur', 1392577232, 1422577232)
@@ -425,7 +423,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'asset_platforms'
+        url = self.get_url_base()+'asset_platforms'
 
         self.assertEqual(cg.get_asset_platforms(), self.get(url))
 
@@ -442,7 +440,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'coins/categories/list'
+        url = self.get_url_base()+'coins/categories/list'
 
         self.assertEqual(cg.get_coins_categories_list(), self.get(url))
 
@@ -455,7 +453,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'coins/categories'
+        url = self.get_url_base()+'coins/categories'
 
         self.assertEqual(cg.get_coins_categories(), self.get(url))
 
@@ -472,7 +470,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'exchanges/?per_page=250&page=1'
+        url = self.get_url_base()+'exchanges/?per_page=250&page=1'
 
         self.assertEqual(cg.get_exchanges(250, 1), self.get(url))
 
@@ -485,7 +483,7 @@ class TestCoinGecko_API(unittest.TestCase):
 
         cg = CoinGecko()
 
-        url = cg.get_url_base()+'exchanges/list'
+        url = self.get_url_base()+'exchanges/list'
 
         self.assertEqual(cg.get_exchanges_list(), self.get(url))
 
