@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2022/01/01 15:57:44.777307
+#+ Editado:	2022/01/01 17:23:38.069656
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1236,9 +1236,54 @@ class CoinGecko:
     # STATUS_UPDATES -----------------------------------------------------------
 
     # /status_updates
-    def get_status_updates(self):
-        # xFCR
-        pass
+    def get_status_updates(self, categoria: Optional[str] = '', tipo_prox: Optional[str] = '',
+            xpax: Optional[int] = 0, pax: Optional[int] = 0):
+        """
+        Lista todos as actualizacións de estado con datos (descrición, categoría,
+        data de creación, usuario, título de usuario, e pin)
+
+        @entradas:
+            categoria   -   Opcional    -   Catex
+            └ Na que se queren obter os datos.
+                valores válidos:
+                    "general", "milestone", "partnership",
+                    "exchange_listing", "software_release",
+                    "fund_movement", "new_listings", "event".
+            tipo_prox   -   Opcional    -   Catex
+            └ Filto sobre o tipo de proxecto.
+                valores válidos: "coin", "market".
+            xpax        -   Opcional    -   Enteiro
+            └ Cantidade de resultados a mostrar por páxina.
+            pax         -   Opcional    -   Enteiro
+            └ Páxina de resultados a mostrar.
+
+        @saídas:
+            Dicionario  -   Sempre
+            └ Cunha lista de dicionarios de "status_updates"
+        """
+
+        # checkeo de tipos
+        if not lazy_check_types([categoria, tipo_prox, xpax, pax], [str, str, int, int]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        vv_categoria = [
+                'general', 'milestone', 'partnership', 'exchange_listing',
+                'software_release', 'fund_movement', 'new_listings', 'event'
+                ]
+        vv_tipo_prox = ['coin', 'market']
+
+        url_categoria = ''
+        if categoria in vv_categoria:
+            url_categoria = f'category={categoria}'
+
+        url_tipo_prox = ''
+        if tipo_prox in vv_tipo_prox:
+            url_tipo_prox = f'&project_type={tipo_prox}'
+
+
+        url = self.get_url_base()+'status_updates?'+url_categoria+url_tipo_prox+f'&per_page={xpax}&page={pax}'
+
+        return self.get(url)
 
     # STATUS_UPDATES # ---------------------------------------------------------
 

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2022/01/01 15:57:38.547111
+#+ Editado:	2022/01/01 17:23:30.769998
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -23,6 +23,7 @@ class TestCoinGecko_API(unittest.TestCase):
     def get_url_base():
         return 'https://api.coingecko.com/api/v3/'
 
+    '''
     # Getters ------------------------------------------------------------------
     def test_get_url_base(self):
         url_base = 'https://api.coingecko.com/api/v3/'
@@ -830,6 +831,33 @@ class TestCoinGecko_API(unittest.TestCase):
     # DERIVATIVES # ------------------------------------------------------------
 
     # STATUS_UPDATES -----------------------------------------------------------
+
+    # /status_updates
+    def test_get_status_updates_erro(self):
+        """
+        Erro
+        """
+
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_status_updates(categoria=0)
+
+    '''
+    # /status_updates
+    def test_get_status_updates(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = self.get_url_base()+'status_updates'
+        self.assertEqual(cg.get_status_updates(), self.get(url))
+
+        url = self.get_url_base()+'status_updates?category=milestone&project_type=coin&per_page=2&page=5'
+        self.assertEqual(cg.get_status_updates('milestone', 'coin', 2, 5), self.get(url))
+
     # STATUS_UPDATES # ---------------------------------------------------------
 
 # ------------------------------------------------------------------------------
