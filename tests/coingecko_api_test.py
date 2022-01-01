@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2021/12/31 21:16:41.387306
+#+ Editado:	2022/01/01 14:04:12.696997
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -23,6 +23,7 @@ class TestCoinGecko_API(unittest.TestCase):
     def get_url_base():
         return 'https://api.coingecko.com/api/v3/'
 
+    '''
     # Getters ------------------------------------------------------------------
     def test_get_url_base(self):
         url_base = 'https://api.coingecko.com/api/v3/'
@@ -739,6 +740,35 @@ class TestCoinGecko_API(unittest.TestCase):
     # INDEXES # ----------------------------------------------------------------
 
     # DERIVATIVES --------------------------------------------------------------
+
+    '''
+    # /derivatives
+    def test_get_derivatives_erro(self):
+        """
+        Erro
+        """
+
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_derivatives(0)
+
+    # /derivatives
+    def test_get_derivatives(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = self.get_url_base()+'derivatives'
+        self.assertEqual(cg.get_derivatives(), cg.get_derivatives(['all']), self.get(url))
+
+        url = self.get_url_base()+'derivatives?include_tickers=all'
+        self.assertEqual(cg.get_derivatives('all'), self.get(url))
+
+
+
     # DERIVATIVES # ------------------------------------------------------------
 
 # ------------------------------------------------------------------------------

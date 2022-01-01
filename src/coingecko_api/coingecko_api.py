@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2021/12/31 21:16:06.916724
+#+ Editado:	2022/01/01 14:03:56.784782
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1110,9 +1110,32 @@ class CoinGecko:
     # DERIVATIVES --------------------------------------------------------------
 
     # /derivatives
-    def get_derivatives(self):
-        # xFCR
-        pass
+    def get_derivatives(self, tickers: Optional[str] = 'unexpired'):
+        """
+        Lista todos os tickets derivativos.
+
+        @entradas:
+            tickets -   Opcional    -   Catex
+            └ Para elixir se mostrar todos ou só os que non expiraron.
+                valores válidos: "all", "unexpired"
+
+        @saídas:
+            Lista de dicionarios    -   Sempre
+            └ Coa información de cada ticket derivado.
+        """
+
+       # checkeo de tipos
+        if not lazy_check_types([tickers], [str]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        vv_tickers = ['unexpired', 'all']
+
+        if tickers not in vv_tickers:
+           tickers = 'unexpired'
+
+        url = self.get_url_base()+f'derivatives?include_tickers={tickers}'
+
+        return self.get(url)
 
     # /derivatives/exchanges
     def get_derivatives_exchanges(self):
