@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2022/01/01 14:03:56.784782
+#+ Editado:	2022/01/01 15:14:19.118492
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1110,7 +1110,7 @@ class CoinGecko:
     # DERIVATIVES --------------------------------------------------------------
 
     # /derivatives
-    def get_derivatives(self, tickers: Optional[str] = 'unexpired'):
+    def get_derivatives(self, tickers: Optional[str] = 'unexpired') -> List[dict]:
         """
         Lista todos os tickets derivativos.
 
@@ -1138,9 +1138,53 @@ class CoinGecko:
         return self.get(url)
 
     # /derivatives/exchanges
-    def get_derivatives_exchanges(self):
-        # xFCR
-        pass
+    def get_derivatives_exchanges(self, orde: Optional[Union[List[str], str]] = '',
+            xpax: Optional[int] = 0, pax: Optional[int] = 0) -> List[dict]:
+        """
+        Lista todos os exchanges derivativos.
+
+        @entradas:
+            orde    -   Opcional    -   Catex
+            └ Indicador de que orde se quere na exposición dos resultados.
+                valores válidos:
+                "name_asc", "name_desc", "open_interest_btc_asc", "open_interest_btc_desc",
+                "trade_volume_24h_btc_asc", "trade_volume_24h_btc_desc".
+            xpax    -   Opcional    -   Enteiro
+            └ Cantidade de resultados a mostrar por páxina.
+            pax     -   Opcional    -   Enteiro
+            └ Páxina de resultados a mostrar.
+
+        @saídas:
+            Lista de dicionarios    -   Sempre
+            └ Coa información sobre os exchanges derivativos.
+        """
+
+        # checkeo de tipos
+        if not lazy_check_types([orde, xpax, pax], [str, int, int]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        vv_orde = [
+                'name_asc', 'name_desc',
+                'open_interest_btc_asc', 'open_interest_btc_desc',
+                'trade_volume_24h_btc_asc', 'trade_volume_24h_btc_desc'
+                ]
+
+        url_orde = ''
+        if (type(orde) == str) and (orde in vv_orde):
+            url_orde = f'order={orde}'
+        elif type(orde) == list:
+            correcto = True
+            for ele in orde:
+                # se algún elemento non está dentro do permitido
+                # non se modificará a url
+                if ele in vv_orde:
+                    correcto = False
+            if correcto:
+                url_orde = 'order='+','.join(orde)
+
+        url = self.get_url_base()+'derivatives/exchanges?'+url_orde+f'&per_page={xpax}&page={pax}'
+
+        return self.get(url)
 
     # /derivatives/exchanges/{id}
     def get_derivatives_exchange(self):

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2022/01/01 14:04:12.696997
+#+ Editado:	2022/01/01 15:14:45.232829
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -23,7 +23,6 @@ class TestCoinGecko_API(unittest.TestCase):
     def get_url_base():
         return 'https://api.coingecko.com/api/v3/'
 
-    '''
     # Getters ------------------------------------------------------------------
     def test_get_url_base(self):
         url_base = 'https://api.coingecko.com/api/v3/'
@@ -741,7 +740,6 @@ class TestCoinGecko_API(unittest.TestCase):
 
     # DERIVATIVES --------------------------------------------------------------
 
-    '''
     # /derivatives
     def test_get_derivatives_erro(self):
         """
@@ -767,7 +765,30 @@ class TestCoinGecko_API(unittest.TestCase):
         url = self.get_url_base()+'derivatives?include_tickers=all'
         self.assertEqual(cg.get_derivatives('all'), self.get(url))
 
+    # /derivatives/exchanges
+    def test_get_derivatives_exchanges_erro(self):
+        """
+        Erro
+        """
 
+        cg = CoinGecko()
+
+        with self.assertRaises(ErroTipado):
+            cg.get_derivatives_exchanges(orde=0)
+
+    # /derivatives/exchanges
+    def test_get_derivatives_exchanges(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = self.get_url_base()+'derivatives/exchanges'
+        self.assertEqual(cg.get_derivatives_exchanges(), self.get(url))
+
+        url = self.get_url_base()+'derivatives/exchanges?order=name_asc,trade_volume_24h_btc_desc&per_page=5&page=3'
+        self.assertEqual(cg.get_derivatives_exchanges(['name_asc', 'trade_volume_24h_btc_desc'], 5, 3), self.get(url))
 
     # DERIVATIVES # ------------------------------------------------------------
 
