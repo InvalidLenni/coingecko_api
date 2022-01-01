@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2022/01/01 17:42:40.321888
+#+ Editado:	2022/01/01 17:53:04.863524
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1364,12 +1364,28 @@ class CoinGecko:
     # COMPANIES ----------------------------------------------------------------
 
     # /companies
-    def get_companies(self):
-        # xFCR
-        pass
+    def get_companies_public_treasury(self, coin_id: str):
+        """
+        Devolve dato xerais non individuais sobre o top 100 das moedas defi.
+
+        @entradas:
+            coin_id -   Requirido   -   Catex
+            └ Só pode ser bitcoin ou ethereum.
+
+        @saídas:
+            Dicionario  -   Sempre
+            └ Cos datos.
+        """
+
+        vv_coin_id = ['bitcoin', 'ethereum']
+
+        if coin_id not in vv_coin_id:
+            coin_id = 'bitcoin'
+
+        return self.get(self.get_url_base()+f'companies/public_treasury/{coin_id}')
 
     # COMPANIES # --------------------------------------------------------------
 
-    # --------------------------------------------------------------------------
+    # Operacións # -------------------------------------------------------------
 
 # ------------------------------------------------------------------------------

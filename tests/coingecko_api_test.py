@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2022/01/01 17:43:00.249076
+#+ Editado:	2022/01/01 17:53:07.912014
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -23,7 +23,6 @@ class TestCoinGecko_API(unittest.TestCase):
     def get_url_base():
         return 'https://api.coingecko.com/api/v3/'
 
-    '''
     # Getters ------------------------------------------------------------------
     def test_get_url_base(self):
         url_base = 'https://api.coingecko.com/api/v3/'
@@ -902,7 +901,6 @@ class TestCoinGecko_API(unittest.TestCase):
         url = self.get_url_base()+'global'
         self.assertEqual(cg.get_global(), self.get(url))
 
-    '''
     # /global/decentralized_finance_defi
     def test_get_global_defi(self):
         """
@@ -919,6 +917,18 @@ class TestCoinGecko_API(unittest.TestCase):
     # COMPANIES ----------------------------------------------------------------
 
     # /companies
+    def test_get_companies_public_treasury(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = self.get_url_base()+'companies/public_treasury/bitcoin'
+        self.assertEqual(cg.get_companies_public_treasury('bitcoin'), self.get(url))
+
+        url = self.get_url_base()+'companies/public_treasury/ethereum'
+        self.assertEqual(cg.get_companies_public_treasury('ethereum'), self.get(url))
 
     # COMPANIES # --------------------------------------------------------------
 
