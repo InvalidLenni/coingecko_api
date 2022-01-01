@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2022/01/01 17:35:55.900020
+#+ Editado:	2022/01/01 17:42:40.321888
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1331,13 +1331,33 @@ class CoinGecko:
 
     # /global
     def get_global(self):
-        # xFCR
-        pass
+        """
+        Devolve os datos globais das criptomoedas.
+
+        @entradas:
+            Ningunha.
+
+        @saídas:
+            Dicionario  -   Sempre
+            └ Con chave "data" e composto por un dicionario con datos variados.
+        """
+
+        return self.get(self.get_url_base()+'global')
 
     # /global/decentralized_finance_defi
     def get_global_defi(self):
-        # xFCR
-        pass
+        """
+        Devolve dato xerais non individuais sobre o top 100 das moedas defi.
+
+        @entradas:
+            Ningunha.
+
+        @saídas:
+            Dicionario  -   Sempre
+            └ Con chave "data" e composto por un dicionario cos datos.
+        """
+
+        return self.get(self.get_url_base()+'global/decentralized_finance_defi')
 
     # GLOBAL # -----------------------------------------------------------------
 

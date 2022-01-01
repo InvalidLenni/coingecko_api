@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2022/01/01 17:36:02.326516
+#+ Editado:	2022/01/01 17:43:00.249076
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -874,7 +874,6 @@ class TestCoinGecko_API(unittest.TestCase):
 
     # EXCHANGE_RATES # ---------------------------------------------------------
 
-    '''
     # TRENDING -----------------------------------------------------------------
 
     # /search/trending
@@ -893,7 +892,27 @@ class TestCoinGecko_API(unittest.TestCase):
     # GLOBAL -------------------------------------------------------------------
 
     # /global
+    def test_get_global(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = self.get_url_base()+'global'
+        self.assertEqual(cg.get_global(), self.get(url))
+
+    '''
     # /global/decentralized_finance_defi
+    def test_get_global_defi(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = self.get_url_base()+'global/decentralized_finance_defi'
+        self.assertEqual(cg.get_global_defi(), self.get(url))
 
     # GLOBAL # -----------------------------------------------------------------
 
