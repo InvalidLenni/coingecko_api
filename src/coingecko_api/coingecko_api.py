@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2022/01/01 15:14:19.118492
+#+ Editado:	2022/01/01 15:32:37.600964
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1110,12 +1110,12 @@ class CoinGecko:
     # DERIVATIVES --------------------------------------------------------------
 
     # /derivatives
-    def get_derivatives(self, tickers: Optional[str] = 'unexpired') -> List[dict]:
+    def get_derivatives(self, ticker: Optional[str] = 'unexpired') -> List[dict]:
         """
         Lista todos os tickets derivativos.
 
         @entradas:
-            tickets -   Opcional    -   Catex
+            ticket  -   Opcional    -   Catex
             └ Para elixir se mostrar todos ou só os que non expiraron.
                 valores válidos: "all", "unexpired"
 
@@ -1125,15 +1125,15 @@ class CoinGecko:
         """
 
        # checkeo de tipos
-        if not lazy_check_types([tickers], [str]):
+        if not lazy_check_types([ticker], [str]):
             raise ErroTipado('Cometiches un erro no tipado')
 
         vv_tickers = ['unexpired', 'all']
 
-        if tickers not in vv_tickers:
-           tickers = 'unexpired'
+        if ticker not in vv_tickers:
+           ticker = 'unexpired'
 
-        url = self.get_url_base()+f'derivatives?include_tickers={tickers}'
+        url = self.get_url_base()+f'derivatives?include_tickers={ticker}'
 
         return self.get(url)
 
@@ -1187,9 +1187,34 @@ class CoinGecko:
         return self.get(url)
 
     # /derivatives/exchanges/{id}
-    def get_derivatives_exchange(self):
-        # xFCR
-        pass
+    def get_derivatives_exchange(self, exchange_id: str, ticker: Optional[str] = 'unexpired') -> dict:
+        """
+        Mostra os datos derivativos do exchange/mercado.
+
+        @entradas:
+            exchange_id -   Requirido   -   Catex
+            └ Indicador de que orde se quere na exposición dos resultados.
+            ticker      -   Opcional    -   Catex
+            └ Para elixir se mostrar todos ou só os que non expiraron.
+                valores válidos: "all", "unexpired"
+
+        @saídas:
+            Dicionario  -   Sempre
+            └ Cos datos pedidos do exchange.
+        """
+
+        # checkeo de tipos
+        if not lazy_check_types([exchange_id, ticker], [str, str]):
+            raise ErroTipado('Cometiches un erro no tipado')
+
+        vv_tickers = ['unexpired', 'all']
+
+        if ticker not in vv_tickers:
+           ticker = 'unexpired'
+
+        url = self.get_url_base()+f'derivatives/exchanges/{exchange_id}?include_tickers={ticker}'
+
+        return self.get(url)
 
     # /derivatives/exchanges/list
     def get_derivatives_exchanges_list(self):
