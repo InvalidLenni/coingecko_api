@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2022/01/01 17:32:08.958068
+#+ Editado:	2022/01/01 17:35:55.900020
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1310,9 +1310,20 @@ class CoinGecko:
     # TRENDING -----------------------------------------------------------------
 
     # /search/trending
-    def search_trending(self):
-        # xFCR
-        pass
+    def get_search_trending(self):
+        """
+        Devolve o top 7 das moedas trending en CoinGecko ordeadas por popularidade.
+        Estas ditaminanse atendendo ás búsquedas feitas na páxina.
+
+        @entradas:
+            Ningunha.
+
+        @saídas:
+            Dicionario  -   Sempre
+            └ Con chave "coins" e composto dunha lista de dicionarios.
+        """
+
+        return self.get(self.get_url_base()+'trending')
 
     # TRENDING # ---------------------------------------------------------------
 

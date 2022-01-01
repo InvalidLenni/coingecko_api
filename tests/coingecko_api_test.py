@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2022/01/01 17:31:53.431037
+#+ Editado:	2022/01/01 17:36:02.326516
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -861,7 +861,6 @@ class TestCoinGecko_API(unittest.TestCase):
 
     # EXCHANGE_RATES -----------------------------------------------------------
 
-    '''
     # /exchange/rates
     def test_get_exchange_rates(self):
         """
@@ -875,9 +874,19 @@ class TestCoinGecko_API(unittest.TestCase):
 
     # EXCHANGE_RATES # ---------------------------------------------------------
 
+    '''
     # TRENDING -----------------------------------------------------------------
 
     # /search/trending
+    def test_get_search_trending(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = self.get_url_base()+'trending'
+        self.assertEqual(cg.get_search_trending(), self.get(url))
 
     # TRENDING # ---------------------------------------------------------------
 
