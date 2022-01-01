@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2022/01/01 17:23:38.069656
+#+ Editado:	2022/01/01 17:32:08.958068
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1291,8 +1291,19 @@ class CoinGecko:
 
     # /exchange_rates
     def get_exchange_rates(self):
-        # xFCR
-        pass
+        """
+        Devolve os valores das moedas con respecto ó bitcoin.
+        Cantas moedas fan falla para ter un bitcoin.
+
+        @entradas:
+            Ningunha.
+
+        @saídas:
+            Dicionario  -   Sempre
+            └ Con chave "rates" e composto de dicionarios.
+        """
+
+        return self.get(self.get_url_base()+'exchange_rates')
 
     # EXCHANGE_RATES # ---------------------------------------------------------
 

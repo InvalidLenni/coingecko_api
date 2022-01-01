@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2022/01/01 17:23:30.769998
+#+ Editado:	2022/01/01 17:31:53.431037
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -843,7 +843,6 @@ class TestCoinGecko_API(unittest.TestCase):
         with self.assertRaises(ErroTipado):
             cg.get_status_updates(categoria=0)
 
-    '''
     # /status_updates
     def test_get_status_updates(self):
         """
@@ -859,5 +858,40 @@ class TestCoinGecko_API(unittest.TestCase):
         self.assertEqual(cg.get_status_updates('milestone', 'coin', 2, 5), self.get(url))
 
     # STATUS_UPDATES # ---------------------------------------------------------
+
+    # EXCHANGE_RATES -----------------------------------------------------------
+
+    '''
+    # /exchange/rates
+    def test_get_exchange_rates(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = self.get_url_base()+'exchange_rates'
+        self.assertEqual(cg.get_exchange_rates(), self.get(url))
+
+    # EXCHANGE_RATES # ---------------------------------------------------------
+
+    # TRENDING -----------------------------------------------------------------
+
+    # /search/trending
+
+    # TRENDING # ---------------------------------------------------------------
+
+    # GLOBAL -------------------------------------------------------------------
+
+    # /global
+    # /global/decentralized_finance_defi
+
+    # GLOBAL # -----------------------------------------------------------------
+
+    # COMPANIES ----------------------------------------------------------------
+
+    # /companies
+
+    # COMPANIES # --------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
