@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/12/09 22:13:41.735240
-#+ Editado:	2022/01/01 15:32:31.275049
+#+ Editado:	2022/01/01 15:57:38.547111
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -816,10 +816,20 @@ class TestCoinGecko_API(unittest.TestCase):
         url = self.get_url_base()+'derivatives/exchanges/bitmex?include_tickers=all'
         self.assertEqual(cg.get_derivatives_exchange('bitmex', 'all'), self.get(url))
 
+    # /derivatives/exchanges/list
+    def test_get_derivatives_exchanges_list(self):
+        """
+        Uso normal.
+        """
+
+        cg = CoinGecko()
+
+        url = self.get_url_base()+'derivatives/exchanges/list'
+        self.assertEqual(cg.get_derivatives_exchanges_list(), self.get(url))
+
     # DERIVATIVES # ------------------------------------------------------------
 
+    # STATUS_UPDATES -----------------------------------------------------------
+    # STATUS_UPDATES # ---------------------------------------------------------
+
 # ------------------------------------------------------------------------------
-
-
-
-

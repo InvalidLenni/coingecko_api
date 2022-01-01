@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2022/01/01 15:32:37.600964
+#+ Editado:	2022/01/01 15:57:44.777307
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -1218,8 +1218,18 @@ class CoinGecko:
 
     # /derivatives/exchanges/list
     def get_derivatives_exchanges_list(self):
-        # xFCR
-        pass
+        """
+        Lista todos os exchanges derivativos co nome e identificador.
+
+        @entradas:
+            Ningunha
+
+        @saídas:
+            Lista de dicionarios    -   Sempre
+            └ Co id e o nome.
+        """
+
+        return self.get(self.get_url_base()+'derivatives/exchanges/list')
 
     # DERIVATIVES # ------------------------------------------------------------
 
