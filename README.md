@@ -6,7 +6,7 @@ Python wrapper for the [CoinGecko](https://www.coingecko.com/en) API(v3) with GP
 
 Documentation of the API at [<img src="https://github.com/Ran-n/media/blob/main/empresas/coing_gecko_03.svg" width="100" alt="CoinGecko" title="CoinGecko">](https://www.coingecko.com/en/api/documentation?)
 
-## Donations 🙇🙇‍♀
+## [Donations 🙇🙇‍♀](https://github.com/Ran-n/doc/blob/main/doaz%C3%B3ns.md)♀
 
 **Bitcoin** <img src="https://raw.githubusercontent.com/Ran-n/svgs/main/divisas/bitcoin/bitcoin_0.svg" width="20" alt="bitcoin logo" title="Bitcoin">  
 bc1q79vja8jzr27dxaf3ylu7e49ady8zq0jsm5qfk6
