@@ -21,7 +21,7 @@ __version__ = '1.1'
 __autor__ = 'Ran#'
 __creditos__ = 'Ran#'
 __licenza__ = 'GPLv3'
-__descricion__ = ''
+__descricion__ = 'Wrapper of the CoinGecko API'
 __ligazon__ = 'https://wwww.github.com/Ran-n/coingecko_api'
 __problemas__ = 'https://wwww.github.com/Ran-n/coingecko_api/issues'
 
