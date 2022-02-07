@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2021/10/24 18:10:22.139504
-#+ Editado:	2022/01/01 17:53:04.863524
+#+ Editado:	2022/02/07 20:47:53.645827
 # ------------------------------------------------------------------------------
 import requests as r
 import json
@@ -11,10 +11,8 @@ import time
 from datetime import datetime
 from typing import Optional, List, Union
 
-from uteis.ficheiro import gardarJson
-
-from src.coingecko_api.excepcions import ErroTipado, ErroData
-from src.coingecko_api.cg_uteis import check_types, lazy_check_types, e_bisesto
+from .excepcions import ErroTipado, ErroData
+from .cg_uteis import check_types, lazy_check_types, e_bisesto
 # ------------------------------------------------------------------------------
 class CoinGecko:
     # class variables/atributes
