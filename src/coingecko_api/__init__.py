@@ -17,7 +17,7 @@ from .coingecko_api import CoinGecko
 # ------------------------------------------------------------------------------
 
 __nome__ = 'coingecko_api'
-__version__ = '1.1'
+__version__ = '1.2'
 __autor__ = 'Ran#'
 __creditos__ = 'Ran#'
 __licenza__ = 'GPLv3'
